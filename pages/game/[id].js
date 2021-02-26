@@ -15,7 +15,7 @@ export default function Game() {
 				</h1>
 
 				<p className={styles.description}>
-					Get started by editing{" "}
+					Get started by esfsdditing{" "}
 					<code className={styles.code}>pages/index.js</code>
 				</p>
 
