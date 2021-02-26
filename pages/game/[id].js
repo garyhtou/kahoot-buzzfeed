@@ -1,7 +1,7 @@
 import Head from "next/head";
-import styles from "../styles/Home.module.css";
+import styles from "../styles/Game.module.css";
 
-export default function Home() {
+export default function Game() {
 	return (
 		<div className={styles.container}>
 			<Head>
