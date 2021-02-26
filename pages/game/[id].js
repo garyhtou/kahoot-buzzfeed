@@ -1,5 +1,5 @@
 import Head from "next/head";
-import styles from "../styles/Game.module.css";
+import styles from "../../styles/Game.module.css";
 
 export default function Game() {
 	return (
