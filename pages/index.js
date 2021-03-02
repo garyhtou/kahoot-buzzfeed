@@ -23,12 +23,14 @@ export default function Home() {
 	const router = useRouter();
 	const invalid_pin = router.query["invalid_pin"];
 
-	const [open, setOpen] = useState(true);
-	const handleClose = (event, reason) => {
+	// manage state of snack bar
+	// used to alert user of invalid game pin
+	const [openSnackBar, setOpenSnackBar] = useState(true);
+	const handleCloseSnackBar = (event, reason) => {
 		if (reason === "clickaway") {
 			return;
 		}
-		setOpen(false);
+		setOpenSnackBar(false);
 	};
 
 	return (
@@ -43,9 +45,9 @@ export default function Home() {
 						vertical: "bottom",
 						horizontal: "left",
 					}}
-					open={open}
+					open={openSnackBar}
 					autoHideDuration={6000}
-					onClose={handleClose}
+					onClose={handleCloseSnackBar}
 					message={
 						<>
 							Invalid game pin: <strong>{invalid_pin}</strong>
@@ -56,7 +58,7 @@ export default function Home() {
 							size="small"
 							aria-label="close"
 							color="inherit"
-							onClick={handleClose}
+							onClick={handleCloseSnackBar}
 						>
 							<Close fontSize="small" />
 						</IconButton>
@@ -65,7 +67,7 @@ export default function Home() {
 			) : null}
 
 			<Typography variant="h1" id={styles.title} gutterBottom>
-				Washington FBLA!
+				{consts.siteName}!
 			</Typography>
 			<Card className={styles.gamePinCard}>
 				<CardContent className={styles.pinContainer}>

@@ -18,7 +18,6 @@ import {
 	Toolbar,
 	Typography,
 } from "@material-ui/core";
-import firebase from "../../utils/firebase";
 import { useEffect, useState } from "react";
 import game from "../../helpers/game";
 
@@ -31,12 +30,15 @@ export default function Game() {
 	useEffect(async () => {
 		const pin = getPin();
 		if (typeof pin === "undefined") {
+			// sometime javascript window is undefined...
 			return;
 		}
 		const result = await game.validatePin(pin);
 		if (!result) {
+			// if invalid game pin, redirect to home page with error message
 			router.replace(`/?invalid_pin=${pin}`);
 		} else {
+			// if VALID game pin, continue
 			setLoadingPinValidation(false);
 		}
 	}, []);
