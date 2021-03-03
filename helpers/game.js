@@ -34,6 +34,10 @@ function isEnded(state) {
 	return state === consts.gameStates.end;
 }
 function isInGameQuestions(state) {
+	return getQuestionNum(state) === null ? false : true;
+}
+
+function getQuestionNum(state) {
 	if (
 		!isWaiting(state) &&
 		!isEnded(state) &&
@@ -41,7 +45,10 @@ function isInGameQuestions(state) {
 	) {
 		return state.substring(consts.gameStates.gameQuestionPrefix.length);
 	}
-	return false;
+	return null;
+}
+function getQuestionText(num) {
+	return consts.game.questions[num].question;
 }
 
 /**
@@ -178,4 +185,6 @@ export default {
 	calcAllMatchesExceptUser,
 	calcMyMatch,
 	chooseAnswer,
+	getQuestionText,
+	getQuestionNum,
 };

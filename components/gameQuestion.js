@@ -24,9 +24,11 @@ export default function gameQuestion(props) {
 	const state = props.state;
 
 	return (
-		<Typography variant="h3" id={styles.question}>
-			QUESTION HERE
-		</Typography>
+		<Box id={styles.container}>
+			<Typography variant="h3" id={styles.question}>
+				{game.getQuestionText(game.getQuestionNum(state))}
+			</Typography>
+		</Box>
 	);
 }
 

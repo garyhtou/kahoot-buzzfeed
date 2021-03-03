@@ -25,7 +25,7 @@ import GameView from "../../components/gameView";
 export default function Game() {
 	const router = useRouter();
 	const [loadingPinValidation, setLoadingPinValidation] = useState(true);
-	const [gameState, setGameState] = useState();
+	const [gameState, setGameState] = useState("");
 
 	// Validate game pin
 	useEffect(async () => {
@@ -60,23 +60,19 @@ export default function Game() {
 				if (snapshot && snapshot.exists()) {
 					const newState = snapshot.val();
 					setGameState(newState);
-					console.log(`GAME STATE CHANGING TO: ${newState}`);
+					console.log(`GAME STATE: ${newState}`);
 				}
 			})
 		);
 
 		// clean up firebase listener when leaving
-		return unsubAll(unsubFuncs);
-		function unsubAll(arr) {
-			arr.forEach((func) => func());
-		}
+		return function () {
+			unsubFuncs.forEach((func) => func());
+		};
 	}, [loadingPinValidation]);
 
 	return (
 		<>
-			<Backdrop open={loadingPinValidation}>
-				<CircularProgress color="inherit" />
-			</Backdrop>
 			<Container id={styles.gameContainer}>
 				<Head>
 					<title>
