@@ -20,6 +20,7 @@ import {
 } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import game from "../../helpers/game";
+import GameView from "../../components/gameView";
 
 export default function Game() {
 	const router = useRouter();
@@ -72,22 +73,27 @@ export default function Game() {
 	}, [loadingPinValidation]);
 
 	return (
-		<Container id={styles.gameContainer}>
-			<Head>
-				<title>
-					{consts.siteName}: {consts.game.name}
-				</title>
-			</Head>
+		<>
 			<Backdrop open={loadingPinValidation}>
 				<CircularProgress color="inherit" />
 			</Backdrop>
-			<AppBar position="fixed">
-				<Toolbar>
-					<Typography variant="h6">{consts.game.name}</Typography>
-					<Typography variant="body1">Question 1/11</Typography>
-				</Toolbar>
-			</AppBar>
-		</Container>
+			<Container id={styles.gameContainer}>
+				<Head>
+					<title>
+						{consts.siteName}: {consts.game.name}
+					</title>
+				</Head>
+				<AppBar position="fixed">
+					<Toolbar>
+						<Typography variant="h6">{consts.game.name}</Typography>
+						<Typography variant="body1">Question 1/11</Typography>
+					</Toolbar>
+				</AppBar>
+				{/* This toolbar is necessary to prevent content being hidden under the real fixed appbar/toolbar */}
+				<Toolbar />
+				<GameView pin={getPin()} state={gameState} />
+			</Container>
+		</>
 	);
 }
 

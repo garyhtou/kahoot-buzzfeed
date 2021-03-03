@@ -32,6 +32,14 @@ export default {
 				],
 				characteristics: "filler",
 			},
+			c: {
+				name: "Funnier group",
+				members: [
+					{ name: "State Officer 1", picture: "https://somewhere.com/so1" },
+					{ name: "State Officer 1", picture: "https://somewhere.com/so1" },
+				],
+				characteristics: "filler",
+			},
 		},
 		// In case of tie, set default priority
 		tieBreaker: ["a", "b"],
@@ -39,12 +47,30 @@ export default {
 		questions: [
 			{
 				question: "What type of competitive event do you like?",
-				answers: [
+				answers: {
 					// Each choice must be assigned to a result group!!!
-					{ title: "Presentation", belongs: "a" },
-					{ title: "Test", belongs: "b" },
-					{ title: "Demonstration", belongs: "c" },
-				],
+					a: { title: "Presentation", belongs: "c" },
+					b: { title: "Test", belongs: "c" },
+					c: { title: "Demonstration", belongs: "c" },
+				},
+			},
+			{
+				question: "What type of competitive event do you like?",
+				answers: {
+					// Each choice must be assigned to a result group!!!
+					a: { title: "Presentation", belongs: "a" },
+					b: { title: "Test", belongs: "b" },
+					c: { title: "Demonstration", belongs: "c" },
+				},
+			},
+			{
+				question: "What type of competitive event do you like?",
+				answers: {
+					// Each choice must be assigned to a result group!!!
+					a: { title: "Presentation", belongs: "a" },
+					b: { title: "Test", belongs: "b" },
+					c: { title: "Demonstration", belongs: "c" },
+				},
 			},
 		],
 	},
