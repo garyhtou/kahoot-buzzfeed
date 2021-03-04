@@ -1,15 +1,6 @@
 #gameView {
-	min-height: 100%;
+	height: 100%;
 	padding: 2rem 0;
 	flex-grow: 1;
 	width: 100%;
-
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-}
-
-#question{
-	/* font-size: 6rem; */
 }
