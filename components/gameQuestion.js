@@ -10,6 +10,7 @@ import {
 	CardContent,
 	CardHeader,
 	Container,
+	Grid,
 	IconButton,
 	Paper,
 	Snackbar,
@@ -28,6 +29,28 @@ export default function gameQuestion(props) {
 			<Typography variant="h3" id={styles.question}>
 				{game.getQuestionText(game.getQuestionNum(state))}
 			</Typography>
+			<Grid container id={styles.options} spacing={2}>
+				<Grid item lg>
+					<Paper>
+						<Typography varient="body1">Option 1</Typography>
+					</Paper>
+				</Grid>
+				<Grid item md>
+					<Paper>
+						<Typography varient="body1">Option 1</Typography>
+					</Paper>
+				</Grid>
+				<Grid item md>
+					<Paper>
+						<Typography varient="body1">Option 1</Typography>
+					</Paper>
+				</Grid>
+				<Grid item md>
+					<Paper>
+						<Typography varient="body1">Option 1</Typography>
+					</Paper>
+				</Grid>
+			</Grid>
 		</Box>
 	);
 }
