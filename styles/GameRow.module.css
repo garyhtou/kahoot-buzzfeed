@@ -1,0 +1,34 @@
+#listContainer {
+	min-height: 100vh;
+	padding: 0 0.5rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+/* 
+.main {
+	padding: 5rem 0;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+} */
+
+#gameTitle {
+	text-align: left;
+	background: purple;
+	width: 200px;
+	border: 1px solid white;
+	padding: 10px;
+	color: white;
+}
+
+
+#viewButton {
+	color: blue;
+	text-align: center;
+	padding: 10px;
+	color: white;
+}
