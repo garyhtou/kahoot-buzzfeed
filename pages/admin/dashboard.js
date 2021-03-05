@@ -102,32 +102,35 @@ export default function Dashboard() {
               Pin: {gamePin}
             </Typography>
             {console.log()}
-            <Link href={"/admin/game?gamepin=" + gamePin}>
-              <Button
-                variant="contained"
-                onClick={() => {
-                  gameArrayState[gamePin].state === "GAME_STATE-WAITING" &&
-                    stateToggle(gamePin, "QUESTION-1");
-                }}
-                color="primary"
-                id={styles.enterButton}
-              >
-                {gameArrayState[gamePin].state === "GAME_STATE-WAITING"
-                  ? "Start Game"
-                  : "View Game"}
-              </Button>
-            </Link>
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              <Link href={"/admin/game?gamepin=" + gamePin}>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    gameArrayState[gamePin].state === "GAME_STATE-WAITING" &&
+                      stateToggle(gamePin, "QUESTION-1");
+                  }}
+                  color="primary"
+                  id={styles.enterButton}
+                >
+                  {gameArrayState[gamePin].state === "GAME_STATE-WAITING"
+                    ? "Start Game"
+                    : "View Game"}
+                </Button>
+              </Link>
 
-            <Link href="dashboard">
-              <Button
-                variant="contained"
-                onClick={() => stateToggle(gamePin, "END")}
-                color="primary"
-                id={styles.enterButton}
-              >
-                End game
-              </Button>
-            </Link>
+              <Link href="dashboard">
+                <Button
+                  variant="contained"
+                  onClick={() => stateToggle(gamePin, "END")}
+                  color="primary"
+                  id={styles.enterButton}
+                >
+                  End game
+                </Button>
+              </Link>
+            </div>
+
             <Typography variant="h5" style={{ marginTop: "20px" }} gutterBottom>
               Game state:{" "}
               {gameArrayState[gamePin].state.replace("GAME_STATE-", "")}
@@ -164,7 +167,7 @@ export default function Dashboard() {
         </div>
       ) : (
         <div>
-          <h1 onClick={dashMain}>Dashboard</h1>
+          <h1>Dashboard</h1>
           <Container id={styles.listContainer} style={{ minHeight: "60vh" }}>
             <Typography variant="h2" id={styles.title} gutterBottom>
               View all games

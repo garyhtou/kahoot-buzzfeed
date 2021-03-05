@@ -63,12 +63,21 @@ export default function AdminGameView(props) {
     return count;
   }
 
-  function sample(currentQ) {
+  function moveOn(currentQ) {
     firebase
       .database()
       .ref(`games/` + gamePin)
       .child("state")
       .set("GAME_STATE-QUESTION-" + (currentQ + 1));
+  }
+
+  function shadowToggle(gamepin, uid) {
+    //document.getElementById(styles.username).style = 'background: red;';
+    firebase
+      .database()
+      .ref(`games/` + gamepin + "/users/" + uid)
+      .child("sban")
+      .set(userData[uid].sban !== undefined ? !userData[uid].sban : true);
   }
 
   return (
@@ -92,13 +101,39 @@ export default function AdminGameView(props) {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => sample(currentQNum)}
+            onClick={() => moveOn(currentQNum)}
             id={styles.adminMoveOn}
           >
             Next question
           </Button>
         </CardContent>
       </Card>
+
+      <div
+        style={{
+          justifyContent: "center",
+          display: "flex",
+          flexDirection: "row",
+          marginTop: "20px",
+        }}
+      >
+        {Object.keys(userData).map(function (key) {
+          return (
+            <div
+              onClick={() => shadowToggle(gamePin, key)}
+              style={{
+                textDecoration:
+                  userData[key].sban !== undefined && userData[key].sban
+                    ? "line-through"
+                    : "",
+              }}
+              id={styles.username}
+            >
+              {userData[key].name}
+            </div>
+          );
+        })}
+      </div>
     </Container>
   );
 }

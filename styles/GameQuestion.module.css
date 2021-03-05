@@ -20,3 +20,22 @@
 #adminMoveOn {
 	margin-top: 20px;
 }
+
+
+#username {
+	text-align: center;
+	cursor: pointer;
+	white-space: nowrap;
+	font-size: 13px;
+	background: purple;
+	max-height: 40px;
+	margin-right: 10px;
+	width: 100px;
+	border: 1px solid white;
+	padding: 10px;
+	color: white;
+}
+
+#username:hover {
+	text-decoration: line-through
+}
