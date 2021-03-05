@@ -6,6 +6,15 @@
 	justify-content: center;
 	align-items: center;
 }
+
+#nameContainer {
+	padding: 20px;
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
 /* 
 .main {
 	padding: 5rem 0;
@@ -25,10 +34,31 @@
 	color: white;
 }
 
+#username {
+	text-align: center;
+	cursor: pointer;
+	white-space: nowrap;
+	font-size: 13px;
+	background: purple;
+	max-height: 40px;
+	margin-right: 10px;
+	width: 100px;
+	border: 1px solid white;
+	padding: 10px;
+	color: white;
+}
+
+#username:hover {
+	text-decoration: line-through
+}
+
+
+
+
 
 #viewButton {
-	color: blue;
 	text-align: center;
+	cursor: pointer;
 	padding: 10px;
 	color: white;
 }

@@ -175,15 +175,13 @@ async function userExists(pin, uuid) {
   return user.exists();
 }
 
-async function getGameNames() {
-  var data = [];
+async function getAllGames() {
+  var data;
   const snapshot = await firebase
     .database()
     .ref(`games`)
     .once("value", function (subsnapshot) {
-      subsnapshot.forEach((childSnapshot) => {
-        data.push(childSnapshot.key);
-      });
+      data = subsnapshot.val();
     });
 
   return data;
@@ -191,7 +189,7 @@ async function getGameNames() {
 
 export default {
   validatePin,
-  getGameNames,
+  getAllGames,
   getDbRefs,
   isWaiting,
   isEnded,

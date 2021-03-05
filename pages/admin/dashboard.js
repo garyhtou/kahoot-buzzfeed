@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { CircularProgress, Typography } from "@material-ui/core";
-import PropTypes from "prop-types";
+import PropTypes, { array } from "prop-types";
 import styles from "../../styles/GameRow.module.css";
 import game from "../../helpers/game";
 
@@ -23,57 +23,144 @@ import {
 } from "@material-ui/core";
 
 export default function Dashboard() {
-  const [arrayState, setArrayState] = useState([]);
+  const [gameArrayState, setGameArrayState] = useState([]);
+  const [gameClick, setGameClick] = useState(false);
+  const [gamePin, setGamePin] = useState();
 
-  var employees = [
-    {
-      id: 1,
-      firstname: "abc",
-      lastname: "xyz",
-      phone: "+91 789654123",
-      email: "abcyz@gmail.com",
-    },
-    {
-      id: 2,
-      firstname: "def",
-      lastname: "uvz",
-      phone: "+91 123456987",
-      email: "defvu@gmail.com",
-    },
-    {
-      id: 2,
-      firstname: "def",
-      lastname: "uvz",
-      phone: "+91 123456987",
-      email: "defvu@gmail.com",
-    },
-  ];
+  const router = useRouter();
 
   useEffect(async () => {
-    const result = await game.getGameNames();
-    setArrayState(result);
+    var data;
+    const snapshot = await firebase
+      .database()
+      .ref(`games`)
+      .on("value", (subsnapshot) => {
+        data = subsnapshot.val();
+        //console.log(data);
+        setGameArrayState(data);
+      });
   }, []);
+
+  var listOfGames = [];
+  for (var k in gameArrayState) {
+    listOfGames.push(k);
+  }
+
+  function gameClicked(pin) {
+    router.replace(`?gamepin=${pin}`);
+    setGameClick(true);
+    setGamePin(pin);
+  }
+
+  function dashMain() {
+    setGameClick(false);
+    setGamePin("");
+    router.replace(`/admin/dashboard`);
+  }
+
+  function shadowToggle(gamepin, uid) {
+    //document.getElementById(styles.username).style = 'background: red;';
+    firebase
+      .database()
+      .ref(`games/` + gamepin + "/users/" + uid)
+      .child("sban")
+      .set(
+        gameArrayState[gamepin].users[uid].sban !== undefined
+          ? !gameArrayState[gamepin].users[uid].sban
+          : true
+      );
+  }
+
+  function stateToggle(gamepin, state) {
+    //document.getElementById(styles.username).style = 'background: red;';
+    firebase
+      .database()
+      .ref(`games/` + gamepin)
+      .child("state")
+      .set("GAME_STATE-" + state);
+  }
 
   return (
     <>
-      <h1>Dashboard</h1>
-      <Container id={styles.listContainer} style={{ minHeight: "60vh" }}>
-        <Typography variant="h2" id={styles.title} gutterBottom>
-          View all games
-        </Typography>
-        <Card className={styles.gamePinCard}>
-          <CardContent className={styles.pinContainer}>
-            {arrayState.map((el) => {
-              return (
-                <div style={{ display: "flex", flexDirection: "row" }}>
-                  <div id={styles.gameTitle}>{el}</div>
-                  <div id={styles.viewButton}>View</div>
-                </div>
-              );
-            })}
-          </CardContent>
-        </Card>
-      </Container>
+      {gameClick ? (
+        <div>
+          <Link href="dashboard">
+            <h1 onClick={dashMain}>Back to dashboard</h1>
+          </Link>
+          <Container id={styles.listContainer} style={{ minHeight: "10vh" }}>
+            <Typography variant="h4" gutterBottom>
+              Pin: {gamePin}
+            </Typography>
+            <Button
+              variant="contained"
+              onClick={() => stateToggle(gamePin, "START")}
+              color="primary"
+              id={styles.enterButton}
+            >
+              Start game
+            </Button>
+
+            <Typography variant="h5" style={{ marginTop: "20px" }} gutterBottom>
+              Game state:{" "}
+              {gameArrayState[gamePin].state.replace("GAME_STATE-", "")}
+            </Typography>
+
+            <Card>
+              <CardContent id={styles.nameContainer}>
+                {gameArrayState[gamePin].users !== undefined &&
+                  Object.keys(gameArrayState[gamePin].users).map(function (
+                    key
+                  ) {
+                    return (
+                      <div style={{ display: "flex", flexDirection: "row" }}>
+                        <div
+                          onClick={() => shadowToggle(gamePin, key)}
+                          style={{
+                            textDecoration:
+                              gameArrayState[gamePin].users[key].sban !==
+                                undefined &&
+                              gameArrayState[gamePin].users[key].sban
+                                ? "line-through"
+                                : "",
+                          }}
+                          id={styles.username}
+                        >
+                          {gameArrayState[gamePin].users[key].name}
+                        </div>
+                      </div>
+                    );
+                  })}
+              </CardContent>
+            </Card>
+          </Container>
+        </div>
+      ) : (
+        <div>
+          <h1 onClick={dashMain}>Dashboard</h1>
+          <Container id={styles.listContainer} style={{ minHeight: "60vh" }}>
+            <Typography variant="h2" id={styles.title} gutterBottom>
+              View all games
+            </Typography>
+            <Card className={styles.gamePinCard}>
+              <CardContent className={styles.pinContainer}>
+                {listOfGames.map((el) => {
+                  return (
+                    <div style={{ display: "flex", flexDirection: "row" }}>
+                      <div id={styles.gameTitle}>{el}</div>
+                      <div
+                        onClick={() => gameClicked(el)}
+                        id={styles.viewButton}
+                      >
+                        View
+                      </div>
+                    </div>
+                  );
+                })}
+              </CardContent>
+            </Card>
+          </Container>
+        </div>
+      )}
     </>
   );
 }
