@@ -48,9 +48,14 @@ export default function Dashboard() {
   }
 
   function gameClicked(pin) {
-    router.replace(`?gamepin=${pin}`);
-    setGameClick(true);
-    setGamePin(pin);
+    if (gameArrayState[pin].state !== "GAME_STATE-END") {
+      router.replace(`?gamepin=${pin}`);
+      setGameClick(true);
+      setGamePin(pin);
+    } else {
+      //show results
+      router.replace(`/admin/results?gamepin=${pin}`);
+    }
   }
 
   function dashMain() {
@@ -74,6 +79,10 @@ export default function Dashboard() {
 
   function stateToggle(gamepin, state) {
     //document.getElementById(styles.username).style = 'background: red;';
+    if (state === "END") {
+      setGameClick(false);
+      setGamePin("");
+    }
     firebase
       .database()
       .ref(`games/` + gamepin)
@@ -92,18 +101,33 @@ export default function Dashboard() {
             <Typography variant="h4" gutterBottom>
               Pin: {gamePin}
             </Typography>
-
+            {console.log()}
             <Link href={"/admin/game?gamepin=" + gamePin}>
               <Button
                 variant="contained"
-                onClick={() => stateToggle(gamePin, "QUESTION-1")}
+                onClick={() => {
+                  gameArrayState[gamePin].state === "GAME_STATE-WAITING" &&
+                    stateToggle(gamePin, "QUESTION-1");
+                }}
                 color="primary"
                 id={styles.enterButton}
               >
-                Start game
+                {gameArrayState[gamePin].state === "GAME_STATE-WAITING"
+                  ? "Start Game"
+                  : "View Game"}
               </Button>
             </Link>
 
+            <Link href="dashboard">
+              <Button
+                variant="contained"
+                onClick={() => stateToggle(gamePin, "END")}
+                color="primary"
+                id={styles.enterButton}
+              >
+                End game
+              </Button>
+            </Link>
             <Typography variant="h5" style={{ marginTop: "20px" }} gutterBottom>
               Game state:{" "}
               {gameArrayState[gamePin].state.replace("GAME_STATE-", "")}

@@ -76,6 +76,11 @@ export default function AdminGameView(props) {
       <Typography variant="h3">
         {gameState.replace("GAME_STATE-", "")}
       </Typography>
+      <Link href="dashboard">
+        <Button variant="contained" color="primary">
+          Back to dashboard
+        </Button>
+      </Link>
       <Card style={{ marginTop: "20px" }}>
         <CardContent>
           <Typography variant="h3">
