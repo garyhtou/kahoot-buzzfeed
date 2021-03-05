@@ -6,6 +6,7 @@ import styles from "../../styles/GameRow.module.css";
 import game from "../../helpers/game";
 
 import firebase from "../../utils/firebase";
+import AdminGameView from "./game";
 
 import Link from "next/link";
 import {
@@ -91,14 +92,17 @@ export default function Dashboard() {
             <Typography variant="h4" gutterBottom>
               Pin: {gamePin}
             </Typography>
-            <Button
-              variant="contained"
-              onClick={() => stateToggle(gamePin, "START")}
-              color="primary"
-              id={styles.enterButton}
-            >
-              Start game
-            </Button>
+
+            <Link href={"/admin/game?gamepin=" + gamePin}>
+              <Button
+                variant="contained"
+                onClick={() => stateToggle(gamePin, "QUESTION-1")}
+                color="primary"
+                id={styles.enterButton}
+              >
+                Start game
+              </Button>
+            </Link>
 
             <Typography variant="h5" style={{ marginTop: "20px" }} gutterBottom>
               Game state:{" "}
