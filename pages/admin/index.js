@@ -100,7 +100,7 @@ export default function Admin() {
               color="primary"
               id={styles.enterButton}
             >
-              Go!
+              Sign in!
             </Button>
           </CardContent>
         </Card>
