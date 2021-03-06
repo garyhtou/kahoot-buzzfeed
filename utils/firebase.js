@@ -13,6 +13,8 @@ if (typeof window !== "undefined" && !firebase.apps.length) {
 
   firebase.database();
   firebase.analytics();
+} else {
+  console.log("something wrong in fire");
 }
 
 /* export const auth = firebase.auth();

@@ -26,9 +26,24 @@ import {
 export default function Dashboard() {
   const [gameArrayState, setGameArrayState] = useState([]);
   const [gameClick, setGameClick] = useState(false);
+  const [login, setLogin] = useState(false);
   const [gamePin, setGamePin] = useState();
 
   const router = useRouter();
+
+  if (firebase.apps.length === 0) {
+    console.log("not initialized");
+  } else {
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        setLogin(true);
+      } else {
+        //no user logged in, so go back to admin
+        setLogin(false);
+        router.replace(`/admin?login=signOut`);
+      }
+    });
+  }
 
   useEffect(async () => {
     var data;
@@ -88,6 +103,17 @@ export default function Dashboard() {
       .ref(`games/` + gamepin)
       .child("state")
       .set("GAME_STATE-" + state);
+  }
+
+  function signOutUser() {
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        // Sign-out successful.
+        setLogin(false);
+      })
+      .catch((error) => {});
   }
 
   return (
@@ -166,31 +192,37 @@ export default function Dashboard() {
           </Container>
         </div>
       ) : (
-        <div>
-          <h1>Dashboard</h1>
-          <Container id={styles.listContainer} style={{ minHeight: "60vh" }}>
-            <Typography variant="h2" id={styles.title} gutterBottom>
-              View all games
-            </Typography>
-            <Card className={styles.gamePinCard}>
-              <CardContent className={styles.pinContainer}>
-                {listOfGames.map((el) => {
-                  return (
-                    <div style={{ display: "flex", flexDirection: "row" }}>
-                      <div id={styles.gameTitle}>{el}</div>
-                      <div
-                        onClick={() => gameClicked(el)}
-                        id={styles.viewButton}
-                      >
-                        View
+        login && (
+          <div>
+            <h1>
+              Hey, {firebase.auth().currentUser.displayName}! Welcome to the
+              Admin Dashboard
+            </h1>
+            <h1 onClick={() => signOutUser()}>Sign out</h1>
+            <Container id={styles.listContainer} style={{ minHeight: "60vh" }}>
+              <Typography variant="h2" id={styles.title} gutterBottom>
+                View all games
+              </Typography>
+              <Card className={styles.gamePinCard}>
+                <CardContent className={styles.pinContainer}>
+                  {listOfGames.map((el) => {
+                    return (
+                      <div style={{ display: "flex", flexDirection: "row" }}>
+                        <div id={styles.gameTitle}>{el}</div>
+                        <div
+                          onClick={() => gameClicked(el)}
+                          id={styles.viewButton}
+                        >
+                          View
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
-              </CardContent>
-            </Card>
-          </Container>
-        </div>
+                    );
+                  })}
+                </CardContent>
+              </Card>
+            </Container>
+          </div>
+        )
       )}
     </>
   );
