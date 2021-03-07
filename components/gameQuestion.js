@@ -26,11 +26,10 @@ import game from "../helpers/game";
 export default function gameQuestion(props) {
 	const pin = props.pin;
 	const state = props.state;
+	const uuid = props.uuid;
 
 	const questionNum = game.getQuestionNum(state);
 	const questionObj = consts.game.questions[questionNum];
-
-	const uuid = ""; //TODO
 
 	function chooseOption(option) {
 		game.chooseAnswer(pin, uuid, questionNum, option);

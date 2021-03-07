@@ -12,6 +12,7 @@ if (typeof window !== "undefined" && !firebase.apps.length) {
 	});
 
 	firebase.database();
+	firebase.auth();
 	firebase.analytics();
 }
 

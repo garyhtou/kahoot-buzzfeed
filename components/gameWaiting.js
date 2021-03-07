@@ -21,11 +21,11 @@ import {
 } from "@material-ui/core";
 import PropTypes from "prop-types";
 import game from "../helpers/game";
-import firebase from "../utils/firebase";
 
 export default function gameWaiting(props) {
 	const pin = props.pin;
 	const state = props.state;
+	const uuid = props.uuid;
 
 	const [users, setUsers] = useState([]);
 
@@ -44,7 +44,7 @@ export default function gameWaiting(props) {
 					return { uuid, ...user };
 				})
 				// filter shadowbanned users
-				.filter((u) => !u.sban);
+				.filter((u) => (typeof u.sban !== "undefined" ? !u.sban : true));
 
 			setUsers(users);
 		});

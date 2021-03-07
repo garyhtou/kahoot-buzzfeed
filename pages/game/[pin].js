@@ -21,11 +21,13 @@ import {
 import { useEffect, useState } from "react";
 import game from "../../helpers/game";
 import GameView from "../../components/gameView";
+import firebase from "../../utils/firebase";
 
 export default function Game() {
 	const router = useRouter();
 	const [loadingPinValidation, setLoadingPinValidation] = useState(true);
 	const [gameState, setGameState] = useState("");
+	const [user, setUser] = useState({});
 
 	// Validate game pin
 	useEffect(async () => {
@@ -71,6 +73,27 @@ export default function Game() {
 		};
 	}, [loadingPinValidation]);
 
+	// anon user
+	useEffect(() => {
+		firebase.auth().onAuthStateChanged((user) => {
+			if (user) {
+				console.log(`UID: ${user.uid}`);
+				setUser(user);
+			}
+		});
+
+		firebase
+			.auth()
+			.signInAnonymously()
+			.then(() => {
+				// successfully signed in
+				console.log("ANON USER SUCCESS");
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+	}, []);
+
 	return (
 		<>
 			<Container id={styles.gameContainer}>
@@ -87,7 +110,7 @@ export default function Game() {
 				</AppBar>
 				{/* This toolbar is necessary to prevent content being hidden under the real fixed appbar/toolbar */}
 				<Toolbar />
-				<GameView pin={getPin()} state={gameState} />
+				<GameView pin={getPin()} state={gameState} uuid={user.uid} />
 			</Container>
 		</>
 	);
