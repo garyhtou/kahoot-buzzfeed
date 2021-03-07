@@ -1,5 +1,10 @@
 import firebase from "../utils/firebase";
 import consts from "../config/consts";
+import Filter from "bad-words";
+const filter = new Filter();
+
+const additionalNameBlacklist = [];
+filter.addWords(...additionalNameBlacklist);
 
 async function validatePin(pin) {
 	const snapshot = await firebase
@@ -179,6 +184,34 @@ function getQuestionNumTotal() {
 	return consts.game.questions.length;
 }
 
+async function addCurrentUser(pin, name) {
+	const uuid = firebase.auth().currentUser.uid;
+
+	if (!validateName(name)) {
+		return;
+	}
+
+	return getDbRefs(pin).user(uuid).set({
+		name: name,
+		sban: false,
+	});
+}
+
+function validateName(name, realtime = false) {
+	if (name.length > 30) {
+		throw Error("Your name is too long! Please keep it under 30 characters.");
+	}
+	if (!realtime && name.length <= 1) {
+		throw Error("Hmm... Can you pick a longer name?");
+	}
+
+	if (!realtime && filter.clean(name) !== name) {
+		throw Error("Hey! Please keep it clean :)");
+	}
+
+	return true;
+}
+
 export default {
 	validatePin,
 	getDbRefs,
@@ -192,4 +225,7 @@ export default {
 	getQuestionText,
 	getQuestionNum,
 	getQuestionNumTotal,
+	userExists,
+	addCurrentUser,
+	validateName,
 };
