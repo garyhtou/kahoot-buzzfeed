@@ -52,21 +52,6 @@ export default function gameWaiting(props) {
 		return unsub;
 	}, []);
 
-	// useEffect(() => {
-	// 	setInterval(() => {
-	// 		firebase
-	// 			.database()
-	// 			.ref("games/1234/users/" + Math.floor(Math.random() * 100000))
-	// 			.set({
-	// 				name: Math.random()
-	// 					.toString(36)
-	// 					.replace(/[^a-z]+/g, "")
-	// 					.substr(0, 5),
-	// 				sban: false,
-	// 			});
-	// 	}, 1000);
-	// });
-
 	return (
 		<Box id={styles.container}>
 			<Box id={styles.header}>
