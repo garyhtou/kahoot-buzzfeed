@@ -48,7 +48,9 @@ function getQuestionNum(state) {
 		!isEnded(state) &&
 		(state || "").match(new RegExp(`^${consts.gameStates.gameQuestionPrefix}`))
 	) {
-		return state.substring(consts.gameStates.gameQuestionPrefix.length);
+		return parseInt(
+			state.substring(consts.gameStates.gameQuestionPrefix.length)
+		);
 	}
 	return null;
 }

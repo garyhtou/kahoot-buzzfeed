@@ -105,9 +105,18 @@ export default function Game() {
 					</title>
 				</Head>
 				<AppBar position="fixed">
-					<Toolbar>
-						<Typography variant="h6">{consts.game.name}</Typography>
-						<Typography variant="body1">Question 1/11</Typography>
+					<Toolbar id={styles.toolbar}>
+						{game.isWaiting(gameState) ? (
+							<Typography variant="h6">{consts.siteName}</Typography>
+						) : (
+							<Typography variant="h6">{consts.game.name}</Typography>
+						)}
+						{game.isInGameQuestions(gameState) ? (
+							<Typography variant="body1">
+								Question {game.getQuestionNum(gameState) + 1}/
+								{game.getQuestionNumTotal()}
+							</Typography>
+						) : null}
 					</Toolbar>
 				</AppBar>
 				{/* This toolbar is necessary to prevent content being hidden under the real fixed appbar/toolbar */}
