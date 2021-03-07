@@ -134,7 +134,7 @@ export default function Dashboard() {
                   variant="contained"
                   onClick={() => {
                     gameArrayState[gamePin].state === "GAME_STATE-WAITING" &&
-                      stateToggle(gamePin, "QUESTION-1");
+                      stateToggle(gamePin, "GAME_QUESTION_1");
                   }}
                   color="primary"
                   id={styles.enterButton}

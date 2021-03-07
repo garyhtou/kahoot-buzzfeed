@@ -38,7 +38,7 @@ export default function AdminGameView(props) {
     const snapshot = await firebase.database().ref(`games/` + gamePin);
     snapshot.child("state").on("value", (stateSnap) => {
       setGameState(stateSnap.val());
-      var x = Number(stateSnap.val().replace("GAME_STATE-QUESTION-", ""));
+      var x = Number(stateSnap.val().replace("GAME_STATE-GAME_QUESTION_", ""));
       setCurrentQNum(x);
     });
     snapshot.child("users").on("value", (subsnapshot) => {
@@ -68,7 +68,7 @@ export default function AdminGameView(props) {
       .database()
       .ref(`games/` + gamePin)
       .child("state")
-      .set("GAME_STATE-QUESTION-" + (currentQ + 1));
+      .set("GAME_STATE-GAME_QUESTION_" + (currentQ + 1));
   }
 
   function shadowToggle(gamepin, uid) {
@@ -78,6 +78,10 @@ export default function AdminGameView(props) {
       .ref(`games/` + gamepin + "/users/" + uid)
       .child("sban")
       .set(userData[uid].sban !== undefined ? !userData[uid].sban : true);
+  }
+
+  if (gameState === "GAME_STATE-END") {
+    router.replace(`/admin/results?gamepin=${gamePin}`);
   }
 
   return (
