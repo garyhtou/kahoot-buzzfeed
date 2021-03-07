@@ -75,7 +75,7 @@ export default function Game() {
 
 	// anon user
 	useEffect(() => {
-		firebase.auth().onAuthStateChanged((user) => {
+		var unsub = firebase.auth().onAuthStateChanged((user) => {
 			if (user) {
 				console.log(`UID: ${user.uid}`);
 				setUser(user);
@@ -92,6 +92,8 @@ export default function Game() {
 			.catch((error) => {
 				console.error(error);
 			});
+
+		return unsub;
 	}, []);
 
 	return (

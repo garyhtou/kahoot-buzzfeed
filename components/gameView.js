@@ -104,6 +104,6 @@ export default function GameView(props) {
 }
 
 GameView.propTypes = {
-	pin: PropTypes.number,
+	pin: PropTypes.number || PropTypes.string,
 	state: PropTypes.string,
 };

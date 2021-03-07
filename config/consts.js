@@ -74,6 +74,51 @@ export default {
 					c: { title: "Demonstration", belongs: "c" },
 				},
 			},
+			{
+				question: "What type of competitive event do you like?",
+				answers: {
+					// Each choice must be assigned to a result group!!!
+					a: { title: "Presentation", belongs: "a" },
+					b: { title: "Test", belongs: "b" },
+					c: { title: "Demonstration", belongs: "c" },
+				},
+			},
+			{
+				question: "What type of competitive event do you like?",
+				answers: {
+					// Each choice must be assigned to a result group!!!
+					a: { title: "Presentation", belongs: "a" },
+					b: { title: "Test", belongs: "b" },
+					c: { title: "Demonstration", belongs: "c" },
+				},
+			},
+			{
+				question: "What type of competitive event do you like?",
+				answers: {
+					// Each choice must be assigned to a result group!!!
+					a: { title: "Presentation", belongs: "a" },
+					b: { title: "Test", belongs: "b" },
+					c: { title: "Demonstration", belongs: "c" },
+				},
+			},
+			{
+				question: "What type of competitive event do you like?",
+				answers: {
+					// Each choice must be assigned to a result group!!!
+					a: { title: "Presentation", belongs: "a" },
+					b: { title: "Test", belongs: "b" },
+					c: { title: "Demonstration", belongs: "c" },
+				},
+			},
+			{
+				question: "What type of competitive event do you like?",
+				answers: {
+					// Each choice must be assigned to a result group!!!
+					a: { title: "Presentation", belongs: "a" },
+					b: { title: "Test", belongs: "b" },
+					c: { title: "Demonstration", belongs: "c" },
+				},
+			},
 		],
 	},
 };

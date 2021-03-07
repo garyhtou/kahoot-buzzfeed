@@ -53,7 +53,11 @@ function getQuestionNum(state) {
 	return null;
 }
 function getQuestionText(num) {
-	return consts.game.questions[num].question;
+	const questionObj = consts.game.questions[num];
+	if (typeof questionObj === "undefined") {
+		throw Error(`Question #${num} doesn't exist in config!`);
+	}
+	return questionObj.question;
 }
 
 /**
