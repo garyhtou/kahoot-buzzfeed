@@ -34,7 +34,7 @@
 	color: white;
 }
 
-#username {
+.username {
 	text-align: center;
 	cursor: pointer;
 	white-space: nowrap;

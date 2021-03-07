@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { CircularProgress, Typography } from "@material-ui/core";
 import PropTypes, { array } from "prop-types";
-import styles from "../../styles/GameQuestion.module.css";
+import styles from "../../styles/Results.module.css";
 import game from "../../helpers/game";
 
 import firebase from "../../utils/firebase";
@@ -29,7 +29,7 @@ export default function AdminResults(props) {
   const router = useRouter();
 
   const urlParams = new URLSearchParams(window.location.search);
-  const gamePin = urlParams.get("gamepin");
+  const gamePin = urlParams.get("gamePin");
 
   useEffect(async () => {
     var data;
@@ -47,14 +47,44 @@ export default function AdminResults(props) {
     <Container id={styles.question}>
       <Typography variant="h3">Results</Typography>
       <Typography variant="h4">{gameState}</Typography>
+      <Typography variant="h4">Game pin: {gamePin}</Typography>
 
       <Link href="dashboard">
-        <Button variant="contained" color="primary">
+        <Button
+          variant="contained"
+          color="primary"
+          style={{ marginTop: "10px" }}
+        >
           Back to dashboard
         </Button>
       </Link>
       <Card style={{ marginTop: "20px" }}>
-        <CardContent></CardContent>
+        <CardContent id={styles.nameContainer}>
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            <div id={styles.groupTitle}>Group A:</div>
+            <div id={styles.name}>hello</div>
+            <div id={styles.name}>hello</div>
+            <div id={styles.name}>hello</div>
+          </div>
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            <div id={styles.groupTitle}>Group A:</div>
+            <div id={styles.name}>hello</div>
+            <div id={styles.name}>hello</div>
+            <div id={styles.name}>hello</div>
+          </div>
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            <div id={styles.groupTitle}>Group A:</div>
+            <div id={styles.name}>hello</div>
+            <div id={styles.name}>hello</div>
+            <div id={styles.name}>hello</div>
+          </div>
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            <div id={styles.groupTitle}>Group A:</div>
+            <div id={styles.name}>hello</div>
+            <div id={styles.name}>hello</div>
+            <div id={styles.name}>hello</div>
+          </div>
+        </CardContent>
       </Card>
     </Container>
   );

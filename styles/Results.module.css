@@ -1,0 +1,61 @@
+#container {
+	width: 100%;
+	height: 100%;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: stretch;
+}
+
+#question {
+	padding: 3rem;
+	text-align: center;
+}
+
+#options {
+	flex-grow: 1;
+}
+
+#adminMoveOn {
+	margin-top: 20px;
+}
+
+#groupTitle {
+	padding: 10px;
+	font-size: 13px;
+}
+
+#name {
+	text-align: center;
+	cursor: pointer;
+	white-space: nowrap;
+	font-size: 13px;
+	background: purple;
+	max-height: 40px;
+	margin-right: 10px;
+	width: 100px;
+	border: 1px solid white;
+	padding: 10px;
+	color: white;
+}
+
+
+
+#username {
+	text-align: center;
+	cursor: pointer;
+	white-space: nowrap;
+	font-size: 13px;
+	background: purple;
+	max-height: 40px;
+	margin-right: 10px;
+	width: 100px;
+	border: 1px solid white;
+	padding: 10px;
+	color: white;
+}
+
+#username:hover {
+	text-decoration: line-through
+}

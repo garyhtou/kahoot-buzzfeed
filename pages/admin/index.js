@@ -30,9 +30,23 @@ export default function Admin() {
   const router = useRouter();
 
   const [openSnackBar, setOpenSnackBar] = useState(false);
+  const [isLogin, setLogin] = useState(false);
   const [barMessage, setMessage] = useState("");
 
   const loginState = router.query["login"];
+
+  if (firebase.apps.length === 0) {
+    console.log("not initialized in index");
+  } else {
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        router.replace(`/admin/dashboard`);
+        setLogin(true);
+      } else {
+        //no user logged in, so go back to admin
+      }
+    });
+  }
 
   const handleCloseSnackBar = (event, reason) => {
     if (reason === "clickaway") {
@@ -75,58 +89,62 @@ export default function Admin() {
 
   return (
     <>
-      <Link href="/">
-        <a>Back to home</a>
-      </Link>
-      <Container id={styles.homeContainer} style={{ minHeight: "60vh" }}>
-        <Typography variant="h2" id={styles.title} gutterBottom>
-          Admin
-        </Typography>
-        <Card className={styles.gamePinCard}>
-          <CardContent className={styles.pinContainer}>
-            <TextField
-              placeholder="ADMIN PASSWORD"
-              type={"password"}
-              onChange={(event) => {
-                setInputText(event.target.value);
-              }}
-              id={styles.pinInput}
-              inputProps={{ style: { textAlign: "center" } }}
-            />
+      {isLogin == false && (
+        <div>
+          <Link href="/">
+            <a>Back to home</a>
+          </Link>
+          <Container id={styles.homeContainer} style={{ minHeight: "60vh" }}>
+            <Typography variant="h2" id={styles.title} gutterBottom>
+              Admin
+            </Typography>
+            <Card className={styles.gamePinCard}>
+              <CardContent className={styles.pinContainer}>
+                <TextField
+                  placeholder="ADMIN PASSWORD"
+                  type={"password"}
+                  onChange={(event) => {
+                    setInputText(event.target.value);
+                  }}
+                  id={styles.pinInput}
+                  inputProps={{ style: { textAlign: "center" } }}
+                />
 
-            <Button
-              variant="contained"
-              onClick={() => passwordCheck()}
-              color="primary"
-              id={styles.enterButton}
-            >
-              Sign in!
-            </Button>
-          </CardContent>
-        </Card>
-        {openSnackBar && (
-          <Snackbar
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "left",
-            }}
-            open={openSnackBar}
-            autoHideDuration={6000}
-            onClose={handleCloseSnackBar}
-            message={barMessage}
-            action={
-              <IconButton
-                size="small"
-                aria-label="close"
-                color="inherit"
-                onClick={handleCloseSnackBar}
-              >
-                <Close fontSize="small" />
-              </IconButton>
-            }
-          />
-        )}
-      </Container>
+                <Button
+                  variant="contained"
+                  onClick={() => passwordCheck()}
+                  color="primary"
+                  id={styles.enterButton}
+                >
+                  Sign in!
+                </Button>
+              </CardContent>
+            </Card>
+            {openSnackBar && (
+              <Snackbar
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "left",
+                }}
+                open={openSnackBar}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackBar}
+                message={barMessage}
+                action={
+                  <IconButton
+                    size="small"
+                    aria-label="close"
+                    color="inherit"
+                    onClick={handleCloseSnackBar}
+                  >
+                    <Close fontSize="small" />
+                  </IconButton>
+                }
+              />
+            )}
+          </Container>
+        </div>
+      )}
     </>
   );
 }

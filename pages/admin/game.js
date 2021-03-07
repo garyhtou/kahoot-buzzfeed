@@ -73,15 +73,15 @@ export default function AdminGameView(props) {
 
   function shadowToggle(gamepin, uid) {
     //document.getElementById(styles.username).style = 'background: red;';
-    firebase
-      .database()
-      .ref(`games/` + gamepin + "/users/" + uid)
+    game
+      .getDbRefs(gamepin)
+      .user(uid)
       .child("sban")
       .set(userData[uid].sban !== undefined ? !userData[uid].sban : true);
   }
 
   if (gameState === "GAME_STATE-END") {
-    router.replace(`/admin/results?gamepin=${gamePin}`);
+    router.replace(`/admin/results?gamePin=${gamePin}`);
   }
 
   return (
@@ -125,6 +125,7 @@ export default function AdminGameView(props) {
           return (
             <div
               onClick={() => shadowToggle(gamePin, key)}
+              key={key}
               style={{
                 textDecoration:
                   userData[key].sban !== undefined && userData[key].sban

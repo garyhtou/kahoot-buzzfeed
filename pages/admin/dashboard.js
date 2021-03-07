@@ -31,20 +31,6 @@ export default function Dashboard() {
 
   const router = useRouter();
 
-  if (firebase.apps.length === 0) {
-    console.log("not initialized");
-  } else {
-    firebase.auth().onAuthStateChanged(function (user) {
-      if (user) {
-        setLogin(true);
-      } else {
-        //no user logged in, so go back to admin
-        setLogin(false);
-        router.replace(`/admin?login=signOut`);
-      }
-    });
-  }
-
   useEffect(async () => {
     var data;
     const snapshot = await firebase
@@ -55,6 +41,16 @@ export default function Dashboard() {
         //console.log(data);
         setGameArrayState(data);
       });
+
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        setLogin(true);
+      } else {
+        //no user logged in, so go back to admin
+        setLogin(false);
+        router.replace(`/admin?login=signOut`);
+      }
+    });
   }, []);
 
   var listOfGames = [];
@@ -69,7 +65,7 @@ export default function Dashboard() {
       setGamePin(pin);
     } else {
       //show results
-      router.replace(`/admin/results?gamepin=${pin}`);
+      router.replace(`/admin/results?gamePin=${pin}`);
     }
   }
 
@@ -81,9 +77,9 @@ export default function Dashboard() {
 
   function shadowToggle(gamepin, uid) {
     //document.getElementById(styles.username).style = 'background: red;';
-    firebase
-      .database()
-      .ref(`games/` + gamepin + "/users/" + uid)
+    game
+      .getDbRefs(gamepin)
+      .user(uid)
       .child("sban")
       .set(
         gameArrayState[gamepin].users[uid].sban !== undefined
@@ -169,7 +165,10 @@ export default function Dashboard() {
                     key
                   ) {
                     return (
-                      <div style={{ display: "flex", flexDirection: "row" }}>
+                      <div
+                        key={key}
+                        style={{ display: "flex", flexDirection: "row" }}
+                      >
                         <div
                           onClick={() => shadowToggle(gamePin, key)}
                           style={{
@@ -180,7 +179,7 @@ export default function Dashboard() {
                                 ? "line-through"
                                 : "",
                           }}
-                          id={styles.username}
+                          className={styles.username}
                         >
                           {gameArrayState[gamePin].users[key].name}
                         </div>
@@ -207,7 +206,10 @@ export default function Dashboard() {
                 <CardContent className={styles.pinContainer}>
                   {listOfGames.map((el) => {
                     return (
-                      <div style={{ display: "flex", flexDirection: "row" }}>
+                      <div
+                        key={el}
+                        style={{ display: "flex", flexDirection: "row" }}
+                      >
                         <div id={styles.gameTitle}>{el}</div>
                         <div
                           onClick={() => gameClicked(el)}
