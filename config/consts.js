@@ -52,6 +52,7 @@ export default {
 					a: { title: "Presentation", belongs: "c" },
 					b: { title: "Test", belongs: "c" },
 					c: { title: "Demonstration", belongs: "c" },
+					d: { title: "Roleplay", belongs: "c" },
 				},
 			},
 			{
@@ -61,6 +62,7 @@ export default {
 					a: { title: "Presentation", belongs: "a" },
 					b: { title: "Test", belongs: "b" },
 					c: { title: "Demonstration", belongs: "c" },
+					d: { title: "Roleplay", belongs: "c" },
 				},
 			},
 			{

@@ -5,12 +5,15 @@ import consts from "../config/consts";
 import {
 	Box,
 	Button,
+	ButtonBase,
 	Card,
 	CardActions,
 	CardContent,
 	CardHeader,
 	Container,
 	Grid,
+	GridList,
+	GridListTile,
 	IconButton,
 	Paper,
 	Snackbar,
@@ -24,33 +27,47 @@ export default function gameQuestion(props) {
 	const pin = props.pin;
 	const state = props.state;
 
+	const questionNum = game.getQuestionNum(state);
+	const questionObj = consts.game.questions[questionNum];
+
+	const uuid = ""; //TODO
+
+	function chooseOption(option) {
+		game.chooseAnswer(pin, uuid, questionNum, option);
+		console.log(`I CHOSE ${option}`);
+	}
+
 	return (
 		<Box id={styles.container}>
 			<Typography variant="h3" id={styles.question}>
-				{game.getQuestionText(game.getQuestionNum(state))}
+				{game.getQuestionText(questionNum)}
 			</Typography>
-			<Grid container id={styles.options} spacing={2}>
-				<Grid item lg>
-					<Paper>
-						<Typography varient="body1">Option 1</Typography>
-					</Paper>
-				</Grid>
-				<Grid item md>
-					<Paper>
-						<Typography varient="body1">Option 1</Typography>
-					</Paper>
-				</Grid>
-				<Grid item md>
-					<Paper>
-						<Typography varient="body1">Option 1</Typography>
-					</Paper>
-				</Grid>
-				<Grid item md>
-					<Paper>
-						<Typography varient="body1">Option 1</Typography>
-					</Paper>
-				</Grid>
-			</Grid>
+			<GridList id={styles.options} cellHeight="auto" cols={2} spacing={20}>
+				{Object.keys(questionObj.answers).map((option, index) => (
+					<GridListTile
+						key={index}
+						rows={
+							Object.keys(questionObj.answers).length % 2 !== 0 &&
+							index + 1 === Object.keys(questionObj.answers).length
+								? 2
+								: 1
+						}
+					>
+						<ButtonBase focusRipple={true} className={styles.optionButton}>
+							<Paper
+								className={styles.optionWapper}
+								onClick={() => {
+									chooseOption(option);
+								}}
+							>
+								<Typography variant="h4" component="p">
+									{questionObj.answers[option].title}
+								</Typography>
+							</Paper>
+						</ButtonBase>
+					</GridListTile>
+				))}
+			</GridList>
 		</Box>
 	);
 }

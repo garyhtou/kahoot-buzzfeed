@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import styles from "../styles/GameView.module.css";
 import consts from "../config/consts";
-import { Box, CircularProgress, Typography } from "@material-ui/core";
+import { Backdrop, Box, CircularProgress, Typography } from "@material-ui/core";
 import PropTypes from "prop-types";
 import game from "../helpers/game";
 import GameWaiting from "./gameWaiting";
@@ -22,7 +22,9 @@ export default function GameView(props) {
 			) : game.isEnded(state) ? (
 				<GameEnd pin={pin} state={state} />
 			) : (
-				<CircularProgress color="inherit" />
+				<Box id={styles.invalidState}>
+					<CircularProgress color="inherit" />
+				</Box>
 			)}
 		</Box>
 	);

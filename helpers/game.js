@@ -155,7 +155,7 @@ async function chooseAnswer(pin, uuid, question, option) {
 	if (typeof consts.game.questions[question] === "undefined") {
 		throw Error(`Invalid question number: ${question}`);
 	} else if (
-		typeof consts.game.questions[question].answers[option] !== "undefined"
+		typeof consts.game.questions[question].answers[option] === "undefined"
 	) {
 		throw Error(`Invalid answer option (in question #${question}): ${option}`);
 	}
