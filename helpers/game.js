@@ -175,6 +175,10 @@ async function userExists(pin, uuid) {
 	return user.exists();
 }
 
+function getQuestionNumTotal() {
+	return consts.game.questions.length;
+}
+
 export default {
 	validatePin,
 	getDbRefs,
@@ -187,4 +191,5 @@ export default {
 	chooseAnswer,
 	getQuestionText,
 	getQuestionNum,
+	getQuestionNumTotal,
 };
