@@ -24,14 +24,16 @@ import {
 
 export default function AdminGameView(props) {
   const [userData, setUserData] = useState([]);
+  const [isLogin, setLogin] = useState(false);
   const [playerCount, setPlayerCount] = useState(0);
   const [gameState, setGameState] = useState("");
   const [currentQNum, setCurrentQNum] = useState(0);
-
   const router = useRouter();
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const gamePin = urlParams.get("gamepin");
+  var gamePin = "";
+  if (typeof window !== "undefined") {
+    gamePin = window.location.href.split("?gamePin=").pop();
+  }
 
   useEffect(async () => {
     var data;
@@ -45,6 +47,16 @@ export default function AdminGameView(props) {
       data = subsnapshot.val();
       setUserData(data);
       setPlayerCount(subsnapshot.numChildren());
+    });
+
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user && user.email.endsWith("@wafbla.org")) {
+        setLogin(true);
+      } else {
+        //no user logged in, so go back to admin
+        setLogin(false);
+        router.replace(`/admin`);
+      }
     });
   }, []);
 
@@ -85,60 +97,58 @@ export default function AdminGameView(props) {
   }
 
   return (
-    <Container id={styles.question}>
-      <Typography variant="h3">
-        {gameState.replace("GAME_STATE-", "")}
-      </Typography>
-      <Link href="dashboard">
-        <Button variant="contained" color="primary">
-          Back to dashboard
-        </Button>
-      </Link>
-      <Card style={{ marginTop: "20px" }}>
-        <CardContent>
+    <>
+      {isLogin && (
+        <Container id={styles.question}>
           <Typography variant="h3">
-            what is your favorite competitive event?
+            {gameState.replace("GAME_STATE-", "")}
           </Typography>
-          <Typography style={{ marginTop: "10px" }} id="ratio" variant="h4">
-            {updateAnswerCount(currentQNum - 1)} / {playerCount}
-          </Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => moveOn(currentQNum)}
-            id={styles.adminMoveOn}
-          >
-            Next question
-          </Button>
-        </CardContent>
-      </Card>
+          <Typography variant="h3">Pin: {gamePin}</Typography>
+          <Link href="dashboard">
+            <Button variant="contained" color="primary">
+              Back to dashboard
+            </Button>
+          </Link>
+          <Card style={{ marginTop: "20px" }}>
+            <CardContent>
+              <Typography variant="h3">
+                what is your favorite competitive event?
+              </Typography>
+              <Typography style={{ marginTop: "10px" }} id="ratio" variant="h4">
+                {updateAnswerCount(currentQNum - 1)} / {playerCount}
+              </Typography>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => moveOn(currentQNum)}
+                id={styles.adminMoveOn}
+              >
+                Next question
+              </Button>
+            </CardContent>
+          </Card>
 
-      <div
-        style={{
-          justifyContent: "center",
-          display: "flex",
-          flexDirection: "row",
-          marginTop: "20px",
-        }}
-      >
-        {Object.keys(userData).map(function (key) {
-          return (
-            <div
-              onClick={() => shadowToggle(gamePin, key)}
-              key={key}
-              style={{
-                textDecoration:
-                  userData[key].sban !== undefined && userData[key].sban
-                    ? "line-through"
-                    : "",
-              }}
-              id={styles.username}
-            >
-              {userData[key].name}
-            </div>
-          );
-        })}
-      </div>
-    </Container>
+          <div id={styles.nameContainer}>
+            {Object.keys(userData).map(function (key) {
+              return (
+                <div
+                  onClick={() => shadowToggle(gamePin, key)}
+                  key={key}
+                  style={{
+                    textDecoration:
+                      userData[key].sban !== undefined && userData[key].sban
+                        ? "line-through"
+                        : "",
+                  }}
+                  id={styles.username}
+                >
+                  {userData[key].name}
+                </div>
+              );
+            })}
+          </div>
+        </Container>
+      )}
+    </>
   );
 }

@@ -31,6 +31,8 @@ export default function Dashboard() {
 
   const router = useRouter();
 
+  //admin went directly to the game dashboard url:
+
   useEffect(async () => {
     var data;
     const snapshot = await firebase
@@ -43,12 +45,13 @@ export default function Dashboard() {
       });
 
     firebase.auth().onAuthStateChanged(function (user) {
-      if (user) {
+      if (user && user.email.endsWith("@wafbla.org")) {
+        console.log("ADMIN LOGIN");
         setLogin(true);
       } else {
         //no user logged in, so go back to admin
         setLogin(false);
-        router.replace(`/admin?login=signOut`);
+        router.replace(`/admin`);
       }
     });
   }, []);
@@ -60,7 +63,7 @@ export default function Dashboard() {
 
   function gameClicked(pin) {
     if (gameArrayState[pin].state !== "GAME_STATE-END") {
-      router.replace(`?gamepin=${pin}`);
+      router.replace(`?gamePin=${pin}`);
       setGameClick(true);
       setGamePin(pin);
     } else {
@@ -125,7 +128,7 @@ export default function Dashboard() {
             </Typography>
             {console.log()}
             <div style={{ display: "flex", flexDirection: "row" }}>
-              <Link href={"/admin/game?gamepin=" + gamePin}>
+              <Link href={"/admin/game?gamePin=" + gamePin}>
                 <Button
                   variant="contained"
                   onClick={() => {

@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CircularProgress, Typography } from "@material-ui/core";
 import PropTypes from "prop-types";
 import styles from "../../styles/Home.module.css";
@@ -30,23 +30,16 @@ export default function Admin() {
   const router = useRouter();
 
   const [openSnackBar, setOpenSnackBar] = useState(false);
-  const [isLogin, setLogin] = useState(false);
   const [barMessage, setMessage] = useState("");
 
-  const loginState = router.query["login"];
-
-  if (firebase.apps.length === 0) {
-    console.log("not initialized in index");
-  } else {
+  useEffect(async () => {
     firebase.auth().onAuthStateChanged(function (user) {
-      if (user) {
+      if (user && user.email.endsWith("@wafbla.org")) {
+        console.log("already logged in, redirecting to dashboard");
         router.replace(`/admin/dashboard`);
-        setLogin(true);
-      } else {
-        //no user logged in, so go back to admin
       }
     });
-  }
+  }, []);
 
   const handleCloseSnackBar = (event, reason) => {
     if (reason === "clickaway") {
@@ -70,13 +63,24 @@ export default function Admin() {
       .then((result) => {
         /** @type {firebase.auth.OAuthCredential} */
         var credential = result.credential;
-        var token = credential.accessToken;
         var user = result.user;
+
         if (user.email.endsWith("@wafbla.org")) {
+          console.log("wafbla account, all good");
+          //redirect to dashboard
           router.replace(`/admin/dashboard`);
         } else {
-          setOpenSnackBar(true);
-          setMessage("admins must sign in through their wafbla account");
+          console.log("not a wafbla account");
+          user
+            .delete()
+            .then(function () {
+              //display message to user that sign in operation/account is deleted
+              setOpenSnackBar(true);
+              setMessage("Admins must sign in through a WAFBLA account");
+            })
+            .catch(function (error) {
+              // An error happened.
+            });
         }
       })
       .catch((error) => {
@@ -89,62 +93,58 @@ export default function Admin() {
 
   return (
     <>
-      {isLogin == false && (
-        <div>
-          <Link href="/">
-            <a>Back to home</a>
-          </Link>
-          <Container id={styles.homeContainer} style={{ minHeight: "60vh" }}>
-            <Typography variant="h2" id={styles.title} gutterBottom>
-              Admin
-            </Typography>
-            <Card className={styles.gamePinCard}>
-              <CardContent className={styles.pinContainer}>
-                <TextField
-                  placeholder="ADMIN PASSWORD"
-                  type={"password"}
-                  onChange={(event) => {
-                    setInputText(event.target.value);
-                  }}
-                  id={styles.pinInput}
-                  inputProps={{ style: { textAlign: "center" } }}
-                />
+      <Link href="/">
+        <a>Back to home</a>
+      </Link>
+      <Container id={styles.homeContainer} style={{ minHeight: "60vh" }}>
+        <Typography variant="h2" id={styles.title} gutterBottom>
+          Admin
+        </Typography>
+        <Card className={styles.gamePinCard}>
+          <CardContent className={styles.pinContainer}>
+            <TextField
+              placeholder="ADMIN PASSWORD"
+              type={"password"}
+              onChange={(event) => {
+                setInputText(event.target.value);
+              }}
+              id={styles.pinInput}
+              inputProps={{ style: { textAlign: "center" } }}
+            />
 
-                <Button
-                  variant="contained"
-                  onClick={() => passwordCheck()}
-                  color="primary"
-                  id={styles.enterButton}
-                >
-                  Sign in!
-                </Button>
-              </CardContent>
-            </Card>
-            {openSnackBar && (
-              <Snackbar
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "left",
-                }}
-                open={openSnackBar}
-                autoHideDuration={6000}
-                onClose={handleCloseSnackBar}
-                message={barMessage}
-                action={
-                  <IconButton
-                    size="small"
-                    aria-label="close"
-                    color="inherit"
-                    onClick={handleCloseSnackBar}
-                  >
-                    <Close fontSize="small" />
-                  </IconButton>
-                }
-              />
-            )}
-          </Container>
-        </div>
-      )}
+            <Button
+              variant="contained"
+              onClick={() => passwordCheck()}
+              color="primary"
+              id={styles.enterButton}
+            >
+              Sign in!
+            </Button>
+          </CardContent>
+        </Card>
+        {openSnackBar && (
+          <Snackbar
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+            open={openSnackBar}
+            autoHideDuration={6000}
+            onClose={handleCloseSnackBar}
+            message={barMessage}
+            action={
+              <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={handleCloseSnackBar}
+              >
+                <Close fontSize="small" />
+              </IconButton>
+            }
+          />
+        )}
+      </Container>
     </>
   );
 }

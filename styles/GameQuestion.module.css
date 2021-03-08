@@ -35,6 +35,14 @@
 	padding: 10px;
 	color: white;
 }
+#nameContainer {
+	padding: 20px;
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
 
 #username:hover {
 	text-decoration: line-through
