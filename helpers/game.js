@@ -80,7 +80,7 @@ async function calcMyMatch(pin, uuid) {
 }
 
 /**
- * This is NOT calculate shadow banned users
+ * This does NOT calculate shadow banned users
  * @param {number} pin
  * @param {uuid} excludeUuid
  */
@@ -119,6 +119,9 @@ function calcAllMatches(pin) {
 
 /**
  * [Private]
+ * TODO: This function needs work... account for edge case where
+ * a player skips a quesiton. We probably need to take in an array
+ * or object with index and answer (depends on how firebase returns the data)
  * @param {Array} answers
  */
 function calcMatch(answers) {
@@ -159,8 +162,17 @@ function calcMatch(answers) {
 }
 
 async function chooseAnswer(pin, uuid, question, option) {
-	// TODO: CHECK USER PERMISSIONS (don't allow editing someone else's answers)
-	// Don't rely  on firebase rules to verify this
+	// Check if user is signed in
+	const currentUser = firebase.auth().currentUser;
+	if (typeof currentUser === "undefined") {
+		throw Error("No anonymous user has been created!");
+	}
+
+	// Only allow editing of your own answers
+	if (currentUser.uid !== uuid) {
+		// TODO: include this rule in firebase rule too
+		throw Error("Hey! You can't edit someone else's answers :|");
+	}
 
 	// Check to make sure the question and option exists
 	if (typeof consts.game.questions[question] === "undefined") {
