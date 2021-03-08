@@ -60,6 +60,7 @@ export default {
           a: { title: "Presentation", belongs: "c" },
           b: { title: "Test", belongs: "c" },
           c: { title: "Demonstration", belongs: "c" },
+          d: { title: "Prejudged", belongs: "c" },
         },
       },
       {
@@ -69,6 +70,7 @@ export default {
           a: { title: "Presentation", belongs: "a" },
           b: { title: "Test", belongs: "b" },
           c: { title: "Demonstration", belongs: "c" },
+          d: { title: "Prejudged", belongs: "b" },
         },
       },
       {
@@ -78,6 +80,37 @@ export default {
           a: { title: "Presentation", belongs: "a" },
           b: { title: "Test", belongs: "b" },
           c: { title: "Demonstration", belongs: "c" },
+          d: { title: "Prejudged", belongs: "c" },
+        },
+      },
+      {
+        question: "What type of competitive event do you like?",
+        answers: {
+          // Each choice must be assigned to a result group!!!
+          a: { title: "Presentation", belongs: "a" },
+          b: { title: "Test", belongs: "b" },
+          c: { title: "Demonstration", belongs: "c" },
+          d: { title: "Prejudged", belongs: "c" },
+        },
+      },
+      {
+        question: "What type of competitive event do you like?",
+        answers: {
+          // Each choice must be assigned to a result group!!!
+          a: { title: "Presentation", belongs: "a" },
+          b: { title: "Test", belongs: "b" },
+          c: { title: "Demonstration", belongs: "c" },
+          d: { title: "Prejudged", belongs: "c" },
+        },
+      },
+      {
+        question: "What type of competitive event do you like?",
+        answers: {
+          // Each choice must be assigned to a result group!!!
+          a: { title: "Presentation", belongs: "a" },
+          b: { title: "Test", belongs: "b" },
+          c: { title: "Demonstration", belongs: "c" },
+          d: { title: "Prejudged", belongs: "c" },
         },
       },
     ],
