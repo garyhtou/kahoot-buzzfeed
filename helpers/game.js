@@ -7,6 +7,10 @@ const additionalNameBlacklist = [];
 filter.addWords(...additionalNameBlacklist);
 
 async function validatePin(pin) {
+	if (typeof pin === "undefined" || pin === "") {
+		return false;
+	}
+
 	const snapshot = await firebase
 		.database()
 		.ref(`games/${pin}/state`)

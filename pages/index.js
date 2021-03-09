@@ -18,10 +18,11 @@ import {
 	Typography,
 } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
+import game from "../helpers/game";
 
 export default function Home() {
 	const router = useRouter();
-	const invalid_pin = router.query["invalid_pin"];
+	const [invalidPin, setInvalidPin] = useState(router.query["invalid_pin"]);
 
 	// manage state of snack bar
 	// used to alert user of invalid game pin
@@ -30,8 +31,27 @@ export default function Home() {
 		if (reason === "clickaway") {
 			return;
 		}
+		setInvalidPin(undefined);
 		setOpenSnackBar(false);
 	};
+
+	const [gamePin, setGamePin] = useState("");
+	async function submitPin(pin) {
+		console.log(`VALIDATING PIN: ${pin}`);
+		if (pin === "") {
+			return;
+		}
+		if (!(await game.validatePin(pin))) {
+			// Pin is invalid, show snackbar
+			console.log("nope");
+			setInvalidPin(pin);
+			setOpenSnackBar(true);
+		} else {
+			// Pin is valid, redirect to game page
+			console.log("yup");
+			router.push(`/game/${pin}`);
+		}
+	}
 
 	return (
 		<Container id={styles.homeContainer}>
@@ -39,7 +59,7 @@ export default function Home() {
 				<title>{consts.siteName}: Enter the game pin</title>
 			</Head>
 
-			{invalid_pin ? (
+			{invalidPin ? (
 				<Snackbar
 					anchorOrigin={{
 						vertical: "bottom",
@@ -50,33 +70,50 @@ export default function Home() {
 					onClose={handleCloseSnackBar}
 					message={
 						<>
-							Invalid game pin: <strong>{invalid_pin}</strong>
+							Invalid game pin: <strong>{invalidPin}</strong>
 						</>
 					}
 					action={
 						<IconButton
-							size="small"
-							aria-label="close"
-							color="inherit"
+							size='small'
+							aria-label='close'
+							color='inherit'
 							onClick={handleCloseSnackBar}
 						>
-							<Close fontSize="small" />
+							<Close fontSize='small' />
 						</IconButton>
 					}
 				/>
 			) : null}
 
-			<Typography variant="h1" id={styles.title} gutterBottom>
+			<Typography variant='h1' id={styles.title} gutterBottom>
 				{consts.siteName}!
 			</Typography>
 			<Card className={styles.gamePinCard}>
 				<CardContent className={styles.pinContainer}>
 					<TextField
-						placeholder="GAME PIN"
+						placeholder='GAME PIN'
 						id={styles.pinInput}
 						inputProps={{ style: { textAlign: "center" } }}
+						onChange={(e) => {
+							const pin = e.target.value;
+							setGamePin(pin);
+						}}
+						onKeyDown={(e) => {
+							if (e.key === "Enter") {
+								submitPin(gamePin);
+								e.preventDefault();
+							}
+						}}
 					/>
-					<Button variant="contained" color="primary" id={styles.enterButton}>
+					<Button
+						variant='contained'
+						color='primary'
+						id={styles.enterButton}
+						onClick={() => {
+							submitPin(gamePin);
+						}}
+					>
 						Enter
 					</Button>
 				</CardContent>
