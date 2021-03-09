@@ -120,6 +120,15 @@ export default function Dashboard() {
       .catch((error) => {});
   }
 
+  function newGame() {
+    const newPin = Math.floor(Math.random() * (9999 - 1000) + 1000);
+    firebase
+      .database()
+      .ref(`games/` + newPin)
+      .child("state")
+      .set("GAME_STATE-WAITING");
+  }
+
   return (
     <>
       {gameClick ? (
@@ -200,13 +209,28 @@ export default function Dashboard() {
               Hey, {firebase.auth().currentUser.displayName}! <br />
               Welcome to the Admin Dashboard
             </h1>
-            <Button
-              onClick={() => signOutUser()}
-              variant="contained"
-              id={styles.signOutButton}
+            <div
+              style={{
+                display: "inline-flex",
+                flexDirection: "column",
+              }}
             >
-              Sign out
-            </Button>
+              <Button
+                onClick={() => signOutUser()}
+                variant="contained"
+                id={styles.signOutButton}
+              >
+                Sign out
+              </Button>
+              <Button
+                variant="contained"
+                style={{ marginTop: "10px" }}
+                id={styles.signOutButton}
+                onClick={() => newGame()}
+              >
+                Start a new game
+              </Button>
+            </div>
             <Container id={styles.listContainer} style={{ minHeight: "60vh" }}>
               <Typography variant="h2" id={styles.title} gutterBottom>
                 View all games

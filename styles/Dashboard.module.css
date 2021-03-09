@@ -67,6 +67,7 @@
 
 #signOutButton {
 	cursor: pointer;
+	border: 1px solid white;
 	background: purple;
 	padding: 10px;
 	color: white;
