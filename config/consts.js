@@ -54,63 +54,63 @@ export default {
     // Set your questions
     questions: [
       {
-        question: "What type of competitive event do you like?",
-        answers: {
-          // Each choice must be assigned to a result group!!!
-          a: { title: "Presentation", belongs: "c" },
-          b: { title: "Test", belongs: "c" },
-          c: { title: "Demonstration", belongs: "c" },
-          d: { title: "Prejudged", belongs: "c" },
-        },
-      },
-      {
-        question: "What type of competitive event do you like?",
+        question: "0What type of competitive event do you like?",
         answers: {
           // Each choice must be assigned to a result group!!!
           a: { title: "Presentation", belongs: "a" },
           b: { title: "Test", belongs: "b" },
           c: { title: "Demonstration", belongs: "c" },
-          d: { title: "Prejudged", belongs: "b" },
+          d: { title: "Prejudged", belongs: "d" },
         },
       },
       {
-        question: "What type of competitive event do you like?",
+        question: "1What type of competitive event do you like?",
         answers: {
           // Each choice must be assigned to a result group!!!
           a: { title: "Presentation", belongs: "a" },
           b: { title: "Test", belongs: "b" },
           c: { title: "Demonstration", belongs: "c" },
-          d: { title: "Prejudged", belongs: "c" },
+          d: { title: "Prejudged", belongs: "d" },
         },
       },
       {
-        question: "What type of competitive event do you like?",
+        question: "2What type of competitive event do you like?",
         answers: {
           // Each choice must be assigned to a result group!!!
           a: { title: "Presentation", belongs: "a" },
           b: { title: "Test", belongs: "b" },
           c: { title: "Demonstration", belongs: "c" },
-          d: { title: "Prejudged", belongs: "c" },
+          d: { title: "Prejudged", belongs: "d" },
         },
       },
       {
-        question: "What type of competitive event do you like?",
+        question: "3What type of competitive event do you like?",
         answers: {
           // Each choice must be assigned to a result group!!!
           a: { title: "Presentation", belongs: "a" },
           b: { title: "Test", belongs: "b" },
           c: { title: "Demonstration", belongs: "c" },
-          d: { title: "Prejudged", belongs: "c" },
+          d: { title: "Prejudged", belongs: "d" },
         },
       },
       {
-        question: "What type of competitive event do you like?",
+        question: "4What type of competitive event do you like?",
         answers: {
           // Each choice must be assigned to a result group!!!
           a: { title: "Presentation", belongs: "a" },
           b: { title: "Test", belongs: "b" },
           c: { title: "Demonstration", belongs: "c" },
-          d: { title: "Prejudged", belongs: "c" },
+          d: { title: "Prejudged", belongs: "d" },
+        },
+      },
+      {
+        question: "5What type of competitive event do you like?",
+        answers: {
+          // Each choice must be assigned to a result group!!!
+          a: { title: "Presentation", belongs: "a" },
+          b: { title: "Test", belongs: "b" },
+          c: { title: "Demonstration", belongs: "c" },
+          d: { title: "Prejudged", belongs: "d" },
         },
       },
     ],
