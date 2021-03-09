@@ -1,7 +1,24 @@
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styles from "../styles/GameWaiting.module.css";
 import consts from "../config/consts";
-import { Box, Chip, Divider, Typography } from "@material-ui/core";
+import {
+	Badge,
+	Box,
+	Button,
+	Card,
+	CardActions,
+	CardContent,
+	CardHeader,
+	Chip,
+	Container,
+	Divider,
+	IconButton,
+	Paper,
+	Snackbar,
+	TextField,
+	Typography,
+} from "@material-ui/core";
 import PropTypes from "prop-types";
 import game from "../helpers/game";
 
@@ -39,9 +56,9 @@ export default function gameWaiting(props) {
 		<Box id={styles.container}>
 			<Box id={styles.header}>
 				<Box id={styles.stats}>
-					<Typography variant='body1'>{users.length} Players</Typography>
-					<Typography variant='h3'>{consts.game.name}</Typography>
-					<Typography variant='body1'>
+					<Typography variant="body1">{users.length} Players</Typography>
+					<Typography variant="h3">{consts.game.name}</Typography>
+					<Typography variant="body1">
 						{game.getQuestionNumTotal()} Questions
 					</Typography>
 				</Box>
@@ -51,7 +68,7 @@ export default function gameWaiting(props) {
 				{users.map((u) => (
 					<Chip
 						label={u.name}
-						size='medium'
+						size="medium"
 						key={u.uuid}
 						className={styles.player}
 					/>

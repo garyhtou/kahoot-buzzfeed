@@ -2,7 +2,22 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import styles from "../../styles/Game.module.css";
 import consts from "../../config/consts";
-import { AppBar, Container, Toolbar, Typography } from "@material-ui/core";
+import {
+	AppBar,
+	Backdrop,
+	Box,
+	Button,
+	Card,
+	CardActions,
+	CardContent,
+	CardHeader,
+	CircularProgress,
+	Container,
+	Paper,
+	TextField,
+	Toolbar,
+	Typography,
+} from "@material-ui/core";
 import { useEffect, useState } from "react";
 import game from "../../helpers/game";
 import GameView from "../../components/gameView";
@@ -89,15 +104,15 @@ export default function Game() {
 						{consts.siteName}: {consts.game.name}
 					</title>
 				</Head>
-				<AppBar position='fixed'>
+				<AppBar position="fixed">
 					<Toolbar id={styles.toolbar}>
 						{game.isWaiting(gameState) ? (
-							<Typography variant='h6'>{consts.siteName}</Typography>
+							<Typography variant="h6">{consts.siteName}</Typography>
 						) : (
-							<Typography variant='h6'>{consts.game.name}</Typography>
+							<Typography variant="h6">{consts.game.name}</Typography>
 						)}
 						{game.isInGameQuestions(gameState) ? (
-							<Typography variant='body1'>
+							<Typography variant="body1">
 								Question {game.getQuestionNum(gameState) + 1}/
 								{game.getQuestionNumTotal()}
 							</Typography>
