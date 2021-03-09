@@ -1,5 +1,6 @@
 import Head from "next/head";
 import "../styles/globals.css";
+import consts from "../config/consts";
 
 // Material UI
 import "fontsource-roboto";
