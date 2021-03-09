@@ -93,9 +93,7 @@ export default function AdminResults(props) {
           <Card style={{ marginTop: "20px" }}>
             <CardContent id={styles.nameContainer}>
               <div style={{ display: "flex", flexDirection: "row" }}>
-                <div id={styles.groupTitle}>
-                  Group A: {consts.game.groups.a.name}
-                </div>
+                <div id={styles.groupTitle}>{consts.game.groups.a.name}</div>
                 {Object.keys(getGroup("a")).map(function (key) {
                   return (
                     <div
@@ -114,9 +112,7 @@ export default function AdminResults(props) {
                   flexDirection: "row",
                 }}
               >
-                <div id={styles.groupTitle}>
-                  Group B: {consts.game.groups.b.name}
-                </div>
+                <div id={styles.groupTitle}> {consts.game.groups.b.name}</div>
                 {Object.keys(getGroup("b")).map(function (key) {
                   return (
                     <div
@@ -135,9 +131,7 @@ export default function AdminResults(props) {
                   flexDirection: "row",
                 }}
               >
-                <div id={styles.groupTitle}>
-                  Group C: {consts.game.groups.c.name}
-                </div>
+                <div id={styles.groupTitle}>{consts.game.groups.c.name}</div>
                 {Object.keys(getGroup("c")).map(function (key) {
                   return (
                     <div
@@ -156,9 +150,7 @@ export default function AdminResults(props) {
                   flexDirection: "row",
                 }}
               >
-                <div id={styles.groupTitle}>
-                  Group D: {consts.game.groups.d.name}
-                </div>
+                <div id={styles.groupTitle}> {consts.game.groups.d.name}</div>
                 {Object.keys(getGroup("d")).map(function (key) {
                   return (
                     <div

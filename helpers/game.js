@@ -136,6 +136,16 @@ function calcMatch(answers) {
   Object.keys(tally).forEach((g) => {
     if (tally[g] > tally[highest]) {
       highest = g;
+    } else if (tally[g] == tally[highest]) {
+      //what came first in the array
+      if (
+        consts.game.tieBreaker.indexOf(g) <
+        consts.game.tieBreaker.indexOf(highest)
+      ) {
+        highest = g;
+      } else {
+        highest = highest;
+      }
     }
   });
   return highest;
