@@ -1,5 +1,6 @@
 import firebase from "../utils/firebase";
 import consts from "../config/consts";
+import { LocationSearchingOutlined } from "@material-ui/icons";
 
 async function validatePin(pin) {
   const snapshot = await firebase
@@ -110,37 +111,31 @@ function calcAllMatches(pin) {
  * [Private]
  * @param {Array} answers
  */
+//the answers child level of a uuid is being passed as 'answers'
 function calcMatch(answers) {
+  //sets each group to 0
   var tally = {};
   Object.keys(consts.game.groups).forEach((g) => (tally[g] = 0));
 
-  for (let [i, answer] of answers.entries()) {
-    const question = consts.game.questions[i];
-    if (typeof question === "undefined") {
-      console.error(`Question #${i} is not found!`);
+  for (var k in answers) {
+    const questionIndex = k;
+    const userChoice = answers[questionIndex];
+    const currentQ = consts.game.questions[questionIndex];
+
+    if (typeof currentQ === "undefined") {
+      //this will throow when a mistake is made in entering the questions in consts - number of questions doesnt match, when there are less questions in the consts than in the database
+      console.error(`Question #${questionIndex} is not found!`);
       continue;
     }
-    const belongsTo = question.answers[answer].belongs;
-    if (typeof tally[belongsTo] === "undefined") {
-      console.error(
-        `Group #${belongsTo} is not found! Belongs to answer "${answer}" in question "${i}"`
-      );
-      continue;
-    }
+
+    const belongsTo = currentQ.answers[userChoice].belongs;
+
     tally[belongsTo]++;
   }
-  console.log(tally);
 
   var highest = Object.keys(tally)[0];
   Object.keys(tally).forEach((g) => {
-    if (
-      // if higher tally
-      tally[g] > tally[highest] ||
-      // if tie, use tie breaker
-      ((tally[g] = tally[highest]) && //
-        consts.game.tieBreaker.indexOf(g) <
-          consts.game.tieBreaker.indexOf(highest))
-    ) {
+    if (tally[g] > tally[highest]) {
       highest = g;
     }
   });
@@ -194,6 +189,7 @@ export default {
   isWaiting,
   isEnded,
   isInGameQuestions,
+  calcMatch,
   calcAllMatches,
   calcAllMatchesExceptUser,
   calcMyMatch,
