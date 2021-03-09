@@ -1,6 +1,5 @@
 import firebase from "../utils/firebase";
 import consts from "../config/consts";
-import { LocationSearchingOutlined } from "@material-ui/icons";
 
 async function validatePin(pin) {
   const snapshot = await firebase
