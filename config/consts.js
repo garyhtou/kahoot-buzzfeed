@@ -1,6 +1,6 @@
 export default {
 	// Overall site name and page title
-	siteName: "Washington FBLA",
+	siteName: "Washington FBLA 💼",
 	// Don't touch!
 	gameStates: {
 		waiting: "GAME_STATE-WAITING",
