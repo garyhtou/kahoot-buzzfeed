@@ -13,36 +13,100 @@ export default {
 	// Customize the game!
 	game: {
 		// Name of the game/quiz
-		name: "State Officer",
+		name: "Which State Officers are you like?",
 		// Results
 		groups: {
 			a: {
-				name: "Funny group",
+				name: "Group A",
 				members: [
-					{ name: "State Officer 1", picture: "https://somewhere.com/so1" },
-					{ name: "State Officer 1", picture: "https://somewhere.com/so1" },
+					{
+						name: "State Officer 1",
+						picture: "http://www.gravatar.com/avatar/?d=identicon",
+					},
+					{
+						name: "State Officer 2",
+						picture: "http://www.gravatar.com/avatar/?d=identicon",
+					},
+					{
+						name: "State Officer 3",
+						picture: "http://www.gravatar.com/avatar/?d=identicon",
+					},
+					{
+						name: "State Officer 4",
+						picture: "http://www.gravatar.com/avatar/?d=identicon",
+					},
 				],
-				characteristics: "filler",
+				characteristics: "Loves presentation events",
 			},
 			b: {
-				name: "Funnier group",
+				name: "Group B",
 				members: [
-					{ name: "State Officer 1", picture: "https://somewhere.com/so1" },
-					{ name: "State Officer 1", picture: "https://somewhere.com/so1" },
+					{
+						name: "State Officer 5",
+						picture: "http://www.gravatar.com/avatar/?d=identicon",
+					},
+					{
+						name: "State Officer 6",
+						picture: "http://www.gravatar.com/avatar/?d=identicon",
+					},
+					{
+						name: "State Officer 7",
+						picture: "http://www.gravatar.com/avatar/?d=identicon",
+					},
+					{
+						name: "State Officer 8",
+						picture: "http://www.gravatar.com/avatar/?d=identicon",
+					},
 				],
-				characteristics: "filler",
+				characteristics: "Loves dogs",
 			},
 			c: {
-				name: "Funnier group",
+				name: "Group C",
 				members: [
-					{ name: "State Officer 1", picture: "https://somewhere.com/so1" },
-					{ name: "State Officer 1", picture: "https://somewhere.com/so1" },
+					{
+						name: "State Officer 9",
+						picture: "http://www.gravatar.com/avatar/?d=identicon",
+					},
+					{
+						name: "State Officer 10",
+						picture: "http://www.gravatar.com/avatar/?d=identicon",
+					},
+					{
+						name: "State Officer 11",
+						picture: "http://www.gravatar.com/avatar/?d=identicon",
+					},
+					{
+						name: "State Officer 12",
+						picture: "http://www.gravatar.com/avatar/?d=identicon",
+					},
 				],
-				characteristics: "filler",
+				characteristics: "Loves cats",
+			},
+			d: {
+				name: "Group D",
+				members: [
+					{
+						name: "State Officer 13",
+						picture: "http://www.gravatar.com/avatar/?d=identicon",
+					},
+					{
+						name: "State Officer 14",
+						picture: "http://www.gravatar.com/avatar/?d=identicon",
+					},
+					{
+						name: "State Officer 15",
+						picture: "http://www.gravatar.com/avatar/?d=identicon",
+					},
+					{
+						name: "State Officer 16",
+						picture: "http://www.gravatar.com/avatar/?d=identicon",
+					},
+				],
+				characteristics: "Loves 🍍 on 🍕!",
 			},
 		},
 		// In case of tie, set default priority
-		tieBreaker: ["a", "b"],
+		tieBreaker: ["d", "b", "a", "c"],
 		// Set your questions
 		questions: [
 			{
@@ -52,71 +116,57 @@ export default {
 					a: { title: "Presentation", belongs: "c" },
 					b: { title: "Test", belongs: "c" },
 					c: { title: "Demonstration", belongs: "c" },
-					d: { title: "Roleplay", belongs: "c" },
+					d: { title: "Prejudged", belongs: "c" },
 				},
 			},
 			{
-				question: "What type of competitive event do you like?",
+				question: "What's your favorite pet?",
 				answers: {
 					// Each choice must be assigned to a result group!!!
-					a: { title: "Presentation", belongs: "a" },
-					b: { title: "Test", belongs: "b" },
-					c: { title: "Demonstration", belongs: "c" },
-					d: { title: "Roleplay", belongs: "c" },
+					a: { title: "Dog", belongs: "a" },
+					b: { title: "Cat", belongs: "b" },
+					c: { title: "Snake", belongs: "c" },
+					d: { title: "Hamster", belongs: "b" },
 				},
 			},
 			{
-				question: "What type of competitive event do you like?",
+				question: "What's your favorite fruit?",
 				answers: {
 					// Each choice must be assigned to a result group!!!
-					a: { title: "Presentation", belongs: "a" },
-					b: { title: "Test", belongs: "b" },
-					c: { title: "Demonstration", belongs: "c" },
+					a: { title: "🍉", belongs: "a" },
+					b: { title: "🍍", belongs: "b" },
+					c: { title: "🍓", belongs: "c" },
+					d: { title: "🥥", belongs: "c" },
 				},
 			},
 			{
-				question: "What type of competitive event do you like?",
+				question: "What's your favorite breakfast food?",
 				answers: {
 					// Each choice must be assigned to a result group!!!
-					a: { title: "Presentation", belongs: "a" },
-					b: { title: "Test", belongs: "b" },
-					c: { title: "Demonstration", belongs: "c" },
+					a: { title: "🥐", belongs: "a" },
+					b: { title: "🍳", belongs: "b" },
+					c: { title: "🥞", belongs: "c" },
+					d: { title: "🧇", belongs: "c" },
 				},
 			},
 			{
-				question: "What type of competitive event do you like?",
+				question: "What's your favorite sport?",
 				answers: {
 					// Each choice must be assigned to a result group!!!
-					a: { title: "Presentation", belongs: "a" },
-					b: { title: "Test", belongs: "b" },
-					c: { title: "Demonstration", belongs: "c" },
+					a: { title: "Swimming", belongs: "a" },
+					b: { title: "Tennis", belongs: "b" },
+					c: { title: "Football", belongs: "c" },
+					d: { title: "Soccer", belongs: "c" },
 				},
 			},
 			{
-				question: "What type of competitive event do you like?",
+				question: "Pick a color for your math notebook!",
 				answers: {
 					// Each choice must be assigned to a result group!!!
-					a: { title: "Presentation", belongs: "a" },
-					b: { title: "Test", belongs: "b" },
-					c: { title: "Demonstration", belongs: "c" },
-				},
-			},
-			{
-				question: "What type of competitive event do you like?",
-				answers: {
-					// Each choice must be assigned to a result group!!!
-					a: { title: "Presentation", belongs: "a" },
-					b: { title: "Test", belongs: "b" },
-					c: { title: "Demonstration", belongs: "c" },
-				},
-			},
-			{
-				question: "What type of competitive event do you like?",
-				answers: {
-					// Each choice must be assigned to a result group!!!
-					a: { title: "Presentation", belongs: "a" },
-					b: { title: "Test", belongs: "b" },
-					c: { title: "Demonstration", belongs: "c" },
+					a: { title: "📕", belongs: "a" },
+					b: { title: "📗", belongs: "b" },
+					c: { title: "📘", belongs: "c" },
+					d: { title: "📒", belongs: "c" },
 				},
 			},
 		],
