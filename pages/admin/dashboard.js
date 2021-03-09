@@ -2,11 +2,10 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { CircularProgress, Typography } from "@material-ui/core";
 import PropTypes, { array } from "prop-types";
-import styles from "../../styles/GameRow.module.css";
+import styles from "../../styles/Dashboard.module.css";
 import game from "../../helpers/game";
 
 import firebase from "../../utils/firebase";
-import AdminGameView from "./game";
 
 import Link from "next/link";
 import {
@@ -93,15 +92,21 @@ export default function Dashboard() {
 
   function stateToggle(gamepin, state) {
     //document.getElementById(styles.username).style = 'background: red;';
-    if (state === "END") {
+    if (state === "GAME_STATE-END") {
       setGameClick(false);
-      setGamePin("");
+      router.replace("/admin/results?gamePin=" + gamepin);
+    } else {
+      if (state === "GAME_STATE-WAITING") {
+        state = "GAME_STATE-GAME_QUESTION_0";
+      }
+      router.replace("/admin/game?gamePin=" + gamepin);
     }
+
     firebase
       .database()
       .ref(`games/` + gamepin)
       .child("state")
-      .set("GAME_STATE-" + state);
+      .set(state);
   }
 
   function signOutUser() {
@@ -118,42 +123,37 @@ export default function Dashboard() {
   return (
     <>
       {gameClick ? (
-        <div>
-          <Link href="dashboard">
-            <h1 onClick={dashMain}>Back to dashboard</h1>
-          </Link>
+        <div style={{ padding: "10px" }}>
+          <Button id={styles.backToDash} onClick={dashMain}>
+            Back to dashboard
+          </Button>
           <Container id={styles.listContainer} style={{ minHeight: "10vh" }}>
             <Typography variant="h4" gutterBottom>
               Pin: {gamePin}
             </Typography>
             {console.log()}
             <div style={{ display: "flex", flexDirection: "row" }}>
-              <Link href={"/admin/game?gamePin=" + gamePin}>
-                <Button
-                  variant="contained"
-                  onClick={() => {
-                    gameArrayState[gamePin].state === "GAME_STATE-WAITING" &&
-                      stateToggle(gamePin, "GAME_QUESTION_1");
-                  }}
-                  color="primary"
-                  id={styles.enterButton}
-                >
-                  {gameArrayState[gamePin].state === "GAME_STATE-WAITING"
-                    ? "Start Game"
-                    : "View Game"}
-                </Button>
-              </Link>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  stateToggle(gamePin, gameArrayState[gamePin].state);
+                }}
+                color="primary"
+                id={styles.enterButton}
+              >
+                {gameArrayState[gamePin].state === "GAME_STATE-WAITING"
+                  ? "Start Game"
+                  : "View Game"}
+              </Button>
 
-              <Link href="dashboard">
-                <Button
-                  variant="contained"
-                  onClick={() => stateToggle(gamePin, "END")}
-                  color="primary"
-                  id={styles.enterButton}
-                >
-                  End game
-                </Button>
-              </Link>
+              <Button
+                variant="contained"
+                onClick={() => stateToggle(gamePin, "GAME_STATE-END")}
+                color="primary"
+                id={styles.enterButton}
+              >
+                End game
+              </Button>
             </div>
 
             <Typography variant="h5" style={{ marginTop: "20px" }} gutterBottom>
@@ -161,7 +161,7 @@ export default function Dashboard() {
               {gameArrayState[gamePin].state.replace("GAME_STATE-", "")}
             </Typography>
 
-            <Card>
+            <Card style={{ marginTop: "10px" }}>
               <CardContent id={styles.nameContainer}>
                 {gameArrayState[gamePin].users !== undefined &&
                   Object.keys(gameArrayState[gamePin].users).map(function (
@@ -195,12 +195,18 @@ export default function Dashboard() {
         </div>
       ) : (
         login && (
-          <div>
+          <div style={{ padding: "10px" }}>
             <h1>
-              Hey, {firebase.auth().currentUser.displayName}! Welcome to the
-              Admin Dashboard
+              Hey, {firebase.auth().currentUser.displayName}! <br />
+              Welcome to the Admin Dashboard
             </h1>
-            <h1 onClick={() => signOutUser()}>Sign out</h1>
+            <Button
+              onClick={() => signOutUser()}
+              variant="contained"
+              id={styles.signOutButton}
+            >
+              Sign out
+            </Button>
             <Container id={styles.listContainer} style={{ minHeight: "60vh" }}>
               <Typography variant="h2" id={styles.title} gutterBottom>
                 View all games
@@ -211,7 +217,11 @@ export default function Dashboard() {
                     return (
                       <div
                         key={el}
-                        style={{ display: "flex", flexDirection: "row" }}
+                        style={{
+                          marginTop: "10px",
+                          display: "flex",
+                          flexDirection: "row",
+                        }}
                       >
                         <div id={styles.gameTitle}>{el}</div>
                         <div

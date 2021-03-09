@@ -33,7 +33,7 @@ export default {
         characteristics: "filler",
       },
       c: {
-        name: "Funnier group",
+        name: "Funnier c group",
         members: [
           { name: "State Officer 1", picture: "https://somewhere.com/so1" },
           { name: "State Officer 1", picture: "https://somewhere.com/so1" },

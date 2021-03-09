@@ -30,9 +30,10 @@
 	margin-top: 1em;
 }
 
-
-#adminPress {
-	margin-top: 1em;
+#adminButton {
+	cursor: pointer;
 	background: purple;
+	margin-top: 10px;
+	padding: 10px;
 	color: white;
 }

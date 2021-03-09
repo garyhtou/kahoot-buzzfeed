@@ -7,6 +7,8 @@ import game from "../../helpers/game";
 
 import firebase from "../../utils/firebase";
 
+import consts from "../../config/consts";
+
 import Link from "next/link";
 import {
   Box,
@@ -76,14 +78,14 @@ export default function AdminResults(props) {
       {login && (
         <Container id={styles.question}>
           <Typography variant="h3">Results</Typography>
-          <Typography variant="h4">{gameState}</Typography>
-          <Typography variant="h4">Game pin: {gamePin}</Typography>
+          <Typography variant="h5">{gameState}</Typography>
+          <Typography variant="h5">Game pin: {gamePin}</Typography>
 
           <Link href="dashboard">
             <Button
               variant="contained"
               color="primary"
-              style={{ marginTop: "10px" }}
+              id={styles.resultsButton}
             >
               Back to dashboard
             </Button>
@@ -91,7 +93,9 @@ export default function AdminResults(props) {
           <Card style={{ marginTop: "20px" }}>
             <CardContent id={styles.nameContainer}>
               <div style={{ display: "flex", flexDirection: "row" }}>
-                <div id={styles.groupTitle}>Group A:</div>
+                <div id={styles.groupTitle}>
+                  Group A: {consts.game.groups.a.name}
+                </div>
                 {Object.keys(getGroup("a")).map(function (key) {
                   return (
                     <div
@@ -103,8 +107,16 @@ export default function AdminResults(props) {
                   );
                 })}
               </div>
-              <div style={{ display: "flex", flexDirection: "row" }}>
-                <div id={styles.groupTitle}>Group B:</div>
+              <div
+                style={{
+                  display: "flex",
+                  marginTop: "10px",
+                  flexDirection: "row",
+                }}
+              >
+                <div id={styles.groupTitle}>
+                  Group B: {consts.game.groups.b.name}
+                </div>
                 {Object.keys(getGroup("b")).map(function (key) {
                   return (
                     <div
@@ -116,8 +128,16 @@ export default function AdminResults(props) {
                   );
                 })}
               </div>
-              <div style={{ display: "flex", flexDirection: "row" }}>
-                <div id={styles.groupTitle}>Group C:</div>
+              <div
+                style={{
+                  display: "flex",
+                  marginTop: "10px",
+                  flexDirection: "row",
+                }}
+              >
+                <div id={styles.groupTitle}>
+                  Group C: {consts.game.groups.c.name}
+                </div>
                 {Object.keys(getGroup("c")).map(function (key) {
                   return (
                     <div
@@ -129,8 +149,16 @@ export default function AdminResults(props) {
                   );
                 })}
               </div>
-              <div style={{ display: "flex", flexDirection: "row" }}>
-                <div id={styles.groupTitle}>Group D:</div>
+              <div
+                style={{
+                  display: "flex",
+                  marginTop: "10px",
+                  flexDirection: "row",
+                }}
+              >
+                <div id={styles.groupTitle}>
+                  Group D: {consts.game.groups.d.name}
+                </div>
                 {Object.keys(getGroup("d")).map(function (key) {
                   return (
                     <div

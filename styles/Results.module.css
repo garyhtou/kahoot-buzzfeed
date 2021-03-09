@@ -41,6 +41,11 @@
 }
 
 
+#resultsButton{
+	background: purple;
+	margin-top: 20px;
+	color: white;
+}
 
 #username {
 	text-align: center;

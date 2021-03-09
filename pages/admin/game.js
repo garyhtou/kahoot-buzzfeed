@@ -5,6 +5,8 @@ import PropTypes, { array } from "prop-types";
 import styles from "../../styles/GameQuestion.module.css";
 import game from "../../helpers/game";
 
+import consts from "../../config/consts";
+
 import firebase from "../../utils/firebase";
 
 import Link from "next/link";
@@ -101,27 +103,27 @@ export default function AdminGameView(props) {
       {isLogin && (
         <Container id={styles.question}>
           <Typography variant="h3">
-            {gameState.replace("GAME_STATE-", "")}
+            {gameState.replace("GAME_STATE-GAME_", "")}
           </Typography>
-          <Typography variant="h3">Pin: {gamePin}</Typography>
+          <Typography variant="h4">Pin: {gamePin}</Typography>
           <Link href="dashboard">
-            <Button variant="contained" color="primary">
+            <Button variant="contained" id={styles.gameButton}>
               Back to dashboard
             </Button>
           </Link>
           <Card style={{ marginTop: "20px" }}>
             <CardContent>
               <Typography variant="h3">
-                what is your favorite competitive event?
+                {consts.game.questions[currentQNum].question}
               </Typography>
-              <Typography style={{ marginTop: "10px" }} id="ratio" variant="h4">
-                {updateAnswerCount(currentQNum - 1)} / {playerCount}
+              <Typography style={{ marginTop: "10px" }} id="ratio" variant="h5">
+                Reponses: {updateAnswerCount(currentQNum)} / {playerCount}
               </Typography>
               <Button
                 variant="contained"
                 color="primary"
                 onClick={() => moveOn(currentQNum)}
-                id={styles.adminMoveOn}
+                id={styles.gameButton}
               >
                 Next question
               </Button>

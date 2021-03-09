@@ -83,7 +83,7 @@ export default function Home() {
           </Button>
 
           <Link href="admin">
-            <Button variant="contained" color="primary" id={styles.enterButton}>
+            <Button variant="contained" id={styles.adminPress}>
               admin
             </Button>
           </Link>

@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { CircularProgress, Typography } from "@material-ui/core";
 import PropTypes from "prop-types";
-import styles from "../../styles/Home.module.css";
+import styles from "../../styles/Admin.module.css";
 import { Close } from "@material-ui/icons";
 
 import game from "../../helpers/game";
@@ -93,58 +93,60 @@ export default function Admin() {
 
   return (
     <>
-      <Link href="/">
-        <a>Back to home</a>
-      </Link>
-      <Container id={styles.homeContainer} style={{ minHeight: "60vh" }}>
-        <Typography variant="h2" id={styles.title} gutterBottom>
-          Admin
-        </Typography>
-        <Card className={styles.gamePinCard}>
-          <CardContent className={styles.pinContainer}>
-            <TextField
-              placeholder="ADMIN PASSWORD"
-              type={"password"}
-              onChange={(event) => {
-                setInputText(event.target.value);
-              }}
-              id={styles.pinInput}
-              inputProps={{ style: { textAlign: "center" } }}
-            />
+      <div style={{ padding: "10px" }}>
+        <Link href="/">
+          <Button id={styles.adminButton}>Back to home</Button>
+        </Link>
+        <Container id={styles.homeContainer} style={{ minHeight: "60vh" }}>
+          <Typography variant="h2" id={styles.title} gutterBottom>
+            Admin
+          </Typography>
+          <Card className={styles.gamePinCard}>
+            <CardContent className={styles.pinContainer}>
+              <TextField
+                placeholder="ADMIN PASSWORD"
+                type={"password"}
+                onChange={(event) => {
+                  setInputText(event.target.value);
+                }}
+                id={styles.pinInput}
+                inputProps={{ style: { textAlign: "center" } }}
+              />
 
-            <Button
-              variant="contained"
-              onClick={() => passwordCheck()}
-              color="primary"
-              id={styles.enterButton}
-            >
-              Sign in!
-            </Button>
-          </CardContent>
-        </Card>
-        {openSnackBar && (
-          <Snackbar
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "left",
-            }}
-            open={openSnackBar}
-            autoHideDuration={6000}
-            onClose={handleCloseSnackBar}
-            message={barMessage}
-            action={
-              <IconButton
-                size="small"
-                aria-label="close"
-                color="inherit"
-                onClick={handleCloseSnackBar}
+              <Button
+                variant="contained"
+                onClick={() => passwordCheck()}
+                color="primary"
+                id={styles.adminButton}
               >
-                <Close fontSize="small" />
-              </IconButton>
-            }
-          />
-        )}
-      </Container>
+                Sign in!
+              </Button>
+            </CardContent>
+          </Card>
+          {openSnackBar && (
+            <Snackbar
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
+              }}
+              open={openSnackBar}
+              autoHideDuration={6000}
+              onClose={handleCloseSnackBar}
+              message={barMessage}
+              action={
+                <IconButton
+                  size="small"
+                  aria-label="close"
+                  color="inherit"
+                  onClick={handleCloseSnackBar}
+                >
+                  <Close fontSize="small" />
+                </IconButton>
+              }
+            />
+          )}
+        </Container>
+      </div>
     </>
   );
 }
