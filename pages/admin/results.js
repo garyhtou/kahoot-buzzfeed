@@ -26,6 +26,7 @@ export default function AdminResults(props) {
   const [userData, setUserData] = useState([]);
   const [matchData, setMatchData] = useState([]);
   const [gameState, setGameState] = useState("");
+  const [login, setLogin] = useState(false);
 
   const router = useRouter();
 
@@ -48,6 +49,16 @@ export default function AdminResults(props) {
     });
     const val = await game.calcAllMatches(gamePin);
     setMatchData(val);
+
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user && user.email.endsWith("@wafbla.org")) {
+        setLogin(true);
+      } else {
+        //no user logged in, so go back to admin
+        setLogin(false);
+        router.replace(`/admin`);
+      }
+    });
   }, []);
 
   function getGroup(matchChar) {
@@ -61,76 +72,80 @@ export default function AdminResults(props) {
   }
 
   return (
-    <Container id={styles.question}>
-      <Typography variant="h3">Results</Typography>
-      <Typography variant="h4">{gameState}</Typography>
-      <Typography variant="h4">Game pin: {gamePin}</Typography>
+    <>
+      {login && (
+        <Container id={styles.question}>
+          <Typography variant="h3">Results</Typography>
+          <Typography variant="h4">{gameState}</Typography>
+          <Typography variant="h4">Game pin: {gamePin}</Typography>
 
-      <Link href="dashboard">
-        <Button
-          variant="contained"
-          color="primary"
-          style={{ marginTop: "10px" }}
-        >
-          Back to dashboard
-        </Button>
-      </Link>
-      <Card style={{ marginTop: "20px" }}>
-        <CardContent id={styles.nameContainer}>
-          <div style={{ display: "flex", flexDirection: "row" }}>
-            <div id={styles.groupTitle}>Group A:</div>
-            {Object.keys(getGroup("a")).map(function (key) {
-              return (
-                <div
-                  key={key}
-                  style={{ display: "flex", flexDirection: "row" }}
-                >
-                  <div id={styles.name}>{getGroup("a")[key]}</div>
-                </div>
-              );
-            })}
-          </div>
-          <div style={{ display: "flex", flexDirection: "row" }}>
-            <div id={styles.groupTitle}>Group B:</div>
-            {Object.keys(getGroup("b")).map(function (key) {
-              return (
-                <div
-                  key={key}
-                  style={{ display: "flex", flexDirection: "row" }}
-                >
-                  <div id={styles.name}>{getGroup("b")[key]}</div>
-                </div>
-              );
-            })}
-          </div>
-          <div style={{ display: "flex", flexDirection: "row" }}>
-            <div id={styles.groupTitle}>Group C:</div>
-            {Object.keys(getGroup("c")).map(function (key) {
-              return (
-                <div
-                  key={key}
-                  style={{ display: "flex", flexDirection: "row" }}
-                >
-                  <div id={styles.name}>{getGroup("c")[key]}</div>
-                </div>
-              );
-            })}
-          </div>
-          <div style={{ display: "flex", flexDirection: "row" }}>
-            <div id={styles.groupTitle}>Group D:</div>
-            {Object.keys(getGroup("d")).map(function (key) {
-              return (
-                <div
-                  key={key}
-                  style={{ display: "flex", flexDirection: "row" }}
-                >
-                  <div id={styles.name}>{getGroup("d")[key]}</div>
-                </div>
-              );
-            })}
-          </div>
-        </CardContent>
-      </Card>
-    </Container>
+          <Link href="dashboard">
+            <Button
+              variant="contained"
+              color="primary"
+              style={{ marginTop: "10px" }}
+            >
+              Back to dashboard
+            </Button>
+          </Link>
+          <Card style={{ marginTop: "20px" }}>
+            <CardContent id={styles.nameContainer}>
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <div id={styles.groupTitle}>Group A:</div>
+                {Object.keys(getGroup("a")).map(function (key) {
+                  return (
+                    <div
+                      key={key}
+                      style={{ display: "flex", flexDirection: "row" }}
+                    >
+                      <div id={styles.name}>{getGroup("a")[key]}</div>
+                    </div>
+                  );
+                })}
+              </div>
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <div id={styles.groupTitle}>Group B:</div>
+                {Object.keys(getGroup("b")).map(function (key) {
+                  return (
+                    <div
+                      key={key}
+                      style={{ display: "flex", flexDirection: "row" }}
+                    >
+                      <div id={styles.name}>{getGroup("b")[key]}</div>
+                    </div>
+                  );
+                })}
+              </div>
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <div id={styles.groupTitle}>Group C:</div>
+                {Object.keys(getGroup("c")).map(function (key) {
+                  return (
+                    <div
+                      key={key}
+                      style={{ display: "flex", flexDirection: "row" }}
+                    >
+                      <div id={styles.name}>{getGroup("c")[key]}</div>
+                    </div>
+                  );
+                })}
+              </div>
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <div id={styles.groupTitle}>Group D:</div>
+                {Object.keys(getGroup("d")).map(function (key) {
+                  return (
+                    <div
+                      key={key}
+                      style={{ display: "flex", flexDirection: "row" }}
+                    >
+                      <div id={styles.name}>{getGroup("d")[key]}</div>
+                    </div>
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
+        </Container>
+      )}
+    </>
   );
 }
