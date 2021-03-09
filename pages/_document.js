@@ -1,5 +1,5 @@
 import React from "react";
-import Document, { Html, Head, Main, NextScript } from "next/document";
+import Document, { Html, Main, NextScript } from "next/document";
 import { ServerStyleSheets } from "@material-ui/core/styles";
 
 import consts from "../config/consts";
@@ -8,14 +8,6 @@ export default class MyDocument extends Document {
 	render() {
 		return (
 			<Html lang='en'>
-				<Head>
-					<meta
-						name='viewport'
-						content='minimum-scale=1, initial-scale=1, width=device-width'
-					/>
-					<title>{consts.siteName}</title>
-					<link rel='icon' href='/favicon.ico' />
-				</Head>
 				<body>
 					<Main />
 					<NextScript />
