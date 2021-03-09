@@ -44,9 +44,13 @@ export default function Dashboard() {
       });
 
     firebase.auth().onAuthStateChanged(function (user) {
-      if (user && user.email.endsWith("@wafbla.org")) {
-        console.log("ADMIN LOGIN");
-        setLogin(true);
+      if (user && user.email !== null) {
+        if (user.email.endsWith("@wafbla.org")) {
+          console.log("ADMIN LOGIN");
+          setLogin(true);
+        } else {
+          router.replace(`/admin`);
+        }
       } else {
         //no user logged in, so go back to admin
         setLogin(false);

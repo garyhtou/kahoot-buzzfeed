@@ -53,8 +53,10 @@ export default function AdminResults(props) {
     setMatchData(val);
 
     firebase.auth().onAuthStateChanged(function (user) {
-      if (user && user.email.endsWith("@wafbla.org")) {
-        setLogin(true);
+      if (user && user.email !== null) {
+        if (user.email.endsWith("@wafbla.org")) {
+          setLogin(true);
+        }
       } else {
         //no user logged in, so go back to admin
         setLogin(false);

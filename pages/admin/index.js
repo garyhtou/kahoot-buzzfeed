@@ -34,9 +34,11 @@ export default function Admin() {
 
   useEffect(async () => {
     firebase.auth().onAuthStateChanged(function (user) {
-      if (user && user.email.endsWith("@wafbla.org")) {
-        console.log("already logged in, redirecting to dashboard");
-        router.replace(`/admin/dashboard`);
+      if (user && user.email !== null) {
+        if (user.email.endsWith("@wafbla.org")) {
+          console.log("already logged in, redirecting to dashboard");
+          router.replace(`/admin/dashboard`);
+        }
       }
     });
   }, []);

@@ -52,8 +52,10 @@ export default function AdminGameView(props) {
     });
 
     firebase.auth().onAuthStateChanged(function (user) {
-      if (user && user.email.endsWith("@wafbla.org")) {
-        setLogin(true);
+      if (user && user.email !== null) {
+        if (user.email.endsWith("@wafbla.org")) {
+          setLogin(true);
+        }
       } else {
         //no user logged in, so go back to admin
         setLogin(false);
@@ -103,7 +105,7 @@ export default function AdminGameView(props) {
       {isLogin && (
         <Container id={styles.question}>
           <Typography variant="h3">
-            {gameState.replace("GAME_STATE-GAME_", "")}
+            Question {gameState.replace("GAME_STATE-GAME_QUESTION_", "")}
           </Typography>
           <Typography variant="h4">Pin: {gamePin}</Typography>
           <Link href="dashboard">
