@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { CircularProgress, Typography } from "@material-ui/core";
 import PropTypes from "prop-types";
-import styles from "../../styles/Admin.module.css";
+import styles from "../../styles/admin/Admin.module.css";
 import { Close } from "@material-ui/icons";
 
 import game from "../../helpers/game";

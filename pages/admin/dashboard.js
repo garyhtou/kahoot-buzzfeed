@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { CircularProgress, Typography } from "@material-ui/core";
 import PropTypes, { array } from "prop-types";
-import styles from "../../styles/Dashboard.module.css";
+import styles from "../../styles/admin/Dashboard.module.css";
 import game from "../../helpers/game";
 
 import firebase from "../../utils/firebase";
