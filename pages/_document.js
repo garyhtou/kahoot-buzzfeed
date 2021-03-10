@@ -7,7 +7,7 @@ export default class MyDocument extends Document {
 		return (
 			<Html lang='en'>
 				<body>
-					<Head />
+					<Head></Head>
 					<Main />
 					<NextScript />
 				</body>
