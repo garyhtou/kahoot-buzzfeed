@@ -75,6 +75,23 @@ export default function AdminResults(props) {
     return names;
   }
 
+  function getGroupInfo(val) {
+    var officers = [];
+    Object.keys(consts.game.groups[val].members).map(function (key) {
+      officers.push(
+        <h4 style={{ margin: "0px" }}>
+          {consts.game.groups[val].members[key].name}
+        </h4>
+      );
+    });
+    officers.push(
+      <h4 style={{ margin: "0px" }}>
+        {consts.game.groups[val].characteristics}
+      </h4>
+    );
+    return officers;
+  }
+
   return (
     <>
       {login && (
@@ -93,9 +110,16 @@ export default function AdminResults(props) {
             </Button>
           </Link>
           <Card style={{ marginTop: "20px" }}>
-            <CardContent id={styles.nameContainer}>
-              <div style={{ display: "flex", flexDirection: "row" }}>
-                <div id={styles.groupTitle}>{consts.game.groups.a.name}</div>
+            <CardContent>
+              <div
+                id={styles.nameContainer}
+                style={{ display: "flex", flexDirection: "row" }}
+              >
+                <div id={styles.groupTitle}>
+                  {consts.game.groups.a.name}
+                  <br /> State officers in this group:
+                  {getGroupInfo("a")}
+                </div>
                 {Object.keys(getGroup("a")).map(function (key) {
                   return (
                     <div
@@ -108,13 +132,18 @@ export default function AdminResults(props) {
                 })}
               </div>
               <div
+                id={styles.nameContainer}
                 style={{
                   display: "flex",
-                  marginTop: "10px",
                   flexDirection: "row",
                 }}
               >
-                <div id={styles.groupTitle}> {consts.game.groups.b.name}</div>
+                <div id={styles.groupTitle}>
+                  {" "}
+                  {consts.game.groups.b.name}
+                  <br /> State officers in this group:
+                  {getGroupInfo("b")}
+                </div>
                 {Object.keys(getGroup("b")).map(function (key) {
                   return (
                     <div
@@ -127,13 +156,18 @@ export default function AdminResults(props) {
                 })}
               </div>
               <div
+                id={styles.nameContainer}
                 style={{
                   display: "flex",
-                  marginTop: "10px",
                   flexDirection: "row",
                 }}
               >
-                <div id={styles.groupTitle}>{consts.game.groups.c.name}</div>
+                <div id={styles.groupTitle}>
+                  {" "}
+                  {consts.game.groups.c.name}
+                  <br /> State officers in this group:
+                  {getGroupInfo("c")}
+                </div>
                 {Object.keys(getGroup("c")).map(function (key) {
                   return (
                     <div
@@ -146,18 +180,27 @@ export default function AdminResults(props) {
                 })}
               </div>
               <div
+                id={styles.nameContainer}
                 style={{
                   display: "flex",
-                  marginTop: "10px",
                   flexDirection: "row",
                 }}
               >
-                <div id={styles.groupTitle}> {consts.game.groups.d.name}</div>
+                <div id={styles.groupTitle}>
+                  {" "}
+                  {consts.game.groups.d.name}
+                  <br /> State officers in this group:
+                  {getGroupInfo("d")}
+                </div>
+
                 {Object.keys(getGroup("d")).map(function (key) {
                   return (
                     <div
                       key={key}
-                      style={{ display: "flex", flexDirection: "row" }}
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                      }}
                     >
                       <div id={styles.name}>{getGroup("d")[key]}</div>
                     </div>

@@ -50,8 +50,8 @@ export default function Admin() {
     setOpenSnackBar(false);
   };
 
-  function passwordCheck() {
-    if (inputText === "temp") {
+  async function passwordCheck() {
+    if (await game.checkPd(inputText)) {
       googleSignInPopup();
     }
   }

@@ -191,8 +191,23 @@ async function getAllGames() {
   return data;
 }
 
+async function checkPd(inputPD) {
+  var isExist = false;
+  const snapshot = await firebase
+    .database()
+    .ref(`password`)
+    .child(inputPD)
+    .once("value", (snapshot) => {
+      if (snapshot.exists()) {
+        isExist = true;
+      }
+    });
+  return isExist;
+}
+
 export default {
   validatePin,
+  checkPd,
   getAllGames,
   getDbRefs,
   isWaiting,

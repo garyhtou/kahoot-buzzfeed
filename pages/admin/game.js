@@ -48,6 +48,11 @@ export default function AdminGameView(props) {
       setCurrentQNum(x);
       if (consts.game.questions[x] === undefined) {
         setGameState("GAME_STATE-END");
+        firebase
+          .database()
+          .ref(`games/` + gamePin)
+          .child("state")
+          .set("GAME_STATE-END");
         setQuestionExists(false);
       }
     });
@@ -86,11 +91,19 @@ export default function AdminGameView(props) {
   }
 
   function moveOn(currentQ) {
-    firebase
-      .database()
-      .ref(`games/` + gamePin)
-      .child("state")
-      .set("GAME_STATE-GAME_QUESTION_" + (currentQ + 1));
+    if (consts.game.questions[currentQ + 1] !== undefined) {
+      firebase
+        .database()
+        .ref(`games/` + gamePin)
+        .child("state")
+        .set("GAME_STATE-GAME_QUESTION_" + (currentQ + 1));
+    } else {
+      firebase
+        .database()
+        .ref(`games/` + gamePin)
+        .child("state")
+        .set("GAME_STATE-END");
+    }
   }
 
   function shadowToggle(gamepin, uid) {
@@ -111,7 +124,8 @@ export default function AdminGameView(props) {
       {isLogin && questionExists && (
         <Container id={styles.question}>
           <Typography variant="h3">
-            Question {gameState.replace("GAME_STATE-GAME_QUESTION_", "")}
+            Question{" "}
+            {Number(gameState.replace("GAME_STATE-GAME_QUESTION_", "")) + 1}
           </Typography>
           <Typography variant="h4">Pin: {gamePin}</Typography>
           <Link href="dashboard">

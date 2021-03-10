@@ -140,7 +140,10 @@ export default function Dashboard() {
           <Button id={styles.backToDash} onClick={dashMain}>
             Back to dashboard
           </Button>
-          <Container id={styles.listContainer} style={{ minHeight: "10vh" }}>
+          <Container
+            id={styles.listContainer}
+            style={{ marginTop: "10px", minHeight: "10vh" }}
+          >
             <Typography variant="h4" gutterBottom>
               Pin: {gamePin}
             </Typography>
@@ -235,12 +238,10 @@ export default function Dashboard() {
                 Start a new game
               </Button>
             </div>
-            <Container id={styles.listContainer} style={{ minHeight: "60vh" }}>
-              <Typography variant="h2" id={styles.title} gutterBottom>
-                View all games
-              </Typography>
-              <Card className={styles.gamePinCard}>
-                <CardContent className={styles.pinContainer}>
+            <Container id={styles.listContainer}>
+              <Card>
+                <CardContent>
+                  <h2 style={{ margin: "0px" }}>All games:</h2>
                   {listOfGames.map((el) => {
                     return (
                       <div
@@ -251,7 +252,20 @@ export default function Dashboard() {
                           flexDirection: "row",
                         }}
                       >
-                        <div id={styles.gameTitle}>{el}</div>
+                        <div
+                          style={{
+                            background:
+                              (gameArrayState[el].state === "GAME_STATE-END" &&
+                                "red") ||
+                              (gameArrayState[el].state ===
+                                "GAME_STATE-WAITING" &&
+                                "orange") ||
+                              "green",
+                          }}
+                          id={styles.gameTitle}
+                        >
+                          {el}
+                        </div>
                         <div
                           onClick={() => gameClicked(el)}
                           id={styles.viewButton}
