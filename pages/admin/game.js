@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { CircularProgress, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import styles from "../../styles//admin/Question.module.css";
 import game from "../../helpers/game";
 
@@ -23,7 +23,7 @@ import {
 	TextField,
 } from "@material-ui/core";
 
-export default function AdminGameView(props) {
+export default function AdminGameView() {
 	const [userData, setUserData] = useState([]);
 	const [isLogin, setLogin] = useState(false);
 	const [playerCount, setPlayerCount] = useState(0);
@@ -39,49 +39,54 @@ export default function AdminGameView(props) {
 	}
 
 	useEffect(async () => {
-		var data;
-		const snapshot = await firebase.database().ref(`games/` + gamePin);
-		snapshot.child("state").on("value", (stateSnap) => {
-			setGameState(stateSnap.val());
-			var x = Number(stateSnap.val().replace("GAME_STATE-GAME_QUESTION_", ""));
-			setCurrentQNum(x);
-			if (consts.game.questions[x] === undefined) {
-				setGameState("GAME_STATE-END");
-				firebase
-					.database()
-					.ref(`games/` + gamePin)
-					.child("state")
-					.set("GAME_STATE-END");
-				setQuestionExists(false);
-			}
-		});
-		snapshot.child("users").on("value", (subsnapshot) => {
-			data = subsnapshot.val();
-			setUserData(data);
-			setPlayerCount(subsnapshot.numChildren());
-		});
+		var unsubFunc = [];
+		const gameRef = game.getDbRefs(gamePin).game.child("state");
 
-		firebase.auth().onAuthStateChanged(function (user) {
-			if (user && user.email !== null) {
-				if (user.email.endsWith("@wafbla.org")) {
-					setLogin(true);
+		unsubFunc.push(
+			gameRef.child("state").on("value", (stateSnapshot) => {
+				var qNum = game.getQuestionNum(stateSnapshot.val());
+
+				if (consts.game.questions[qNum] === undefined) {
+					gameRef.child("state").set(consts.gameStates.end);
+					setGameState(consts.gameStates.end);
+					setQuestionExists(false);
+				} else {
+					setGameState(stateSnapshot.val());
+					setCurrentQNum(qNum);
 				}
-			} else {
-				//no user logged in, so go back to admin
-				setLogin(false);
-				router.replace(`/admin`);
-			}
-		});
+			})
+		);
+
+		unsubFunc.push(
+			game.getDbRefs(gamePin).users.on("value", (snapshot) => {
+				if (snapshot.exists()) {
+					setUserData(snapshot.val());
+					setPlayerCount(snapshot.numChildren());
+				}
+			})
+		);
+
+		unsubFunc.push(
+			firebase.auth().onAuthStateChanged(function (user) {
+				if (user && user.email !== null) {
+					if (game.validAdminEmail(user.email)) {
+						setLogin(true);
+					}
+				} else {
+					//no user logged in, so go back to admin
+					setLogin(false);
+					router.replace(`/admin`);
+				}
+			})
+		);
 	}, []);
 
-	//move on to next question
-
-	function updateAnswerCount(questionNum) {
+	function getAnswerCount(questionNum) {
 		var count = 0;
-		for (var k in userData) {
+		for (var uuid in userData) {
 			if (
-				userData[k].answers !== undefined &&
-				userData[k].answers[questionNum] !== undefined
+				userData[uuid].answers !== undefined &&
+				userData[uuid].answers[questionNum] !== undefined
 			) {
 				count++;
 			}
@@ -89,24 +94,20 @@ export default function AdminGameView(props) {
 		return count;
 	}
 
+	/**
+	 * Move onto the next question
+	 * @param {number} currentQ
+	 */
 	function moveOn(currentQ) {
 		if (consts.game.questions[currentQ + 1] !== undefined) {
-			firebase
-				.database()
-				.ref(`games/` + gamePin)
-				.child("state")
-				.set("GAME_STATE-GAME_QUESTION_" + (currentQ + 1));
+			const nextQ = consts.gameStates.gameQuestion(currentQ + 1);
+			game.getDbRefs(gamePin).state.set(nextQ);
 		} else {
-			firebase
-				.database()
-				.ref(`games/` + gamePin)
-				.child("state")
-				.set("GAME_STATE-END");
+			game.getDbRefs(gamePin).state.set(consts.gameStates.end);
 		}
 	}
 
 	function shadowToggle(gamepin, uid) {
-		//document.getElementById(styles.username).style = 'background: red;';
 		game
 			.getDbRefs(gamepin)
 			.user(uid)
@@ -114,7 +115,7 @@ export default function AdminGameView(props) {
 			.set(userData[uid].sban !== undefined ? !userData[uid].sban : true);
 	}
 
-	if (gameState === "GAME_STATE-END") {
+	if (game.isEnded(gameState)) {
 		router.replace(`/admin/results?gamePin=${gamePin}`);
 	}
 
@@ -123,22 +124,19 @@ export default function AdminGameView(props) {
 			{isLogin && questionExists && (
 				<Container id={styles.question}>
 					<Typography variant='h3'>
-						Question{" "}
-						{Number(gameState.replace("GAME_STATE-GAME_QUESTION_", "")) + 1}
+						Question {game.getQuestionNum(gameState) + 1}
 					</Typography>
-					<Typography variant='h4'>Pin: {gamePin}</Typography>
+					<Typography variant='body1'>Game Pin: {gamePin}</Typography>
 					<Link href='dashboard'>
-						<Button variant='contained' id={styles.gameButton}>
-							Back to dashboard
-						</Button>
+						<Button variant='contained'>Back to dashboard</Button>
 					</Link>
 					<Card style={{ marginTop: "20px" }}>
 						<CardContent>
 							<Typography variant='h3'>
-								{consts.game.questions[currentQNum].question}
+								{game.getQuestionText(currentQNum)}
 							</Typography>
 							<Typography style={{ marginTop: "10px" }} id='ratio' variant='h5'>
-								Reponses: {updateAnswerCount(currentQNum)} / {playerCount}
+								Responses: {getAnswerCount(currentQNum)} / {playerCount}
 							</Typography>
 							<Button
 								variant='contained'
