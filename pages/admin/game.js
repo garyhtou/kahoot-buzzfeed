@@ -29,6 +29,8 @@ export default function AdminGameView(props) {
   const [isLogin, setLogin] = useState(false);
   const [playerCount, setPlayerCount] = useState(0);
   const [gameState, setGameState] = useState("");
+  const [questionExists, setQuestionExists] = useState(true);
+
   const [currentQNum, setCurrentQNum] = useState(0);
   const router = useRouter();
 
@@ -44,6 +46,10 @@ export default function AdminGameView(props) {
       setGameState(stateSnap.val());
       var x = Number(stateSnap.val().replace("GAME_STATE-GAME_QUESTION_", ""));
       setCurrentQNum(x);
+      if (consts.game.questions[x] === undefined) {
+        setGameState("GAME_STATE-END");
+        setQuestionExists(false);
+      }
     });
     snapshot.child("users").on("value", (subsnapshot) => {
       data = subsnapshot.val();
@@ -102,7 +108,7 @@ export default function AdminGameView(props) {
 
   return (
     <>
-      {isLogin && (
+      {isLogin && questionExists && (
         <Container id={styles.question}>
           <Typography variant="h3">
             Question {gameState.replace("GAME_STATE-GAME_QUESTION_", "")}
