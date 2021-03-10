@@ -271,7 +271,7 @@ export default function Dashboard() {
 													}}
 													id={styles.gameTitle}
 												>
-													{gamePin}(
+													{gamePin} (
 													{game.isWaiting(gamesObjList[gamePin].state)
 														? "waiting"
 														: game.isInGameQuestions(

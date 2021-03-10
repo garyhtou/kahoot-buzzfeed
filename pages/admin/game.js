@@ -112,12 +112,12 @@ export default function AdminGameView() {
 		game.getDbRefs(gamePin).state.set(consts.gameStates.end);
 	}
 
-	function shadowToggle(gamepin, uid) {
-		game
-			.getDbRefs(gamepin)
-			.user(uid)
-			.child("sban")
-			.set(userData[uid].sban !== undefined ? !userData[uid].sban : true);
+	function shadowToggle(pin, uid) {
+		game.setShadowBan(
+			pin,
+			uid,
+			userData[uid].sban !== undefined ? !userData[uid].sban : true
+		);
 	}
 
 	if (game.isEnded(gameState)) {

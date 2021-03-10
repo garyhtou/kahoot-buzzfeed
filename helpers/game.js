@@ -302,6 +302,10 @@ function hasNextQuestion(state) {
 	}
 }
 
+function setShadowBan(pin, uuid, sban) {
+	getDbRefs(pin).user(uuid).child("sban").set(sbane);
+}
+
 export default {
 	validatePin,
 	checkAdminPassword: checkAdminPassword,
@@ -321,4 +325,5 @@ export default {
 	validateName,
 	validAdminEmail,
 	hasNextQuestion,
+	setShadowBan,
 };

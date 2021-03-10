@@ -69,7 +69,7 @@ export default function AdminResults() {
 	// update matchings whenever user data or the state changes
 	useEffect(async () => {
 		const results = await game.calcAllMatches(gamePin);
-		setMatchData(results !== null ? resulsts : []);
+		setMatchData(results !== null ? results : []);
 	}, [userData, gameState]);
 
 	function getGroup(group) {
