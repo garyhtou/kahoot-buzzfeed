@@ -1,13 +1,13 @@
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { Typography } from "@material-ui/core";
-import styles from "../../styles/admin/Admin.module.css";
-import { Close } from "@material-ui/icons";
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { Typography } from '@material-ui/core';
+import styles from '../../styles/admin/Admin.module.css';
+import { Close } from '@material-ui/icons';
 
-import game from "../../helpers/game";
-import consts from "../../config/consts";
+import game from '../../helpers/game';
+import consts from '../../config/consts';
 
-import Link from "next/link";
+import Link from 'next/link';
 import {
 	Button,
 	Card,
@@ -16,16 +16,16 @@ import {
 	IconButton,
 	Snackbar,
 	TextField,
-} from "@material-ui/core";
+} from '@material-ui/core';
 
-import firebase from "../../utils/firebase";
+import firebase from '../../utils/firebase';
 
 export default function Admin() {
-	const [inputText, setInputText] = useState("");
+	const [inputText, setInputText] = useState('');
 	const router = useRouter();
 
 	const [openSnackBar, setOpenSnackBar] = useState(false);
-	const [barMessage, setBarMessage] = useState("");
+	const [barMessage, setBarMessage] = useState('');
 
 	useEffect(() => {
 		const unsub = firebase.auth().onAuthStateChanged(function (user) {
@@ -33,7 +33,7 @@ export default function Admin() {
 			if (user && user.email !== null) {
 				// if email is eligible to be an admin
 				if (game.validAdminEmail(user.email)) {
-					console.log("already logged in, redirecting to dashboard");
+					console.log('already logged in, redirecting to dashboard');
 					router.replace(`/admin/dashboard`);
 				}
 			}
@@ -43,7 +43,7 @@ export default function Admin() {
 	}, []);
 
 	const handleCloseSnackBar = (event, reason) => {
-		if (reason === "clickaway") {
+		if (reason === 'clickaway') {
 			return;
 		}
 		setOpenSnackBar(false);
@@ -57,7 +57,7 @@ export default function Admin() {
 					`Welcome, please select your ${consts.adminEmailDomain} email.`
 				);
 				setOpenSnackBar(true);
-				setInputText("");
+				setInputText('');
 			}
 		} catch (error) {
 			setBarMessage(error.message);
@@ -76,18 +76,18 @@ export default function Admin() {
 				const user = result.user;
 
 				if (game.validAdminEmail(user.email)) {
-					console.log("admin account, all good");
+					console.log('admin account, all good');
 					//redirect to dashboard
 					router.replace(`/admin/dashboard`);
 				} else {
-					console.log("not an admin account");
+					console.log('not an admin account');
 					user
 						.delete()
 						.then(function () {
 							//display message to user that sign in operation/account is deleted
 							setOpenSnackBar(true);
 							setBarMessage(
-								"Admins must sign in through their organization account"
+								'Admins must sign in through their organization account'
 							);
 						})
 						.catch(function (error) {
@@ -107,11 +107,11 @@ export default function Admin() {
 
 	return (
 		<>
-			<div style={{ padding: "10px" }}>
+			<div style={{ padding: '10px' }}>
 				<Link href='/'>
 					<Button variant='text'>Back to home</Button>
 				</Link>
-				<Container id={styles.homeContainer} style={{ minHeight: "60vh" }}>
+				<Container id={styles.homeContainer} style={{ minHeight: '60vh' }}>
 					<Typography variant='h2' id={styles.title} gutterBottom>
 						Admin Dashboard
 					</Typography>
@@ -119,19 +119,19 @@ export default function Admin() {
 						<CardContent className={styles.pinContainer}>
 							<TextField
 								placeholder='ADMIN PASSWORD'
-								type={"password"}
+								type={'password'}
 								onChange={(event) => {
 									setInputText(event.target.value);
 								}}
 								onKeyDown={(e) => {
-									if (e.key === "Enter") {
+									if (e.key === 'Enter') {
 										passwordCheck();
 										e.preventDefault();
 									}
 								}}
 								value={inputText}
 								id={styles.pinInput}
-								inputProps={{ style: { textAlign: "center" } }}
+								inputProps={{ style: { textAlign: 'center' } }}
 							/>
 
 							<Button
@@ -147,8 +147,8 @@ export default function Admin() {
 					{openSnackBar && (
 						<Snackbar
 							anchorOrigin={{
-								vertical: "bottom",
-								horizontal: "left",
+								vertical: 'bottom',
+								horizontal: 'left',
 							}}
 							open={openSnackBar}
 							autoHideDuration={6000}

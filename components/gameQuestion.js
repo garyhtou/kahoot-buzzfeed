@@ -1,28 +1,28 @@
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import styles from "../styles/GameQuestion.module.css";
-import consts from "../config/consts";
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import styles from '../styles/GameQuestion.module.css';
+import consts from '../config/consts';
 import {
-  Box,
-  Button,
-  ButtonBase,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  Container,
-  Grid,
-  GridList,
-  GridListTile,
-  IconButton,
-  Paper,
-  Snackbar,
-  TextField,
-  Typography,
-} from "@material-ui/core";
-import PropTypes from "prop-types";
-import game from "../helpers/game";
-import firebase from "../utils/firebase";
+	Box,
+	Button,
+	ButtonBase,
+	Card,
+	CardActions,
+	CardContent,
+	CardHeader,
+	Container,
+	Grid,
+	GridList,
+	GridListTile,
+	IconButton,
+	Paper,
+	Snackbar,
+	TextField,
+	Typography,
+} from '@material-ui/core';
+import PropTypes from 'prop-types';
+import game from '../helpers/game';
+import firebase from '../utils/firebase';
 
 export default function gameQuestion(props) {
   const pin = props.pin;
@@ -39,7 +39,6 @@ export default function gameQuestion(props) {
     setAnsweredQuestion(true);
     console.log(`I CHOSE ${option}`);
   }
-
   // whether this question has been answered
   const [answeredQuestion, setAnsweredQuestion] = useState(false);
   useEffect(() => {
@@ -108,7 +107,6 @@ export default function gameQuestion(props) {
       </GridList>
     </Box>
   );
-}
 
 gameQuestion.propTypes = {
   pin: PropTypes.number,

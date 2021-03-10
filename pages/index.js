@@ -1,56 +1,56 @@
-import Head from "next/head";
-import { useRouter } from "next/router";
-import { useState } from "react";
-import styles from "../styles/Home.module.css";
-import consts from "../config/consts";
-import Link from "next/link";
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import styles from '../styles/Home.module.css';
+import consts from '../config/consts';
+import Link from 'next/link';
 
 import {
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  Container,
-  IconButton,
-  Paper,
-  Snackbar,
-  TextField,
-  Typography,
-} from "@material-ui/core";
-import { Close } from "@material-ui/icons";
-import game from "../helpers/game";
+	Box,
+	Button,
+	Card,
+	CardActions,
+	CardContent,
+	CardHeader,
+	Container,
+	IconButton,
+	Paper,
+	Snackbar,
+	TextField,
+	Typography,
+} from '@material-ui/core';
+import { Close } from '@material-ui/icons';
+import game from '../helpers/game';
 
 export default function Home() {
 	const router = useRouter();
-	const [invalidPin, setInvalidPin] = useState(router.query["invalid_pin"]);
+	const [invalidPin, setInvalidPin] = useState(router.query['invalid_pin']);
 
 	// manage state of snack bar
 	// used to alert user of invalid game pin
 	const [openSnackBar, setOpenSnackBar] = useState(true);
 	const handleCloseSnackBar = (event, reason) => {
-		if (reason === "clickaway") {
+		if (reason === 'clickaway') {
 			return;
 		}
 		setInvalidPin(undefined);
 		setOpenSnackBar(false);
 	};
 
-	const [gamePin, setGamePin] = useState("");
+	const [gamePin, setGamePin] = useState('');
 	async function submitPin(pin) {
 		console.log(`VALIDATING PIN: ${pin}`);
-		if (pin === "") {
+		if (pin === '') {
 			return;
 		}
 		if (!(await game.validatePin(pin))) {
 			// Pin is invalid, show snackbar
-			console.log("nope");
+			console.log('nope');
 			setInvalidPin(pin);
 			setOpenSnackBar(true);
 		} else {
 			// Pin is valid, redirect to game page
-			console.log("yup");
+			console.log('yup');
 			router.push(`/game/${pin}`);
 		}
 	}
@@ -64,8 +64,8 @@ export default function Home() {
 			{invalidPin ? (
 				<Snackbar
 					anchorOrigin={{
-						vertical: "bottom",
-						horizontal: "left",
+						vertical: 'bottom',
+						horizontal: 'left',
 					}}
 					open={openSnackBar}
 					autoHideDuration={6000}
@@ -96,13 +96,13 @@ export default function Home() {
 					<TextField
 						placeholder='GAME PIN'
 						id={styles.pinInput}
-						inputProps={{ style: { textAlign: "center" } }}
+						inputProps={{ style: { textAlign: 'center' } }}
 						onChange={(e) => {
 							const pin = e.target.value;
 							setGamePin(pin);
 						}}
 						onKeyDown={(e) => {
-							if (e.key === "Enter") {
+							if (e.key === 'Enter') {
 								submitPin(gamePin);
 								e.preventDefault();
 							}

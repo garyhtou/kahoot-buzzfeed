@@ -1,7 +1,7 @@
-import Head from "next/head";
-import { useRouter } from "next/router";
-import styles from "../../styles/Game.module.css";
-import consts from "../../config/consts";
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import styles from '../../styles/Game.module.css';
+import consts from '../../config/consts';
 import {
   AppBar,
   Backdrop,
@@ -57,17 +57,16 @@ export default function Game() {
 
     const refs = game.getDbRefs(getPin());
     const unsubFuncs = [];
-
-    // Game state
-    unsubFuncs.push(
-      refs.state.on("value", (snapshot) => {
-        if (snapshot && snapshot.exists()) {
-          const newState = snapshot.val();
-          setGameState(newState);
-          console.log(`GAME STATE: ${newState}`);
-        }
-      })
-    );
+		// Game state
+		unsubFuncs.push(
+			refs.state.on('value', (snapshot) => {
+				if (snapshot && snapshot.exists()) {
+					const newState = snapshot.val();
+					setGameState(newState);
+					console.log(`GAME STATE: ${newState}`);
+				}
+			})
+		);
 
     // clean up firebase listener when leaving
     return function () {
@@ -80,7 +79,6 @@ export default function Game() {
     var unsub = firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
         console.log(`UID: ${user.uid}`);
-
         setUser(user);
       }
     });

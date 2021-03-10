@@ -1,14 +1,14 @@
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { Typography } from "@material-ui/core";
-import styles from "../../styles//admin/Question.module.css";
-import game from "../../helpers/game";
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { Typography } from '@material-ui/core';
+import styles from '../../styles//admin/Question.module.css';
+import game from '../../helpers/game';
 
-import consts from "../../config/consts";
+import consts from '../../config/consts';
 
-import firebase from "../../utils/firebase";
+import firebase from '../../utils/firebase';
 
-import Link from "next/link";
+import Link from 'next/link';
 import {
 	Box,
 	Button,
@@ -21,29 +21,29 @@ import {
 	Paper,
 	Snackbar,
 	TextField,
-} from "@material-ui/core";
+} from '@material-ui/core';
 
 export default function AdminGameView() {
 	const [userData, setUserData] = useState([]);
 	const [isLogin, setLogin] = useState(false);
 	const [playerCount, setPlayerCount] = useState(0);
-	const [gameState, setGameState] = useState("");
+	const [gameState, setGameState] = useState('');
 	const [questionExists, setQuestionExists] = useState(true);
 
 	const [currentQNum, setCurrentQNum] = useState(0);
 	const router = useRouter();
 
-	var gamePin = "";
-	if (typeof window !== "undefined") {
-		gamePin = window.location.href.split("?gamePin=").pop();
+	var gamePin = '';
+	if (typeof window !== 'undefined') {
+		gamePin = window.location.href.split('?gamePin=').pop();
 	}
 
 	useEffect(async () => {
 		var unsubFuncs = [];
-		const gameStateRef = game.getDbRefs(gamePin).game.child("state");
+		const gameStateRef = game.getDbRefs(gamePin).game.child('state');
 
 		unsubFuncs.push(
-			gameStateRef.on("value", (stateSnapshot) => {
+			gameStateRef.on('value', (stateSnapshot) => {
 				var qNum = game.getQuestionNum(stateSnapshot.val());
 
 				if (consts.game.questions[qNum] === undefined) {
@@ -58,7 +58,7 @@ export default function AdminGameView() {
 		);
 
 		unsubFuncs.push(
-			game.getDbRefs(gamePin).users.on("value", (snapshot) => {
+			game.getDbRefs(gamePin).users.on('value', (snapshot) => {
 				if (snapshot.exists()) {
 					setUserData(snapshot.val());
 					setPlayerCount(snapshot.numChildren());
@@ -137,12 +137,12 @@ export default function AdminGameView() {
 							Back to dashboard
 						</Button>
 					</Link>
-					<Card style={{ marginTop: "20px" }}>
+					<Card style={{ marginTop: '20px' }}>
 						<CardContent>
 							<Typography variant='h3'>
 								{game.getQuestionText(currentQNum)}
 							</Typography>
-							<Typography style={{ marginTop: "10px" }} id='ratio' variant='h5'>
+							<Typography style={{ marginTop: '10px' }} id='ratio' variant='h5'>
 								Responses: {getAnswerCount(currentQNum)} / {playerCount}
 							</Typography>
 							<Button
@@ -152,8 +152,8 @@ export default function AdminGameView() {
 								id={styles.gameButton}
 							>
 								{game.hasNextQuestion(gameState)
-									? "Next question"
-									: "Show the results!"}
+									? 'Next question'
+									: 'Show the results!'}
 							</Button>
 						</CardContent>
 					</Card>
@@ -167,8 +167,8 @@ export default function AdminGameView() {
 									style={{
 										textDecoration:
 											userData[key].sban !== undefined && userData[key].sban
-												? "line-through"
-												: "",
+												? 'line-through'
+												: '',
 									}}
 									id={styles.username}
 								>

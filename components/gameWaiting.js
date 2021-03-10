@@ -1,7 +1,7 @@
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import styles from "../styles/GameWaiting.module.css";
-import consts from "../config/consts";
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import styles from '../styles/GameWaiting.module.css';
+import consts from '../config/consts';
 import {
 	Badge,
 	Box,
@@ -18,9 +18,9 @@ import {
 	Snackbar,
 	TextField,
 	Typography,
-} from "@material-ui/core";
-import PropTypes from "prop-types";
-import game from "../helpers/game";
+} from '@material-ui/core';
+import PropTypes from 'prop-types';
+import game from '../helpers/game';
 
 export default function gameWaiting(props) {
 	const pin = props.pin;
@@ -30,7 +30,7 @@ export default function gameWaiting(props) {
 	const [users, setUsers] = useState([]);
 
 	useEffect(async () => {
-		const unsub = game.getDbRefs(pin).users.on("value", (snapshot) => {
+		const unsub = game.getDbRefs(pin).users.on('value', (snapshot) => {
 			if (!snapshot.exists()) {
 				return;
 			}
@@ -44,7 +44,7 @@ export default function gameWaiting(props) {
 					return { uuid, ...user };
 				})
 				// filter shadowbanned users
-				.filter((u) => (typeof u.sban !== "undefined" ? !u.sban : true));
+				.filter((u) => (typeof u.sban !== 'undefined' ? !u.sban : true));
 
 			setUsers(users);
 		});
