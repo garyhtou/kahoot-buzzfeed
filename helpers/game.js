@@ -16,7 +16,7 @@ async function validatePin(pin) {
 		.ref(`games/${pin}/state`)
 		.once('value');
 
-	return snapshot.exists() ;// && snapshot.val() !== consts.gameStates.end;
+	return snapshot.exists() && snapshot.val() !== consts.gameStates.end;
 }
 
 function getDbRefs(pin) {
