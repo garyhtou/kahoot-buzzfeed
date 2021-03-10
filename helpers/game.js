@@ -16,34 +16,34 @@ async function validatePin(pin) {
 		.ref(`games/${pin}/state`)
 		.once("value");
 
-	return snapshot.exists() && snapshot.val() !== consts.gameStates.end;
+  return snapshot.exists() && snapshot.val() !== consts.gameStates.end;
 }
 
 function getDbRefs(pin) {
-	return {
-		game: firebase.database().ref(`games/${pin}`),
-		pin: firebase.database().ref(`games/${pin}/pin`),
-		state: firebase.database().ref(`games/${pin}/state`),
-		users: firebase.database().ref(`games/${pin}/users`),
-		user: (uuid) => firebase.database().ref(`games/${pin}/users/${uuid}`),
-		user_name: (uuid) =>
-			firebase.database().ref(`games/${pin}/users/${uuid}/name`),
-		user_answers: (uuid) =>
-			firebase.database().ref(`games/${pin}/users/${uuid}/answers`),
-		user_answer: (uuid, question) =>
-			firebase.database().ref(`games/${pin}/users/${uuid}/answers/${question}`),
-	};
+  return {
+    game: firebase.database().ref(`games/${pin}`),
+    pin: firebase.database().ref(`games/${pin}/pin`),
+    state: firebase.database().ref(`games/${pin}/state`),
+    users: firebase.database().ref(`games/${pin}/users`),
+    user: (uuid) => firebase.database().ref(`games/${pin}/users/${uuid}`),
+    user_name: (uuid) =>
+      firebase.database().ref(`games/${pin}/users/${uuid}/name`),
+    user_answers: (uuid) =>
+      firebase.database().ref(`games/${pin}/users/${uuid}/answers`),
+    user_answer: (uuid, question) =>
+      firebase.database().ref(`games/${pin}/users/${uuid}/answers/${question}`),
+  };
 }
 
 // State checkers
 function isWaiting(state) {
-	return state === consts.gameStates.waiting;
+  return state === consts.gameStates.waiting;
 }
 function isEnded(state) {
-	return state === consts.gameStates.end;
+  return state === consts.gameStates.end;
 }
 function isInGameQuestions(state) {
-	return getQuestionNum(state) === null ? false : true;
+  return getQuestionNum(state) === null ? false : true;
 }
 
 function getQuestionNum(state) {
@@ -73,14 +73,14 @@ function getQuestionText(num) {
  * @param {uuid} uuid
  */
 async function calcMyMatch(pin, uuid) {
-	const userRef = getDbRefs(pin).user(uuid);
-	const snapshot = await userRef.once("value");
+  const userRef = getDbRefs(pin).user(uuid);
+  const snapshot = await userRef.once("value");
 
-	if (!snapshot.exists()) {
-		throw Error(`User ${uuid} not found!`);
-	}
+  if (!snapshot.exists()) {
+    throw Error(`User ${uuid} not found!`);
+  }
 
-	return calcMatch(snapshot.val());
+  return calcMatch(snapshot.val());
 }
 
 /**
@@ -89,36 +89,36 @@ async function calcMyMatch(pin, uuid) {
  * @param {uuid} excludeUuid
  */
 async function calcAllMatchesExceptUser(pin, excludeUuid = null) {
-	const usersRef = getDbRefs(pin).users;
-	const snapshot = await usersRef.once("value");
+  const usersRef = getDbRefs(pin).users;
+  const snapshot = await usersRef.once("value");
 
-	if (!snapshot.exists()) {
-		return null; //TODO: error message
-	}
-	const rawUsers = snapshot.val();
+  if (!snapshot.exists()) {
+    return null; //TODO: error message
+  }
+  const rawUsers = snapshot.val();
 
-	var users = Object.keys(rawUsers).map((uuid) => {
-		const user = rawUsers[uuid];
-		return {
-			uuid: uuid,
-			name: user.name,
-			match: calcMatch(user.answers),
-		};
-	});
+  var users = Object.keys(rawUsers).map((uuid) => {
+    const user = rawUsers[uuid];
+    return {
+      uuid: uuid,
+      name: user.name,
+      match: calcMatch(user.answers),
+    };
+  });
 
-	// Filter out a user by uuid
-	if (excludeUuid !== null) {
-		users.filter((user) => user.uuid !== excludeUuid);
-	}
-	// Filter out shadow banned users
-	users.filter((user) =>
-		typeof user.sban !== "undefined" ? !user.sban : true
-	);
+  // Filter out a user by uuid
+  if (excludeUuid !== null) {
+    users.filter((user) => user.uuid !== excludeUuid);
+  }
+  // Filter out shadow banned users
+  users.filter((user) =>
+    typeof user.sban !== "undefined" ? !user.sban : true
+  );
 
-	return users;
+  return users;
 }
 function calcAllMatches(pin) {
-	return calcAllMatchesExceptUser(pin);
+  return calcAllMatchesExceptUser(pin);
 }
 
 /**
@@ -128,41 +128,45 @@ function calcAllMatches(pin) {
  * or object with index and answer (depends on how firebase returns the data)
  * @param {Array} answers
  */
+//the answers child level of a uuid is being passed as 'answers'
 function calcMatch(answers) {
-	var tally = {};
-	Object.keys(consts.game.groups).forEach((g) => (tally[g] = 0));
+  //sets each group to 0
+  var tally = {};
+  Object.keys(consts.game.groups).forEach((g) => (tally[g] = 0));
 
-	for (let [i, answer] of answers.entries()) {
-		const question = consts.game.questions[i];
-		if (typeof question === "undefined") {
-			console.error(`Question #${i} is not found!`);
-			continue;
-		}
-		const belongsTo = question.answers[answer].belongs;
-		if (typeof tally[belongsTo] === "undefined") {
-			console.error(
-				`Group #${belongsTo} is not found! Belongs to answer "${answer}" in question "${i}"`
-			);
-			continue;
-		}
-		tally[belongsTo]++;
-	}
-	console.log(tally);
+  for (var k in answers) {
+    const questionIndex = k;
+    const userChoice = answers[questionIndex];
+    const currentQ = consts.game.questions[questionIndex];
 
-	var highest = Object.keys(tally)[0];
-	Object.keys(tally).forEach((g) => {
-		if (
-			// if higher tally
-			tally[g] > tally[highest] ||
-			// if tie, use tie breaker
-			((tally[g] = tally[highest]) && //
-				consts.game.tieBreaker.indexOf(g) <
-					consts.game.tieBreaker.indexOf(highest))
-		) {
-			highest = g;
-		}
-	});
-	return highest;
+    if (typeof currentQ === "undefined") {
+      //this will throow when a mistake is made in entering the questions in consts - number of questions doesnt match, when there are less questions in the consts than in the database
+      console.error(`Question #${questionIndex} is not found!`);
+      continue;
+    }
+
+    const belongsTo = currentQ.answers[userChoice].belongs;
+
+    tally[belongsTo]++;
+  }
+
+  var highest = Object.keys(tally)[0];
+  Object.keys(tally).forEach((g) => {
+    if (tally[g] > tally[highest]) {
+      highest = g;
+    } else if (tally[g] == tally[highest]) {
+      //what came first in the array
+      if (
+        consts.game.tieBreaker.indexOf(g) <
+        consts.game.tieBreaker.indexOf(highest)
+      ) {
+        highest = g;
+      } else {
+        highest = highest;
+      }
+    }
+  });
+  return highest;
 }
 
 async function chooseAnswer(pin, uuid, question, option) {
@@ -198,8 +202,34 @@ async function chooseAnswer(pin, uuid, question, option) {
 }
 
 async function userExists(pin, uuid) {
-	const user = await getDbRefs(pin).user(uuid).once("value");
-	return user.exists();
+  const user = await getDbRefs(pin).user(uuid).once("value");
+  return user.exists();
+}
+
+async function getAllGames() {
+  var data;
+  const snapshot = await firebase
+    .database()
+    .ref(`games`)
+    .once("value", function (subsnapshot) {
+      data = subsnapshot.val();
+    });
+
+  return data;
+}
+
+async function checkPd(inputPD) {
+  var isExist = false;
+  const snapshot = await firebase
+    .database()
+    .ref(`password`)
+    .child(inputPD)
+    .once("value", (snapshot) => {
+      if (snapshot.exists()) {
+        isExist = true;
+      }
+    });
+  return isExist;
 }
 
 function getQuestionNumTotal() {
@@ -236,6 +266,7 @@ function validateName(name, realtime = false) {
 
 export default {
 	validatePin,
+  checkPd,
 	getDbRefs,
 	isWaiting,
 	isEnded,
