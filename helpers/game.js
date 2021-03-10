@@ -1,20 +1,20 @@
-import firebase from "../utils/firebase";
-import consts from "../config/consts";
-import Filter from "bad-words";
+import firebase from '../utils/firebase';
+import consts from '../config/consts';
+import Filter from 'bad-words';
 const filter = new Filter();
 
 const additionalNameBlacklist = [];
 filter.addWords(...additionalNameBlacklist);
 
 async function validatePin(pin) {
-	if (typeof pin === "undefined" || pin === "") {
+	if (typeof pin === 'undefined' || pin === '') {
 		return false;
 	}
 
 	const snapshot = await firebase
 		.database()
 		.ref(`games/${pin}/state`)
-		.once("value");
+		.once('value');
 
 	return snapshot.exists() && snapshot.val() !== consts.gameStates.end;
 }
@@ -47,7 +47,7 @@ function isInGameQuestions(state) {
 }
 
 function getQuestionNum(state) {
-	if (typeof state !== "string") {
+	if (typeof state !== 'string') {
 		return null;
 	}
 	if (
@@ -63,7 +63,7 @@ function getQuestionNum(state) {
 }
 function getQuestionText(num) {
 	const questionObj = consts.game.questions[num];
-	if (typeof questionObj === "undefined") {
+	if (typeof questionObj === 'undefined') {
 		throw Error(`Question #${num} doesn't exist in config!`);
 	}
 	return questionObj.question;
@@ -77,7 +77,7 @@ function getQuestionText(num) {
  */
 async function calcMyMatch(pin, uuid) {
 	const userRef = getDbRefs(pin).user(uuid);
-	const snapshot = await userRef.once("value");
+	const snapshot = await userRef.once('value');
 
 	if (!snapshot.exists()) {
 		throw Error(`User ${uuid} not found!`);
@@ -93,7 +93,7 @@ async function calcMyMatch(pin, uuid) {
  */
 async function calcAllMatchesExceptUser(pin, excludeUuid = null) {
 	const usersRef = getDbRefs(pin).users;
-	const snapshot = await usersRef.once("value");
+	const snapshot = await usersRef.once('value');
 
 	if (!snapshot.exists()) {
 		return null; //TODO: error message
@@ -115,7 +115,7 @@ async function calcAllMatchesExceptUser(pin, excludeUuid = null) {
 	}
 	// Filter out shadow banned users
 	users.filter((user) =>
-		typeof user.sban !== "undefined" ? !user.sban : true
+		typeof user.sban !== 'undefined' ? !user.sban : true
 	);
 
 	return users;
@@ -142,7 +142,7 @@ function calcMatch(answers) {
 		const userChoice = answers[questionIndex];
 		const currentQ = consts.game.questions[questionIndex];
 
-		if (typeof currentQ === "undefined") {
+		if (typeof currentQ === 'undefined') {
 			//this will throow when a mistake is made in entering the questions in consts - number of questions doesnt match, when there are less questions in the consts than in the database
 			console.error(`Question #${questionIndex} is not found!`);
 			continue;
@@ -175,8 +175,8 @@ function calcMatch(answers) {
 async function chooseAnswer(pin, uuid, question, option) {
 	// Check if user is signed in
 	const currentUser = firebase.auth().currentUser;
-	if (typeof currentUser === "undefined") {
-		throw Error("No anonymous user has been created!");
+	if (typeof currentUser === 'undefined') {
+		throw Error('No anonymous user has been created!');
 	}
 
 	// Only allow editing of your own answers
@@ -186,10 +186,10 @@ async function chooseAnswer(pin, uuid, question, option) {
 	}
 
 	// Check to make sure the question and option exists
-	if (typeof consts.game.questions[question] === "undefined") {
+	if (typeof consts.game.questions[question] === 'undefined') {
 		throw Error(`Invalid question number: ${question}`);
 	} else if (
-		typeof consts.game.questions[question].answers[option] === "undefined"
+		typeof consts.game.questions[question].answers[option] === 'undefined'
 	) {
 		throw Error(`Invalid answer option (in question #${question}): ${option}`);
 	}
@@ -205,7 +205,7 @@ async function chooseAnswer(pin, uuid, question, option) {
 }
 
 async function userExists(pin, uuid) {
-	const user = await getDbRefs(pin).user(uuid).once("value");
+	const user = await getDbRefs(pin).user(uuid).once('value');
 	return user.exists();
 }
 
@@ -214,7 +214,7 @@ async function getAllGames() {
 	const snapshot = await firebase
 		.database()
 		.ref(`games`)
-		.once("value", function (subsnapshot) {
+		.once('value', function (subsnapshot) {
 			data = subsnapshot.val();
 		});
 
@@ -227,22 +227,22 @@ async function getAllGames() {
  * @returns true if valid. else throw error
  */
 async function checkAdminPassword(password) {
-	if (typeof password === "undefined" || password === "") {
-		throw Error("Please provide a password");
+	if (typeof password === 'undefined' || password === '') {
+		throw Error('Please provide a password');
 	}
-	if (password.replace(/\/\[\]#\$\./, "").trim() !== password) {
-		throw Error("Invalid password");
+	if (password.replace(/\/\[\]#\$\./, '').trim() !== password) {
+		throw Error('Invalid password');
 	}
 	const snapshot = await firebase
 		.database()
 		.ref(`password`)
 		.child(password)
-		.once("value");
+		.once('value');
 
 	if (snapshot.exists()) {
 		return true;
 	} else {
-		throw Error("Invalid password");
+		throw Error('Invalid password');
 	}
 }
 
@@ -265,14 +265,14 @@ async function addCurrentUser(pin, name) {
 
 function validateName(name, realtime = false) {
 	if (name.length > 30) {
-		throw Error("Your name is too long! Please keep it under 30 characters.");
+		throw Error('Your name is too long! Please keep it under 30 characters.');
 	}
 	if (!realtime && name.length <= 1) {
-		throw Error("Hmm... Can you pick a longer name?");
+		throw Error('Hmm... Can you pick a longer name?');
 	}
 
 	if (!realtime && filter.clean(name) !== name) {
-		throw Error("Hey! Please keep it clean :)");
+		throw Error('Hey! Please keep it clean :)');
 	}
 
 	return true;
@@ -284,7 +284,7 @@ function validateName(name, realtime = false) {
  */
 function validAdminEmail(email) {
 	return (
-		typeof email === "string" && email.endsWith(`@${consts.adminEmailDomain}`)
+		typeof email === 'string' && email.endsWith(`@${consts.adminEmailDomain}`)
 	);
 }
 
@@ -298,17 +298,17 @@ function hasNextQuestion(state) {
 	}
 
 	function questionExists(num) {
-		return typeof consts.game.questions[num] !== "undefined";
+		return typeof consts.game.questions[num] !== 'undefined';
 	}
 }
 
 function setShadowBan(pin, uuid, sban) {
-	getDbRefs(pin).user(uuid).child("sban").set(sbane);
+	getDbRefs(pin).user(uuid).child('sban').set(sbane);
 }
 
 export default {
 	validatePin,
-	checkAdminPassword: checkAdminPassword,
+	checkAdminPassword,
 	getDbRefs,
 	isWaiting,
 	isEnded,
