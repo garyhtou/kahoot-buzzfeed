@@ -23,10 +23,11 @@ export default function gameEnd(props) {
 	const pin = props.pin;
 	const state = props.state;
 
-	return <Typography variant="h3">RESULTS</Typography>;
+	return <Typography variant='h3'>RESULTS</Typography>;
 }
 
 gameEnd.propTypes = {
 	pin: PropTypes.number,
 	state: PropTypes.string,
+	uuid: PropTypes.string,
 };

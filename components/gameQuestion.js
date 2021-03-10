@@ -109,4 +109,5 @@ export default function gameQuestion(props) {
 gameQuestion.propTypes = {
 	pin: PropTypes.number,
 	state: PropTypes.string,
+	uuid: PropTypes.string,
 };

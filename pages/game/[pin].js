@@ -104,15 +104,15 @@ export default function Game() {
 						{consts.siteName}: {consts.game.name}
 					</title>
 				</Head>
-				<AppBar position="fixed">
+				<AppBar position='fixed'>
 					<Toolbar id={styles.toolbar}>
 						{game.isWaiting(gameState) ? (
-							<Typography variant="h6">{consts.siteName}</Typography>
+							<Typography variant='h6'>{consts.siteName}</Typography>
 						) : (
-							<Typography variant="h6">{consts.game.name}</Typography>
+							<Typography variant='h6'>{consts.game.name}</Typography>
 						)}
 						{game.isInGameQuestions(gameState) ? (
-							<Typography variant="body1">
+							<Typography variant='body1'>
 								Question {game.getQuestionNum(gameState) + 1}/
 								{game.getQuestionNumTotal()}
 							</Typography>
@@ -128,7 +128,9 @@ export default function Game() {
 }
 
 function getPin() {
-	return typeof window !== "undefined"
-		? window.location.href.split("/").pop().split("?")[0]
-		: undefined;
+	if (typeof window === "undefined") {
+		return undefined;
+	}
+	const pin = window.location.href.split("/").pop().split("?")[0];
+	return isNaN(pin) ? pin : parseInt(pin);
 }
