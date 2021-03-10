@@ -21,6 +21,7 @@
 #gameButton {
 	background: purple;
 	margin-top: 20px;
+	border: 1px solid white;
 	color: white;
 }
 

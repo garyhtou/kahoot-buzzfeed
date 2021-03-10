@@ -50,6 +50,7 @@
 
 #resultsButton {
 	background: purple;
+	border: 1px solid white;
 	margin-top: 20px;
 	color: white;
 }
