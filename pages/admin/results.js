@@ -76,20 +76,23 @@ export default function AdminResults() {
 		return matchData.filter((u) => u.match === group).map((u) => u.name);
 	}
 
-	function getGroupInfo(val) {
+	function getGroupInfo(val, field) {
 		var officers = [];
 		Object.keys(consts.game.groups[val].members).map(function (key) {
-			officers.push(
-				<h4 style={{ margin: '0px' }}>
-					{consts.game.groups[val].members[key].name}
-				</h4>
-			);
+      if(field === "name"){
+        officers.push(
+          <h4 style={{ margin: '0px' }}>
+            {consts.game.groups[val].members[key].name}
+          </h4>
+        );
+      }else{
+        officers.push(
+          <img style={{width: '25px', borderRadius: '50%', flex:'0 0 50%'}} src={consts.game.groups[val].members[key].picture} />
+        );
+      }
+		
 		});
-		officers.push(
-			<h4 style={{ margin: '0px' }}>
-				{consts.game.groups[val].characteristics}
-			</h4>
-		);
+
 		return officers;
 	}
 
@@ -117,10 +120,15 @@ export default function AdminResults() {
 									style={{ display: 'flex', flexDirection: 'row' }}
 									key={group}
 								>
+                  <div style={{display: 'flex', flexWrap: 'wrap'}}>
+                  {getGroupInfo(group)}
+                  </div>
+                
 									<div id={styles.groupTitle}>
 										{consts.game.groups[group].name}
 										<br /> State officers in this group:
-										{getGroupInfo(group)}
+										{getGroupInfo(group, "name")}
+                    {consts.game.groups[group].characteristics}
 									</div>
 									{Object.keys(getGroup(group)).map(function (key) {
 										return (
