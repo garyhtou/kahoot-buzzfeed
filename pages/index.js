@@ -3,19 +3,21 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import styles from "../styles/Home.module.css";
 import consts from "../config/consts";
+import Link from "next/link";
+
 import {
-	Box,
-	Button,
-	Card,
-	CardActions,
-	CardContent,
-	CardHeader,
-	Container,
-	IconButton,
-	Paper,
-	Snackbar,
-	TextField,
-	Typography,
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Container,
+  IconButton,
+  Paper,
+  Snackbar,
+  TextField,
+  Typography,
 } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
 import game from "../helpers/game";

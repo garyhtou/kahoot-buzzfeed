@@ -1,6 +1,8 @@
 export default {
 	// Overall site name and page title
-	siteName: "Washington FBLA 💼",
+	siteName: "Washington FBLA",
+	// Admin Sign in with Google email ends with
+	adminEmailDomain: "wafbla.org",
 	// Don't touch!
 	gameStates: {
 		waiting: "GAME_STATE-WAITING",
@@ -113,10 +115,10 @@ export default {
 				question: "What type of competitive event do you like?",
 				answers: {
 					// Each choice must be assigned to a result group!!!
-					a: { title: "Presentation", belongs: "c" },
-					b: { title: "Test", belongs: "c" },
+					a: { title: "Presentation", belongs: "a" },
+					b: { title: "Test", belongs: "b" },
 					c: { title: "Demonstration", belongs: "c" },
-					d: { title: "Prejudged", belongs: "c" },
+					d: { title: "Prejudged", belongs: "d" },
 				},
 			},
 			{
@@ -126,7 +128,7 @@ export default {
 					a: { title: "Dog", belongs: "a" },
 					b: { title: "Cat", belongs: "b" },
 					c: { title: "Snake", belongs: "c" },
-					d: { title: "Hamster", belongs: "b" },
+					d: { title: "Hamster", belongs: "d" },
 				},
 			},
 			{
@@ -136,7 +138,7 @@ export default {
 					a: { title: "🍉", belongs: "a" },
 					b: { title: "🍍", belongs: "b" },
 					c: { title: "🍓", belongs: "c" },
-					d: { title: "🥥", belongs: "c" },
+					d: { title: "🥥", belongs: "d" },
 				},
 			},
 			{
@@ -146,7 +148,7 @@ export default {
 					a: { title: "🥐", belongs: "a" },
 					b: { title: "🍳", belongs: "b" },
 					c: { title: "🥞", belongs: "c" },
-					d: { title: "🧇", belongs: "c" },
+					d: { title: "🧇", belongs: "d" },
 				},
 			},
 			{
@@ -156,7 +158,7 @@ export default {
 					a: { title: "Swimming", belongs: "a" },
 					b: { title: "Tennis", belongs: "b" },
 					c: { title: "Football", belongs: "c" },
-					d: { title: "Soccer", belongs: "c" },
+					d: { title: "Soccer", belongs: "d" },
 				},
 			},
 			{
@@ -166,7 +168,7 @@ export default {
 					a: { title: "📕", belongs: "a" },
 					b: { title: "📗", belongs: "b" },
 					c: { title: "📘", belongs: "c" },
-					d: { title: "📒", belongs: "c" },
+					d: { title: "📒", belongs: "d" },
 				},
 			},
 		],

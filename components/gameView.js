@@ -74,15 +74,15 @@ export default function GameView(props) {
 						error={nameError !== null}
 						helperText={nameError !== null ? nameError : undefined}
 						autoFocus
-						id="username"
-						label="Username"
+						id='username'
+						label='Username'
 						fullWidth
-						type="text"
+						type='text'
 						onChange={nameOnChange.bind(this)}
 					/>
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={closeDialogSetupUser} color="secondary">
+					<Button onClick={closeDialogSetupUser} color='secondary'>
 						Let's go!
 					</Button>
 				</DialogActions>
@@ -96,7 +96,7 @@ export default function GameView(props) {
 				<GameEnd pin={pin} state={state} uuid={uuid} />
 			) : (
 				<Box id={styles.invalidState}>
-					<CircularProgress color="inherit" />
+					<CircularProgress color='inherit' />
 				</Box>
 			)}
 		</Box>
@@ -106,4 +106,5 @@ export default function GameView(props) {
 GameView.propTypes = {
 	pin: PropTypes.number || PropTypes.string,
 	state: PropTypes.string,
+	uuid: PropTypes.string,
 };

@@ -55,4 +55,5 @@ export default function gameEnd(props) {
 gameEnd.propTypes = {
 	pin: PropTypes.number,
 	state: PropTypes.string,
+	uuid: PropTypes.string,
 };

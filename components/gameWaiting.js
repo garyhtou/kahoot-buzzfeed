@@ -56,9 +56,9 @@ export default function gameWaiting(props) {
 		<Box id={styles.container}>
 			<Box id={styles.header}>
 				<Box id={styles.stats}>
-					<Typography variant="body1">{users.length} Players</Typography>
-					<Typography variant="h3">{consts.game.name}</Typography>
-					<Typography variant="body1">
+					<Typography variant='body1'>{users.length} Players</Typography>
+					<Typography variant='h3'>{consts.game.name}</Typography>
+					<Typography variant='body1'>
 						{game.getQuestionNumTotal()} Questions
 					</Typography>
 				</Box>
@@ -68,7 +68,7 @@ export default function gameWaiting(props) {
 				{users.map((u) => (
 					<Chip
 						label={u.name}
-						size="medium"
+						size='medium'
 						key={u.uuid}
 						className={styles.player}
 					/>
@@ -81,4 +81,5 @@ export default function gameWaiting(props) {
 gameWaiting.propTypes = {
 	pin: PropTypes.number,
 	state: PropTypes.string,
+	uuid: PropTypes.string,
 };

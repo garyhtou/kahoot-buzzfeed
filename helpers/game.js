@@ -47,10 +47,13 @@ function isInGameQuestions(state) {
 }
 
 function getQuestionNum(state) {
+	if (typeof state !== "string") {
+		return null;
+	}
 	if (
 		!isWaiting(state) &&
 		!isEnded(state) &&
-		(state || "").match(new RegExp(`^${consts.gameStates.gameQuestionPrefix}`))
+		state.match(new RegExp(`^${consts.gameStates.gameQuestionPrefix}`))
 	) {
 		return parseInt(
 			state.substring(consts.gameStates.gameQuestionPrefix.length)
@@ -128,38 +131,42 @@ function calcAllMatches(pin) {
  * or object with index and answer (depends on how firebase returns the data)
  * @param {Array} answers
  */
+//the answers child level of a uuid is being passed as 'answers'
 function calcMatch(answers) {
+	//sets each group to 0
 	var tally = {};
 	Object.keys(consts.game.groups).forEach((g) => (tally[g] = 0));
 
-	for (let [i, answer] of answers.entries()) {
-		const question = consts.game.questions[i];
-		if (typeof question === "undefined") {
-			console.error(`Question #${i} is not found!`);
+	for (var k in answers) {
+		const questionIndex = k;
+		const userChoice = answers[questionIndex];
+		const currentQ = consts.game.questions[questionIndex];
+
+		if (typeof currentQ === "undefined") {
+			//this will throow when a mistake is made in entering the questions in consts - number of questions doesnt match, when there are less questions in the consts than in the database
+			console.error(`Question #${questionIndex} is not found!`);
 			continue;
 		}
-		const belongsTo = question.answers[answer].belongs;
-		if (typeof tally[belongsTo] === "undefined") {
-			console.error(
-				`Group #${belongsTo} is not found! Belongs to answer "${answer}" in question "${i}"`
-			);
-			continue;
-		}
+
+		const belongsTo = currentQ.answers[userChoice].belongs;
+
 		tally[belongsTo]++;
 	}
-	console.log(tally);
 
 	var highest = Object.keys(tally)[0];
 	Object.keys(tally).forEach((g) => {
-		if (
-			// if higher tally
-			tally[g] > tally[highest] ||
-			// if tie, use tie breaker
-			((tally[g] = tally[highest]) && //
-				consts.game.tieBreaker.indexOf(g) <
-					consts.game.tieBreaker.indexOf(highest))
-		) {
+		if (tally[g] > tally[highest]) {
 			highest = g;
+		} else if (tally[g] == tally[highest]) {
+			//what came first in the array
+			if (
+				consts.game.tieBreaker.indexOf(g) <
+				consts.game.tieBreaker.indexOf(highest)
+			) {
+				highest = g;
+			} else {
+				highest = highest;
+			}
 		}
 	});
 	return highest;
@@ -202,6 +209,43 @@ async function userExists(pin, uuid) {
 	return user.exists();
 }
 
+async function getAllGames() {
+	var data;
+	const snapshot = await firebase
+		.database()
+		.ref(`games`)
+		.once("value", function (subsnapshot) {
+			data = subsnapshot.val();
+		});
+
+	return data;
+}
+
+/**
+ * checks the admin password
+ * @param {string} password
+ * @returns true if valid. else throw error
+ */
+async function checkAdminPassword(password) {
+	if (typeof password === "undefined" || password === "") {
+		throw Error("Please provide a password");
+	}
+	if (password.replace(/\/\[\]#\$\./, "").trim() !== password) {
+		throw Error("Invalid password");
+	}
+	const snapshot = await firebase
+		.database()
+		.ref(`password`)
+		.child(password)
+		.once("value");
+
+	if (snapshot.exists()) {
+		return true;
+	} else {
+		throw Error("Invalid password");
+	}
+}
+
 function getQuestionNumTotal() {
 	return consts.game.questions.length;
 }
@@ -234,8 +278,37 @@ function validateName(name, realtime = false) {
 	return true;
 }
 
+/**
+ * @param {string} email
+ * @returns
+ */
+function validAdminEmail(email) {
+	return (
+		typeof email === "string" && email.endsWith(`@${consts.adminEmailDomain}`)
+	);
+}
+
+function hasNextQuestion(state) {
+	if (isEnded(state)) {
+		return false;
+	} else if (isWaiting(state)) {
+		return questionExists(0);
+	} else {
+		return questionExists(getQuestionNum(state) + 1);
+	}
+
+	function questionExists(num) {
+		return typeof consts.game.questions[num] !== "undefined";
+	}
+}
+
+function setShadowBan(pin, uuid, sban) {
+	getDbRefs(pin).user(uuid).child("sban").set(sbane);
+}
+
 export default {
 	validatePin,
+	checkAdminPassword: checkAdminPassword,
 	getDbRefs,
 	isWaiting,
 	isEnded,
@@ -250,4 +323,7 @@ export default {
 	userExists,
 	addCurrentUser,
 	validateName,
+	validAdminEmail,
+	hasNextQuestion,
+	setShadowBan,
 };

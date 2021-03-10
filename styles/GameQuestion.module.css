@@ -17,10 +17,12 @@
 #options {
 	flex-grow: 1;
 }
+
 .optionButton {
 	height: 100%;
 	width: 100%;
 }
+
 .optionWapper {
 	height: 100%;
 	width: 100%;
