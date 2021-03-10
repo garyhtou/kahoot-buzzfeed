@@ -1,12 +1,12 @@
-import Head from "next/head";
-import "../styles/globals.css";
-import consts from "../config/consts";
+import Head from 'next/head';
+import '../styles/globals.css';
+import consts from '../config/consts';
 
 // Material UI
-import "fontsource-roboto";
-import { CssBaseline } from "@material-ui/core";
-import { ThemeProvider } from "@material-ui/core/styles";
-import theme from "../helpers/theme";
+import 'fontsource-roboto';
+import { CssBaseline } from '@material-ui/core';
+import { ThemeProvider } from '@material-ui/core/styles';
+import theme from '../helpers/theme';
 
 function MyApp({ Component, pageProps }) {
 	return (

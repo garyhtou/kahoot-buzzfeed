@@ -1,44 +1,44 @@
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { Typography } from "@material-ui/core";
-import styles from "../../styles/admin/Results.module.css";
-import game from "../../helpers/game";
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { Typography } from '@material-ui/core';
+import styles from '../../styles/admin/Results.module.css';
+import game from '../../helpers/game';
 
-import firebase from "../../utils/firebase";
-import consts from "../../config/consts";
+import firebase from '../../utils/firebase';
+import consts from '../../config/consts';
 
-import Link from "next/link";
-import { Button, Card, CardContent, Container } from "@material-ui/core";
+import Link from 'next/link';
+import { Button, Card, CardContent, Container } from '@material-ui/core';
 
 export default function AdminResults() {
 	const [userData, setUserData] = useState([]);
 	const [matchData, setMatchData] = useState([]);
-	const [gameState, setGameState] = useState("");
+	const [gameState, setGameState] = useState('');
 	const [login, setLogin] = useState(false);
 
 	const router = useRouter();
 
-	var gamePin = "";
-	if (typeof window !== "undefined") {
-		gamePin = window.location.href.split("?gamePin=").pop();
+	var gamePin = '';
+	if (typeof window !== 'undefined') {
+		gamePin = window.location.href.split('?gamePin=').pop();
 	}
 
 	useEffect(async () => {
 		var unsubFuncs = [];
 
-		if (!(await game.getDbRefs(gamePin).game.once("value")).exists()) {
-			router.push("/admin/dashboard");
+		if (!(await game.getDbRefs(gamePin).game.once('value')).exists()) {
+			router.push('/admin/dashboard');
 			return;
 		}
 
 		unsubFuncs.push(
-			game.getDbRefs(gamePin).state.on("value", (snapshot) => {
+			game.getDbRefs(gamePin).state.on('value', (snapshot) => {
 				setGameState(snapshot.val());
 			})
 		);
 
 		unsubFuncs.push(
-			game.getDbRefs(gamePin).users.on("value", (snapshot) => {
+			game.getDbRefs(gamePin).users.on('value', (snapshot) => {
 				if (snapshot.exists()) {
 					setUserData(snapshot.val());
 				} else {
@@ -80,13 +80,13 @@ export default function AdminResults() {
 		var officers = [];
 		Object.keys(consts.game.groups[val].members).map(function (key) {
 			officers.push(
-				<h4 style={{ margin: "0px" }}>
+				<h4 style={{ margin: '0px' }}>
 					{consts.game.groups[val].members[key].name}
 				</h4>
 			);
 		});
 		officers.push(
-			<h4 style={{ margin: "0px" }}>
+			<h4 style={{ margin: '0px' }}>
 				{consts.game.groups[val].characteristics}
 			</h4>
 		);
@@ -109,12 +109,12 @@ export default function AdminResults() {
 							Back to dashboard
 						</Button>
 					</Link>
-					<Card style={{ marginTop: "20px" }}>
+					<Card style={{ marginTop: '20px' }}>
 						<CardContent>
 							{Object.keys(consts.game.groups).map((group) => (
 								<div
 									id={styles.nameContainer}
-									style={{ display: "flex", flexDirection: "row" }}
+									style={{ display: 'flex', flexDirection: 'row' }}
 									key={group}
 								>
 									<div id={styles.groupTitle}>
@@ -126,7 +126,7 @@ export default function AdminResults() {
 										return (
 											<div
 												key={key}
-												style={{ display: "flex", flexDirection: "row" }}
+												style={{ display: 'flex', flexDirection: 'row' }}
 											>
 												<div id={styles.name}>{getGroup(group)[key]}</div>
 											</div>
