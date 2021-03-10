@@ -35,6 +35,18 @@ function getDbRefs(pin) {
   };
 }
 
+async function getName(pin, uid) {
+  const snapshot = await firebase
+    .database()
+    .ref(`games`)
+    .child(pin)
+    .child("users")
+    .child(uid)
+    .child("name")
+    .once("value");
+  return snapshot.val();
+}
+
 // State checkers
 function isWaiting(state) {
   return state === consts.gameStates.waiting;
@@ -264,8 +276,8 @@ async function addCurrentUser(pin, name) {
 }
 
 function validateName(name, realtime = false) {
-  if (name.length > 30) {
-    throw Error("Your name is too long! Please keep it under 30 characters.");
+  if (name.length > 14) {
+    throw Error("Your name is too long! Please keep it under 14 characters.");
   }
   if (!realtime && name.length <= 1) {
     throw Error("Hmm... Can you pick a longer name?");
@@ -310,6 +322,7 @@ export default {
   validatePin,
   checkAdminPassword,
   getDbRefs,
+  getName,
   isWaiting,
   isEnded,
   isInGameQuestions,
