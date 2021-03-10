@@ -1,7 +1,7 @@
-import Head from "next/head";
-import { useRouter } from "next/router";
-import styles from "../../styles/Game.module.css";
-import consts from "../../config/consts";
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import styles from '../../styles/Game.module.css';
+import consts from '../../config/consts';
 import {
 	AppBar,
 	Backdrop,
@@ -17,22 +17,22 @@ import {
 	TextField,
 	Toolbar,
 	Typography,
-} from "@material-ui/core";
-import { useEffect, useState } from "react";
-import game from "../../helpers/game";
-import GameView from "../../components/gameView";
-import firebase from "../../utils/firebase";
+} from '@material-ui/core';
+import { useEffect, useState } from 'react';
+import game from '../../helpers/game';
+import GameView from '../../components/gameView';
+import firebase from '../../utils/firebase';
 
 export default function Game() {
 	const router = useRouter();
 	const [loadingPinValidation, setLoadingPinValidation] = useState(true);
-	const [gameState, setGameState] = useState("");
+	const [gameState, setGameState] = useState('');
 	const [user, setUser] = useState({});
 
 	// Validate game pin
 	useEffect(async () => {
 		const pin = getPin();
-		if (typeof pin === "undefined") {
+		if (typeof pin === 'undefined') {
 			// sometime javascript window is undefined...
 			return;
 		}
@@ -58,7 +58,7 @@ export default function Game() {
 
 		// Game state
 		unsubFuncs.push(
-			refs.state.on("value", (snapshot) => {
+			refs.state.on('value', (snapshot) => {
 				if (snapshot && snapshot.exists()) {
 					const newState = snapshot.val();
 					setGameState(newState);
@@ -87,7 +87,7 @@ export default function Game() {
 			.signInAnonymously()
 			.then(() => {
 				// successfully signed in
-				console.log("ANON USER SUCCESS");
+				console.log('ANON USER SUCCESS');
 			})
 			.catch((error) => {
 				console.error(error);
@@ -128,9 +128,9 @@ export default function Game() {
 }
 
 function getPin() {
-	if (typeof window === "undefined") {
+	if (typeof window === 'undefined') {
 		return undefined;
 	}
-	const pin = window.location.href.split("/").pop().split("?")[0];
+	const pin = window.location.href.split('/').pop().split('?')[0];
 	return isNaN(pin) ? pin : parseInt(pin);
 }

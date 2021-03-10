@@ -1,7 +1,7 @@
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import styles from "../styles/GameView.module.css";
-import consts from "../config/consts";
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import styles from '../styles/GameView.module.css';
+import consts from '../config/consts';
 import {
 	Backdrop,
 	Box,
@@ -14,12 +14,12 @@ import {
 	DialogTitle,
 	TextField,
 	Typography,
-} from "@material-ui/core";
-import PropTypes from "prop-types";
-import game from "../helpers/game";
-import GameWaiting from "./gameWaiting";
-import GameEnd from "./gameEnd";
-import GameQuestion from "./gameQuestion";
+} from '@material-ui/core';
+import PropTypes from 'prop-types';
+import game from '../helpers/game';
+import GameWaiting from './gameWaiting';
+import GameEnd from './gameEnd';
+import GameQuestion from './gameQuestion';
 
 export default function GameView(props) {
 	const pin = props.pin;
@@ -27,12 +27,12 @@ export default function GameView(props) {
 	const uuid = props.uuid;
 
 	const [needSetup, setNeedSetup] = useState(false);
-	const [name, setName] = useState("");
+	const [name, setName] = useState('');
 	const [nameError, setNameError] = useState(null);
 
 	// check if a user for this game has been created in the db
 	useEffect(async () => {
-		if (typeof uuid !== "undefined") {
+		if (typeof uuid !== 'undefined') {
 			if (!(await game.userExists(pin, uuid))) {
 				setNeedSetup(true);
 			}

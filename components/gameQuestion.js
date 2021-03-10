@@ -1,7 +1,7 @@
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import styles from "../styles/GameQuestion.module.css";
-import consts from "../config/consts";
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import styles from '../styles/GameQuestion.module.css';
+import consts from '../config/consts';
 import {
 	Box,
 	Button,
@@ -19,10 +19,10 @@ import {
 	Snackbar,
 	TextField,
 	Typography,
-} from "@material-ui/core";
-import PropTypes from "prop-types";
-import game from "../helpers/game";
-import firebase from "../utils/firebase";
+} from '@material-ui/core';
+import PropTypes from 'prop-types';
+import game from '../helpers/game';
+import firebase from '../utils/firebase';
 
 export default function gameQuestion(props) {
 	const pin = props.pin;
@@ -46,8 +46,8 @@ export default function gameQuestion(props) {
 		const unsub = game
 			.getDbRefs(pin)
 			.user_answer(uuid, questionNum)
-			.on("value", (snapshot) => {
-				if (typeof snapshot === "undefined") {
+			.on('value', (snapshot) => {
+				if (typeof snapshot === 'undefined') {
 					return;
 				}
 				const answered = snapshot.exists();
@@ -64,10 +64,10 @@ export default function gameQuestion(props) {
 
 	return (
 		<Box id={styles.container}>
-			<Typography variant="h3" id={styles.question}>
+			<Typography variant='h3' id={styles.question}>
 				{game.getQuestionText(questionNum)}
 			</Typography>
-			<GridList id={styles.options} cellHeight="auto" cols={2} spacing={20}>
+			<GridList id={styles.options} cellHeight='auto' cols={2} spacing={20}>
 				{Object.keys(questionObj.answers).map((option, index) => (
 					<GridListTile
 						key={questionNum + option}
@@ -91,9 +91,9 @@ export default function gameQuestion(props) {
 								elevation={chosenAnswer === option ? 24 : 1}
 							>
 								<Typography
-									variant="h4"
-									component="p"
-									color={chosenAnswer === option ? "secondary" : undefined}
+									variant='h4'
+									component='p'
+									color={chosenAnswer === option ? 'secondary' : undefined}
 								>
 									{questionObj.answers[option].title}
 								</Typography>
