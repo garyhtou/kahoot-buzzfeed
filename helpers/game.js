@@ -16,7 +16,7 @@ async function validatePin(pin) {
 		.ref(`games/${pin}/state`)
 		.once('value');
 
-	return snapshot.exists() && snapshot.val() !== consts.gameStates.end;
+	return snapshot.exists() ;// && snapshot.val() !== consts.gameStates.end;
 }
 
 function getDbRefs(pin) {
@@ -306,6 +306,16 @@ function setShadowBan(pin, uuid, sban) {
 	getDbRefs(pin).user(uuid).child('sban').set(sbane);
 }
 
+function getGroupInfo(group) {
+	const data = consts.game.groups[group];
+
+	if (typeof data !== 'undefined') {
+		return data;
+	} else {
+		throw Error(`Hey! This group (${group}) doesn't exist in consts`);
+	}
+}
+
 export default {
 	validatePin,
 	checkAdminPassword,
@@ -326,4 +336,5 @@ export default {
 	validAdminEmail,
 	hasNextQuestion,
 	setShadowBan,
+	getGroupInfo,
 };
