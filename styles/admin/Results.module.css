@@ -8,7 +8,6 @@
 	align-items: stretch;
 }
 
-
 #nameContainer {
 	display: flex;
 	margin-bottom: 10px;
@@ -38,7 +37,6 @@
 
 #name {
 	text-align: center;
-	cursor: pointer;
 	white-space: nowrap;
 	font-size: 13px;
 	background: purple;
@@ -50,8 +48,7 @@
 	color: white;
 }
 
-
-#resultsButton{
+#resultsButton {
 	background: purple;
 	margin-top: 20px;
 	color: white;
@@ -59,7 +56,6 @@
 
 #username {
 	text-align: center;
-	cursor: pointer;
 	white-space: nowrap;
 	font-size: 13px;
 	background: purple;
@@ -72,5 +68,5 @@
 }
 
 #username:hover {
-	text-decoration: line-through
+	text-decoration: line-through;
 }

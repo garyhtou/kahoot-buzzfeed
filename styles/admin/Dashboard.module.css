@@ -48,12 +48,8 @@
 }
 
 #username:hover {
-	text-decoration: line-through
+	text-decoration: line-through;
 }
-
-
-
-
 
 #viewButton {
 	text-align: center;
@@ -63,8 +59,7 @@
 	color: white;
 }
 
-
-#signOutButton {
+#newGameButton {
 	cursor: pointer;
 	border: 1px solid white;
 	background: purple;
@@ -72,15 +67,6 @@
 	color: white;
 }
 
-
-#backToDash {
-	cursor: pointer;
-	background: purple;
-	padding: 10px;
-	color: white;
-}
-
-
-#enterButton{
+#enterButton {
 	margin-right: 10px;
 }
