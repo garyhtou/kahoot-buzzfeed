@@ -280,7 +280,9 @@ function validateName(name, realtime = false) {
  * @returns
  */
 function validAdminEmail(email) {
-	return email.endsWith(`@${consts.adminEmailDomain}`);
+	return (
+		typeof email === "string" && email.endsWith(`@${consts.adminEmailDomain}`)
+	);
 }
 
 export default {
