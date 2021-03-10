@@ -68,5 +68,6 @@
 }
 
 #enterButton {
+	border: 1px solid white;
 	margin-right: 10px;
 }
