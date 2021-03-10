@@ -318,25 +318,35 @@ function setShadowBan(pin, uuid, sban) {
 	getDbRefs(pin).user(uuid).child('sban').set(sbane);
 }
 
+function getGroupInfo(group) {
+	const data = consts.game.groups[group];
+
+	if (typeof data !== 'undefined') {
+		return data;
+	} else {
+		throw Error(`Hey! This group (${group}) doesn't exist in consts`);
+	}
+}
+
 export default {
-  validatePin,
-  checkAdminPassword,
-  getDbRefs,
-  getName,
-  isWaiting,
-  isEnded,
-  isInGameQuestions,
-  calcAllMatches,
-  calcAllMatchesExceptUser,
-  calcMyMatch,
-  chooseAnswer,
-  getQuestionText,
-  getQuestionNum,
-  getQuestionNumTotal,
-  userExists,
-  addCurrentUser,
-  validateName,
-  validAdminEmail,
-  hasNextQuestion,
-  setShadowBan,
+	validatePin,
+	checkAdminPassword,
+	getDbRefs,
+	isWaiting,
+	isEnded,
+	isInGameQuestions,
+	calcAllMatches,
+	calcAllMatchesExceptUser,
+	calcMyMatch,
+	chooseAnswer,
+	getQuestionText,
+	getQuestionNum,
+	getQuestionNumTotal,
+	userExists,
+	addCurrentUser,
+	validateName,
+	validAdminEmail,
+	hasNextQuestion,
+	setShadowBan,
+	getGroupInfo,
 };
