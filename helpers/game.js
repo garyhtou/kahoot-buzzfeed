@@ -7,66 +7,66 @@ const additionalNameBlacklist = [];
 filter.addWords(...additionalNameBlacklist);
 
 async function validatePin(pin) {
-	if (typeof pin === "undefined" || pin === "") {
-		return false;
-	}
+  if (typeof pin === "undefined" || pin === "") {
+    return false;
+  }
 
-	const snapshot = await firebase
-		.database()
-		.ref(`games/${pin}/state`)
-		.once("value");
+  const snapshot = await firebase
+    .database()
+    .ref(`games/${pin}/state`)
+    .once("value");
 
-	return snapshot.exists() && snapshot.val() !== consts.gameStates.end;
+  return snapshot.exists() && snapshot.val() !== consts.gameStates.end;
 }
 
 function getDbRefs(pin) {
-	return {
-		game: firebase.database().ref(`games/${pin}`),
-		pin: firebase.database().ref(`games/${pin}/pin`),
-		state: firebase.database().ref(`games/${pin}/state`),
-		users: firebase.database().ref(`games/${pin}/users`),
-		user: (uuid) => firebase.database().ref(`games/${pin}/users/${uuid}`),
-		user_name: (uuid) =>
-			firebase.database().ref(`games/${pin}/users/${uuid}/name`),
-		user_answers: (uuid) =>
-			firebase.database().ref(`games/${pin}/users/${uuid}/answers`),
-		user_answer: (uuid, question) =>
-			firebase.database().ref(`games/${pin}/users/${uuid}/answers/${question}`),
-	};
+  return {
+    game: firebase.database().ref(`games/${pin}`),
+    pin: firebase.database().ref(`games/${pin}/pin`),
+    state: firebase.database().ref(`games/${pin}/state`),
+    users: firebase.database().ref(`games/${pin}/users`),
+    user: (uuid) => firebase.database().ref(`games/${pin}/users/${uuid}`),
+    user_name: (uuid) =>
+      firebase.database().ref(`games/${pin}/users/${uuid}/name`),
+    user_answers: (uuid) =>
+      firebase.database().ref(`games/${pin}/users/${uuid}/answers`),
+    user_answer: (uuid, question) =>
+      firebase.database().ref(`games/${pin}/users/${uuid}/answers/${question}`),
+  };
 }
 
 // State checkers
 function isWaiting(state) {
-	return state === consts.gameStates.waiting;
+  return state === consts.gameStates.waiting;
 }
 function isEnded(state) {
-	return state === consts.gameStates.end;
+  return state === consts.gameStates.end;
 }
 function isInGameQuestions(state) {
-	return getQuestionNum(state) === null ? false : true;
+  return getQuestionNum(state) === null ? false : true;
 }
 
 function getQuestionNum(state) {
-	if (typeof state !== "string") {
-		return null;
-	}
-	if (
-		!isWaiting(state) &&
-		!isEnded(state) &&
-		state.match(new RegExp(`^${consts.gameStates.gameQuestionPrefix}`))
-	) {
-		return parseInt(
-			state.substring(consts.gameStates.gameQuestionPrefix.length)
-		);
-	}
-	return null;
+  if (typeof state !== "string") {
+    return null;
+  }
+  if (
+    !isWaiting(state) &&
+    !isEnded(state) &&
+    state.match(new RegExp(`^${consts.gameStates.gameQuestionPrefix}`))
+  ) {
+    return parseInt(
+      state.substring(consts.gameStates.gameQuestionPrefix.length)
+    );
+  }
+  return null;
 }
 function getQuestionText(num) {
-	const questionObj = consts.game.questions[num];
-	if (typeof questionObj === "undefined") {
-		throw Error(`Question #${num} doesn't exist in config!`);
-	}
-	return questionObj.question;
+  const questionObj = consts.game.questions[num];
+  if (typeof questionObj === "undefined") {
+    throw Error(`Question #${num} doesn't exist in config!`);
+  }
+  return questionObj.question;
 }
 
 /**
@@ -76,14 +76,14 @@ function getQuestionText(num) {
  * @param {uuid} uuid
  */
 async function calcMyMatch(pin, uuid) {
-	const userRef = getDbRefs(pin).user(uuid);
-	const snapshot = await userRef.once("value");
+  const userRef = getDbRefs(pin).user(uuid);
+  const snapshot = await userRef.once("value");
 
-	if (!snapshot.exists()) {
-		throw Error(`User ${uuid} not found!`);
-	}
+  if (!snapshot.exists()) {
+    throw Error(`User ${uuid} not found!`);
+  }
 
-	return calcMatch(snapshot.val());
+  return calcMatch(snapshot.val());
 }
 
 /**
@@ -92,36 +92,36 @@ async function calcMyMatch(pin, uuid) {
  * @param {uuid} excludeUuid
  */
 async function calcAllMatchesExceptUser(pin, excludeUuid = null) {
-	const usersRef = getDbRefs(pin).users;
-	const snapshot = await usersRef.once("value");
+  const usersRef = getDbRefs(pin).users;
+  const snapshot = await usersRef.once("value");
 
-	if (!snapshot.exists()) {
-		return null; //TODO: error message
-	}
-	const rawUsers = snapshot.val();
+  if (!snapshot.exists()) {
+    return null; //TODO: error message
+  }
+  const rawUsers = snapshot.val();
 
-	var users = Object.keys(rawUsers).map((uuid) => {
-		const user = rawUsers[uuid];
-		return {
-			uuid: uuid,
-			name: user.name,
-			match: calcMatch(user.answers),
-		};
-	});
+  var users = Object.keys(rawUsers).map((uuid) => {
+    const user = rawUsers[uuid];
+    return {
+      uuid: uuid,
+      name: user.name,
+      match: calcMatch(user.answers),
+    };
+  });
 
-	// Filter out a user by uuid
-	if (excludeUuid !== null) {
-		users.filter((user) => user.uuid !== excludeUuid);
-	}
-	// Filter out shadow banned users
-	users.filter((user) =>
-		typeof user.sban !== "undefined" ? !user.sban : true
-	);
+  // Filter out a user by uuid
+  if (excludeUuid !== null) {
+    users.filter((user) => user.uuid !== excludeUuid);
+  }
+  // Filter out shadow banned users
+  users.filter((user) =>
+    typeof user.sban !== "undefined" ? !user.sban : true
+  );
 
-	return users;
+  return users;
 }
 function calcAllMatches(pin) {
-	return calcAllMatchesExceptUser(pin);
+  return calcAllMatchesExceptUser(pin);
 }
 
 /**
@@ -133,92 +133,92 @@ function calcAllMatches(pin) {
  */
 //the answers child level of a uuid is being passed as 'answers'
 function calcMatch(answers) {
-	//sets each group to 0
-	var tally = {};
-	Object.keys(consts.game.groups).forEach((g) => (tally[g] = 0));
+  //sets each group to 0
+  var tally = {};
+  Object.keys(consts.game.groups).forEach((g) => (tally[g] = 0));
 
-	for (var k in answers) {
-		const questionIndex = k;
-		const userChoice = answers[questionIndex];
-		const currentQ = consts.game.questions[questionIndex];
+  for (var k in answers) {
+    const questionIndex = k;
+    const userChoice = answers[questionIndex];
+    const currentQ = consts.game.questions[questionIndex];
 
-		if (typeof currentQ === "undefined") {
-			//this will throow when a mistake is made in entering the questions in consts - number of questions doesnt match, when there are less questions in the consts than in the database
-			console.error(`Question #${questionIndex} is not found!`);
-			continue;
-		}
+    if (typeof currentQ === "undefined") {
+      //this will throow when a mistake is made in entering the questions in consts - number of questions doesnt match, when there are less questions in the consts than in the database
+      console.error(`Question #${questionIndex} is not found!`);
+      continue;
+    }
 
-		const belongsTo = currentQ.answers[userChoice].belongs;
+    const belongsTo = currentQ.answers[userChoice].belongs;
 
-		tally[belongsTo]++;
-	}
+    tally[belongsTo]++;
+  }
 
-	var highest = Object.keys(tally)[0];
-	Object.keys(tally).forEach((g) => {
-		if (tally[g] > tally[highest]) {
-			highest = g;
-		} else if (tally[g] == tally[highest]) {
-			//what came first in the array
-			if (
-				consts.game.tieBreaker.indexOf(g) <
-				consts.game.tieBreaker.indexOf(highest)
-			) {
-				highest = g;
-			} else {
-				highest = highest;
-			}
-		}
-	});
-	return highest;
+  var highest = Object.keys(tally)[0];
+  Object.keys(tally).forEach((g) => {
+    if (tally[g] > tally[highest]) {
+      highest = g;
+    } else if (tally[g] == tally[highest]) {
+      //what came first in the array
+      if (
+        consts.game.tieBreaker.indexOf(g) <
+        consts.game.tieBreaker.indexOf(highest)
+      ) {
+        highest = g;
+      } else {
+        highest = highest;
+      }
+    }
+  });
+  return highest;
 }
 
 async function chooseAnswer(pin, uuid, question, option) {
-	// Check if user is signed in
-	const currentUser = firebase.auth().currentUser;
-	if (typeof currentUser === "undefined") {
-		throw Error("No anonymous user has been created!");
-	}
+  // Check if user is signed in
+  const currentUser = firebase.auth().currentUser;
+  if (typeof currentUser === "undefined") {
+    throw Error("No anonymous user has been created!");
+  }
 
-	// Only allow editing of your own answers
-	if (currentUser.uid !== uuid) {
-		// TODO: include this rule in firebase rule too
-		throw Error("Hey! You can't edit someone else's answers :|");
-	}
+  // Only allow editing of your own answers
+  if (currentUser.uid !== uuid) {
+    // TODO: include this rule in firebase rule too
+    throw Error("Hey! You can't edit someone else's answers :|");
+  }
 
-	// Check to make sure the question and option exists
-	if (typeof consts.game.questions[question] === "undefined") {
-		throw Error(`Invalid question number: ${question}`);
-	} else if (
-		typeof consts.game.questions[question].answers[option] === "undefined"
-	) {
-		throw Error(`Invalid answer option (in question #${question}): ${option}`);
-	}
+  // Check to make sure the question and option exists
+  if (typeof consts.game.questions[question] === "undefined") {
+    throw Error(`Invalid question number: ${question}`);
+  } else if (
+    typeof consts.game.questions[question].answers[option] === "undefined"
+  ) {
+    throw Error(`Invalid answer option (in question #${question}): ${option}`);
+  }
 
-	// Make sure this user is playing the game
-	if (!(await userExists(pin, uuid))) {
-		throw Error(
-			`User with UUID ${uuid} is not playing this game (pin: #${pin})`
-		);
-	}
+  // Make sure this user is playing the game
+  if (!(await userExists(pin, uuid))) {
+    throw Error(
+      `User with UUID ${uuid} is not playing this game (pin: #${pin})`
+    );
+  }
 
-	return getDbRefs(pin).user_answer(uuid, question).set(option);
+  return getDbRefs(pin).user_answer(uuid, question).set(option);
 }
 
 async function userExists(pin, uuid) {
-	const user = await getDbRefs(pin).user(uuid).once("value");
-	return user.exists();
+  const user = await getDbRefs(pin).user(uuid).once("value");
+  return user.exists();
 }
 
 async function getAllGames() {
-	var data;
-	const snapshot = await firebase
-		.database()
-		.ref(`games`)
-		.once("value", function (subsnapshot) {
-			data = subsnapshot.val();
-		});
+  var data;
+  const snapshot = await firebase
+    .database()
+    .ref(`games`)
+    .once("value", function (subsnapshot) {
+      data = subsnapshot.val();
+    });
 
-	return data;
+  return data;
 }
 
 /**
@@ -227,55 +227,55 @@ async function getAllGames() {
  * @returns true if valid. else throw error
  */
 async function checkAdminPassword(password) {
-	if (typeof password === "undefined" || password === "") {
-		throw Error("Please provide a password");
-	}
-	if (password.replace(/\/\[\]#\$\./, "").trim() !== password) {
-		throw Error("Invalid password");
-	}
-	const snapshot = await firebase
-		.database()
-		.ref(`password`)
-		.child(password)
-		.once("value");
+  if (typeof password === "undefined" || password === "") {
+    throw Error("Please provide a password");
+  }
+  if (password.replace(/\/\[\]#\$\./, "").trim() !== password) {
+    throw Error("Invalid password");
+  }
+  const snapshot = await firebase
+    .database()
+    .ref(`password`)
+    .child(password)
+    .once("value");
 
-	if (snapshot.exists()) {
-		return true;
-	} else {
-		throw Error("Invalid password");
-	}
+  if (snapshot.exists()) {
+    return true;
+  } else {
+    throw Error("Invalid password");
+  }
 }
 
 function getQuestionNumTotal() {
-	return consts.game.questions.length;
+  return consts.game.questions.length;
 }
 
 async function addCurrentUser(pin, name) {
-	const uuid = firebase.auth().currentUser.uid;
+  const uuid = firebase.auth().currentUser.uid;
 
-	if (!validateName(name)) {
-		return;
-	}
+  if (!validateName(name)) {
+    return;
+  }
 
-	return getDbRefs(pin).user(uuid).set({
-		name: name,
-		sban: false,
-	});
+  return getDbRefs(pin).user(uuid).set({
+    name: name,
+    sban: false,
+  });
 }
 
 function validateName(name, realtime = false) {
-	if (name.length > 30) {
-		throw Error("Your name is too long! Please keep it under 30 characters.");
-	}
-	if (!realtime && name.length <= 1) {
-		throw Error("Hmm... Can you pick a longer name?");
-	}
+  if (name.length > 30) {
+    throw Error("Your name is too long! Please keep it under 30 characters.");
+  }
+  if (!realtime && name.length <= 1) {
+    throw Error("Hmm... Can you pick a longer name?");
+  }
 
-	if (!realtime && filter.clean(name) !== name) {
-		throw Error("Hey! Please keep it clean :)");
-	}
+  if (!realtime && filter.clean(name) !== name) {
+    throw Error("Hey! Please keep it clean :)");
+  }
 
-	return true;
+  return true;
 }
 
 /**
@@ -283,47 +283,47 @@ function validateName(name, realtime = false) {
  * @returns
  */
 function validAdminEmail(email) {
-	return (
-		typeof email === "string" && email.endsWith(`@${consts.adminEmailDomain}`)
-	);
+  return (
+    typeof email === "string" && email.endsWith(`@${consts.adminEmailDomain}`)
+  );
 }
 
 function hasNextQuestion(state) {
-	if (isEnded(state)) {
-		return false;
-	} else if (isWaiting(state)) {
-		return questionExists(0);
-	} else {
-		return questionExists(getQuestionNum(state) + 1);
-	}
+  if (isEnded(state)) {
+    return false;
+  } else if (isWaiting(state)) {
+    return questionExists(0);
+  } else {
+    return questionExists(getQuestionNum(state) + 1);
+  }
 
-	function questionExists(num) {
-		return typeof consts.game.questions[num] !== "undefined";
-	}
+  function questionExists(num) {
+    return typeof consts.game.questions[num] !== "undefined";
+  }
 }
 
 function setShadowBan(pin, uuid, sban) {
-	getDbRefs(pin).user(uuid).child("sban").set(sbane);
+  getDbRefs(pin).user(uuid).child("sban").set(sbane);
 }
 
 export default {
-	validatePin,
-	checkAdminPassword: checkAdminPassword,
-	getDbRefs,
-	isWaiting,
-	isEnded,
-	isInGameQuestions,
-	calcAllMatches,
-	calcAllMatchesExceptUser,
-	calcMyMatch,
-	chooseAnswer,
-	getQuestionText,
-	getQuestionNum,
-	getQuestionNumTotal,
-	userExists,
-	addCurrentUser,
-	validateName,
-	validAdminEmail,
-	hasNextQuestion,
-	setShadowBan,
+  validatePin,
+  checkAdminPassword,
+  getDbRefs,
+  isWaiting,
+  isEnded,
+  isInGameQuestions,
+  calcAllMatches,
+  calcAllMatchesExceptUser,
+  calcMyMatch,
+  chooseAnswer,
+  getQuestionText,
+  getQuestionNum,
+  getQuestionNumTotal,
+  userExists,
+  addCurrentUser,
+  validateName,
+  validAdminEmail,
+  hasNextQuestion,
+  setShadowBan,
 };
