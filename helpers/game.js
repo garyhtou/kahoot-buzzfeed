@@ -1,11 +1,20 @@
 import firebase from "../utils/firebase";
 import consts from "../config/consts";
+import Filter from "bad-words";
+const filter = new Filter();
+
+const additionalNameBlacklist = [];
+filter.addWords(...additionalNameBlacklist);
 
 async function validatePin(pin) {
-  const snapshot = await firebase
-    .database()
-    .ref(`games/${pin}/state`)
-    .once("value");
+	if (typeof pin === "undefined" || pin === "") {
+		return false;
+	}
+
+	const snapshot = await firebase
+		.database()
+		.ref(`games/${pin}/state`)
+		.once("value");
 
   return snapshot.exists() && snapshot.val() !== consts.gameStates.end;
 }
@@ -38,17 +47,23 @@ function isInGameQuestions(state) {
 }
 
 function getQuestionNum(state) {
-  if (
-    !isWaiting(state) &&
-    !isEnded(state) &&
-    (state || "").match(new RegExp(`^${consts.gameStates.gameQuestionPrefix}`))
-  ) {
-    return state.substring(consts.gameStates.gameQuestionPrefix.length);
-  }
-  return null;
+	if (
+		!isWaiting(state) &&
+		!isEnded(state) &&
+		(state || "").match(new RegExp(`^${consts.gameStates.gameQuestionPrefix}`))
+	) {
+		return parseInt(
+			state.substring(consts.gameStates.gameQuestionPrefix.length)
+		);
+	}
+	return null;
 }
 function getQuestionText(num) {
-  return consts.game.questions[num].question;
+	const questionObj = consts.game.questions[num];
+	if (typeof questionObj === "undefined") {
+		throw Error(`Question #${num} doesn't exist in config!`);
+	}
+	return questionObj.question;
 }
 
 /**
@@ -69,7 +84,7 @@ async function calcMyMatch(pin, uuid) {
 }
 
 /**
- * This is NOT calculate shadow banned users
+ * This does NOT calculate shadow banned users
  * @param {number} pin
  * @param {uuid} excludeUuid
  */
@@ -108,6 +123,9 @@ function calcAllMatches(pin) {
 
 /**
  * [Private]
+ * TODO: This function needs work... account for edge case where
+ * a player skips a quesiton. We probably need to take in an array
+ * or object with index and answer (depends on how firebase returns the data)
  * @param {Array} answers
  */
 //the answers child level of a uuid is being passed as 'answers'
@@ -152,26 +170,35 @@ function calcMatch(answers) {
 }
 
 async function chooseAnswer(pin, uuid, question, option) {
-  // TODO: CHECK USER PERMISSIONS (don't allow editing someone else's answers)
-  // Don't rely  on firebase rules to verify this
+	// Check if user is signed in
+	const currentUser = firebase.auth().currentUser;
+	if (typeof currentUser === "undefined") {
+		throw Error("No anonymous user has been created!");
+	}
 
-  // Check to make sure the question and option exists
-  if (typeof consts.game.questions[question] === "undefined") {
-    throw Error(`Invalid question number: ${question}`);
-  } else if (
-    typeof consts.game.questions[question].answers[option] !== "undefined"
-  ) {
-    throw Error(`Invalid answer option (in question #${question}): ${option}`);
-  }
+	// Only allow editing of your own answers
+	if (currentUser.uid !== uuid) {
+		// TODO: include this rule in firebase rule too
+		throw Error("Hey! You can't edit someone else's answers :|");
+	}
 
-  // Make sure this user is playing the game
-  if (!(await userExists(pin, uuid))) {
-    throw Error(
-      `User with UUID ${uuid} is not playing this game (pin: #${pin})`
-    );
-  }
+	// Check to make sure the question and option exists
+	if (typeof consts.game.questions[question] === "undefined") {
+		throw Error(`Invalid question number: ${question}`);
+	} else if (
+		typeof consts.game.questions[question].answers[option] === "undefined"
+	) {
+		throw Error(`Invalid answer option (in question #${question}): ${option}`);
+	}
 
-  return getDbRefs(pin).user_answer(uuid, question).set(option);
+	// Make sure this user is playing the game
+	if (!(await userExists(pin, uuid))) {
+		throw Error(
+			`User with UUID ${uuid} is not playing this game (pin: #${pin})`
+		);
+	}
+
+	return getDbRefs(pin).user_answer(uuid, question).set(option);
 }
 
 async function userExists(pin, uuid) {
@@ -205,19 +232,53 @@ async function checkPd(inputPD) {
   return isExist;
 }
 
+function getQuestionNumTotal() {
+	return consts.game.questions.length;
+}
+
+async function addCurrentUser(pin, name) {
+	const uuid = firebase.auth().currentUser.uid;
+
+	if (!validateName(name)) {
+		return;
+	}
+
+	return getDbRefs(pin).user(uuid).set({
+		name: name,
+		sban: false,
+	});
+}
+
+function validateName(name, realtime = false) {
+	if (name.length > 30) {
+		throw Error("Your name is too long! Please keep it under 30 characters.");
+	}
+	if (!realtime && name.length <= 1) {
+		throw Error("Hmm... Can you pick a longer name?");
+	}
+
+	if (!realtime && filter.clean(name) !== name) {
+		throw Error("Hey! Please keep it clean :)");
+	}
+
+	return true;
+}
+
 export default {
-  validatePin,
+	validatePin,
   checkPd,
-  getAllGames,
-  getDbRefs,
-  isWaiting,
-  isEnded,
-  isInGameQuestions,
-  calcMatch,
-  calcAllMatches,
-  calcAllMatchesExceptUser,
-  calcMyMatch,
-  chooseAnswer,
-  getQuestionText,
-  getQuestionNum,
+	getDbRefs,
+	isWaiting,
+	isEnded,
+	isInGameQuestions,
+	calcAllMatches,
+	calcAllMatchesExceptUser,
+	calcMyMatch,
+	chooseAnswer,
+	getQuestionText,
+	getQuestionNum,
+	getQuestionNumTotal,
+	userExists,
+	addCurrentUser,
+	validateName,
 };

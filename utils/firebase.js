@@ -1,4 +1,7 @@
-import firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/database";
+import "firebase/auth";
+import "firebase/analytics";
 
 if (typeof window !== "undefined" && !firebase.apps.length) {
   firebase.initializeApp({
@@ -11,22 +14,9 @@ if (typeof window !== "undefined" && !firebase.apps.length) {
     measurementId: "G-DKCBFTG7K9",
   });
 
-  firebase.database();
-  firebase.analytics();
+	firebase.database();
+	firebase.auth();
+	firebase.analytics();
 }
-
-/* export const auth = firebase.auth();
-
-const googleProvider = new firebase.auth.GoogleAuthProvider();
-export const signInWithGoogle = () => {
-  auth
-    .signInWithPopup(googleProvider)
-    .then((res) => {
-      console.log(res.user);
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
-}; */
 
 export default firebase;
