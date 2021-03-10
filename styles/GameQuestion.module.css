@@ -22,12 +22,11 @@
 	margin-top: 20px;
 }
 
-#gameButton{
+#gameButton {
 	background: purple;
 	margin-top: 20px;
 	color: white;
 }
-
 
 #username {
 	text-align: center;
@@ -52,12 +51,14 @@
 }
 
 #username:hover {
-	text-decoration: line-through
+	text-decoration: line-through;
+}
 
 .optionButton {
 	height: 100%;
 	width: 100%;
 }
+
 .optionWapper {
 	height: 100%;
 	width: 100%;
