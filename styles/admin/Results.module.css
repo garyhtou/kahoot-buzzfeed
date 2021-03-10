@@ -10,8 +10,8 @@
 
 #nameContainer {
 	display: flex;
-	margin-bottom: 10px;
 	flex-wrap: wrap;
+	justify-content: center;
 	flex-direction: row;
 	align-items: center;
 }
@@ -30,7 +30,6 @@
 }
 
 #groupTitle {
-	padding: 10px;
 	width: 200px;
 	font-size: 13px;
 }
