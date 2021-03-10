@@ -87,11 +87,13 @@ export default function AdminResults() {
         );
       }else{
         officers.push(
-          <img style={{width: '25px', borderRadius: '50%', flex:'0 0 50%'}} src={consts.game.groups[val].members[key].picture} />
-        );
+			
+          <img style={{width: '25px', borderRadius:  '50%', flex:'0 0 50%'}} src={ consts.game.groups[val].members[key].picture}>
+		  </img>
+		  
+		);
       }
-		
-		});
+	});
 
 		return officers;
 	}
@@ -115,31 +117,31 @@ export default function AdminResults() {
 					<Card style={{ marginTop: '20px' }}>
 						<CardContent>
 							{Object.keys(consts.game.groups).map((group) => (
+								<div>
+									<h2 style={{margin: '0px'}}>{consts.game.groups[group].name}</h2>
 								<div
 									id={styles.nameContainer}
-									style={{ display: 'flex', flexDirection: 'row' }}
 									key={group}
 								>
-                  <div style={{display: 'flex', flexWrap: 'wrap'}}>
-                  {getGroupInfo(group)}
-                  </div>
+								<div style={{display: 'flex', flexWrap: 'wrap'}}>
+								{getGroupInfo(group)}
+								</div>
                 
 									<div id={styles.groupTitle}>
-										{consts.game.groups[group].name}
 										<br /> State officers in this group:
 										{getGroupInfo(group, "name")}
-                    {consts.game.groups[group].characteristics}
+                    					{consts.game.groups[group].characteristics}
 									</div>
+									
+									
+								</div>
+								<div style={{display: 'flex', marginTop: '20px', marginBottom: '30px', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center'}}>
 									{Object.keys(getGroup(group)).map(function (key) {
 										return (
-											<div
-												key={key}
-												style={{ display: 'flex', flexDirection: 'row' }}
-											>
-												<div id={styles.name}>{getGroup(group)[key]}</div>
-											</div>
+										<div key={key} id={styles.name}>{getGroup(group)[key]}</div>
 										);
 									})}
+									</div>
 								</div>
 							))}
 						</CardContent>
