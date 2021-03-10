@@ -107,9 +107,10 @@ export default function gameQuestion(props) {
       </GridList>
     </Box>
   );
+			}
 
 gameQuestion.propTypes = {
   pin: PropTypes.number,
   state: PropTypes.string,
   uuid: PropTypes.string,
-};
+}
