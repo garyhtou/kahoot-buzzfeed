@@ -39,15 +39,15 @@ export default function AdminGameView() {
 	}
 
 	useEffect(async () => {
-		var unsubFunc = [];
-		const gameRef = game.getDbRefs(gamePin).game.child("state");
+		var unsubFuncs = [];
+		const gameStateRef = game.getDbRefs(gamePin).game.child("state");
 
-		unsubFunc.push(
-			gameRef.child("state").on("value", (stateSnapshot) => {
+		unsubFuncs.push(
+			gameStateRef.on("value", (stateSnapshot) => {
 				var qNum = game.getQuestionNum(stateSnapshot.val());
 
 				if (consts.game.questions[qNum] === undefined) {
-					gameRef.child("state").set(consts.gameStates.end);
+					gameStateRef.set(consts.gameStates.end);
 					setGameState(consts.gameStates.end);
 					setQuestionExists(false);
 				} else {
@@ -57,7 +57,7 @@ export default function AdminGameView() {
 			})
 		);
 
-		unsubFunc.push(
+		unsubFuncs.push(
 			game.getDbRefs(gamePin).users.on("value", (snapshot) => {
 				if (snapshot.exists()) {
 					setUserData(snapshot.val());
@@ -66,7 +66,7 @@ export default function AdminGameView() {
 			})
 		);
 
-		unsubFunc.push(
+		unsubFuncs.push(
 			firebase.auth().onAuthStateChanged(function (user) {
 				if (user && user.email !== null) {
 					if (game.validAdminEmail(user.email)) {
@@ -79,6 +79,10 @@ export default function AdminGameView() {
 				}
 			})
 		);
+
+		return () => {
+			unsubFuncs.forEach((unsub) => unsub());
+		};
 	}, []);
 
 	function getAnswerCount(questionNum) {
@@ -96,15 +100,16 @@ export default function AdminGameView() {
 
 	/**
 	 * Move onto the next question
-	 * @param {number} currentQ
+	 * @param {string} currentState
 	 */
-	function moveOn(currentQ) {
-		if (consts.game.questions[currentQ + 1] !== undefined) {
-			const nextQ = consts.gameStates.gameQuestion(currentQ + 1);
-			game.getDbRefs(gamePin).state.set(nextQ);
-		} else {
-			game.getDbRefs(gamePin).state.set(consts.gameStates.end);
+	function moveOn(currentState) {
+		if (game.hasNextQuestion(currentState)) {
+			const nextQ = game.getQuestionNum(currentState) + 1;
+			game.getDbRefs(gamePin).state.set(consts.gameStates.gameQuestion(nextQ));
+			return;
 		}
+
+		game.getDbRefs(gamePin).state.set(consts.gameStates.end);
 	}
 
 	function shadowToggle(gamepin, uid) {
@@ -128,7 +133,9 @@ export default function AdminGameView() {
 					</Typography>
 					<Typography variant='body1'>Game Pin: {gamePin}</Typography>
 					<Link href='dashboard'>
-						<Button variant='contained'>Back to dashboard</Button>
+						<Button variant='contained' id={styles.gameButton}>
+							Back to dashboard
+						</Button>
 					</Link>
 					<Card style={{ marginTop: "20px" }}>
 						<CardContent>
@@ -141,10 +148,12 @@ export default function AdminGameView() {
 							<Button
 								variant='contained'
 								color='primary'
-								onClick={() => moveOn(currentQNum)}
+								onClick={() => moveOn(gameState)}
 								id={styles.gameButton}
 							>
-								Next question
+								{game.hasNextQuestion(gameState)
+									? "Next question"
+									: "Show the results!"}
 							</Button>
 						</CardContent>
 					</Card>

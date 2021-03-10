@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Typography } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import styles from "../../styles/admin/Dashboard.module.css";
 import game from "../../helpers/game";
 import consts from "../../config/consts";
@@ -10,7 +10,8 @@ import firebase from "../../utils/firebase";
 import { Button, Card, CardContent, Container } from "@material-ui/core";
 
 export default function Dashboard() {
-	const [gamesList, setGamesList] = useState([]);
+	const [gamesObjList, setGamesObjList] = useState({});
+	const [gamesArrList, setGamesArrList] = useState([]);
 	const [gameClick, setGameClick] = useState(false);
 	const [login, setLogin] = useState(false);
 	const [gamePin, setGamePin] = useState();
@@ -25,12 +26,12 @@ export default function Dashboard() {
 		unsubFuncs.push(
 			firebase
 				.database()
-				.ref(`games`)
+				.ref("games")
 				.on("value", (snapshot) => {
 					if (snapshot.exists()) {
-						setGamesList(snapshot.val());
+						setGamesObjList(snapshot.val());
 					} else {
-						setGamesList({});
+						setGamesObjList({});
 					}
 				})
 		);
@@ -57,13 +58,16 @@ export default function Dashboard() {
 		};
 	}, []);
 
-	var listOfGames = [];
-	for (var k in gamesList) {
-		listOfGames.push(k);
-	}
+	useEffect(() => {
+		var listOfGames = [];
+		for (var k in gamesObjList) {
+			listOfGames.push(k);
+		}
+		setGamesArrList(listOfGames);
+	}, [gamesObjList]);
 
 	function gameClicked(pin) {
-		if (gamesList[pin].state !== consts.gameStates.end) {
+		if (gamesObjList[pin].state !== consts.gameStates.end) {
 			router.replace(`?gamePin=${pin}`);
 			setGameClick(true);
 			setGamePin(pin);
@@ -80,7 +84,7 @@ export default function Dashboard() {
 	}
 
 	function shadowToggle(gamepin, uid) {
-		const userSban = gamesList[gamepin].users[uid].sban;
+		const userSban = gamesObjList[gamepin].users[uid].sban;
 		game
 			.getDbRefs(gamepin)
 			.user(uid)
@@ -147,12 +151,12 @@ export default function Dashboard() {
 							<Button
 								variant='contained'
 								onClick={() => {
-									stateToggle(gamePin, gamesList[gamePin].state);
+									stateToggle(gamePin, gamesObjList[gamePin].state);
 								}}
 								color='primary'
 								id={styles.enterButton}
 							>
-								{game.isWaiting(gamesList[gamePin].state)
+								{game.isWaiting(gamesObjList[gamePin].state)
 									? "Start Game"
 									: "View Game"}
 							</Button>
@@ -168,43 +172,46 @@ export default function Dashboard() {
 						</div>
 
 						<Typography variant='h5' style={{ marginTop: "20px" }} gutterBottom>
-							{game.isWaiting(gamesList[gamePin].state)
+							{game.isWaiting(gamesObjList[gamePin].state)
 								? "Waiting to start..."
-								: game.isInGameQuestions(gamesList[gamePin].state)
+								: game.isInGameQuestions(gamesObjList[gamePin].state)
 								? `Currently on question #${
-										game.getQuestionNum(gamesList[gamePin].state) + 1
+										game.getQuestionNum(gamesObjList[gamePin].state) + 1
 								  }`
-								: game.isEnded(gamesList[gamePin].state)
+								: game.isEnded(gamesObjList[gamePin].state)
 								? "Game ended"
-								: gamesList[gamePin].state}
+								: gamesObjList[gamePin].state}
 						</Typography>
 
 						<Card style={{ marginTop: "10px" }}>
 							<CardContent id={styles.nameContainer}>
-								{gamesList[gamePin].users !== undefined &&
-									Object.keys(gamesList[gamePin].users).map(function (uuid) {
-										return (
-											<div
-												key={uuid}
-												style={{ display: "flex", flexDirection: "row" }}
-											>
+								{gamesObjList[gamePin].users !== undefined
+									? Object.keys(gamesObjList[gamePin].users).map(function (
+											uuid
+									  ) {
+											return (
 												<div
-													onClick={() => shadowToggle(gamePin, uuid)}
-													style={{
-														textDecoration:
-															typeof gamesList[gamePin].users[uuid].sban !==
-																"undefined" &&
-															gamesList[gamePin].users[uuid].sban
-																? "line-through"
-																: "",
-													}}
-													className={styles.username}
+													key={uuid}
+													style={{ display: "flex", flexDirection: "row" }}
 												>
-													{gamesList[gamePin].users[uuid].name}
+													<div
+														onClick={() => shadowToggle(gamePin, uuid)}
+														style={{
+															textDecoration:
+																typeof gamesObjList[gamePin].users[uuid]
+																	.sban !== "undefined" &&
+																gamesObjList[gamePin].users[uuid].sban
+																	? "line-through"
+																	: "",
+														}}
+														className={styles.username}
+													>
+														{gamesObjList[gamePin].users[uuid].name}
+													</div>
 												</div>
-											</div>
-										);
-									})}
+											);
+									  })
+									: null}
 							</CardContent>
 						</Card>
 					</Container>
@@ -242,9 +249,9 @@ export default function Dashboard() {
 							<Card>
 								<CardContent>
 									<h2 style={{ margin: "0px" }}>All Games:</h2>
-									{listOfGames.map((gamePin) => {
+									{gamesArrList.map((gamePin) => {
 										return (
-											<div
+											<Box
 												key={gamePin}
 												style={{
 													marginTop: "10px",
@@ -252,36 +259,43 @@ export default function Dashboard() {
 													flexDirection: "row",
 												}}
 											>
-												<div
+												<Box
 													style={{
-														background: game.isEnded(gamesList[gamePin].state)
+														background: game.isEnded(
+															gamesObjList[gamePin].state
+														)
 															? "red"
-															: game.isWaiting(gamesList[gamePin].state)
+															: game.isWaiting(gamesObjList[gamePin].state)
 															? "green"
 															: "orange",
 													}}
 													id={styles.gameTitle}
 												>
-													{gamePin} (
-													{game.isWaiting(gamesList[gamePin].state)
+													{gamePin}(
+													{game.isWaiting(gamesObjList[gamePin].state)
 														? "waiting"
-														: game.isInGameQuestions(gamesList[gamePin].state)
+														: game.isInGameQuestions(
+																gamesObjList[gamePin].state
+														  )
 														? `question ${
-																game.getQuestionNum(gamesList[gamePin].state) +
-																1
+																game.getQuestionNum(
+																	gamesObjList[gamePin].state
+																) + 1
 														  }/${game.getQuestionNumTotal(gamePin)}`
-														: game.isEnded(gamesList[gamePin].state)
+														: game.isEnded(gamesObjList[gamePin].state)
 														? "ended"
-														: gamesList[gamePin].state}
+														: typeof gamesObjList[gamePin].state === "string"
+														? gamesObjList[gamePin].state
+														: "UH... big error"}
 													)
-												</div>
+												</Box>
 												<div
 													onClick={() => gameClicked(gamePin)}
 													id={styles.viewButton}
 												>
 													View
 												</div>
-											</div>
+											</Box>
 										);
 									})}
 								</CardContent>

@@ -47,10 +47,13 @@ function isInGameQuestions(state) {
 }
 
 function getQuestionNum(state) {
+	if (typeof state !== "string") {
+		return null;
+	}
 	if (
 		!isWaiting(state) &&
 		!isEnded(state) &&
-		(state || "").match(new RegExp(`^${consts.gameStates.gameQuestionPrefix}`))
+		state.match(new RegExp(`^${consts.gameStates.gameQuestionPrefix}`))
 	) {
 		return parseInt(
 			state.substring(consts.gameStates.gameQuestionPrefix.length)
@@ -285,6 +288,20 @@ function validAdminEmail(email) {
 	);
 }
 
+function hasNextQuestion(state) {
+	if (isEnded(state)) {
+		return false;
+	} else if (isWaiting(state)) {
+		return questionExists(0);
+	} else {
+		return questionExists(getQuestionNum(state) + 1);
+	}
+
+	function questionExists(num) {
+		return typeof consts.game.questions[num] !== "undefined";
+	}
+}
+
 export default {
 	validatePin,
 	checkAdminPassword: checkAdminPassword,
@@ -303,4 +320,5 @@ export default {
 	addCurrentUser,
 	validateName,
 	validAdminEmail,
+	hasNextQuestion,
 };

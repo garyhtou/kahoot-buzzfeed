@@ -26,6 +26,11 @@ export default function AdminResults() {
 	useEffect(async () => {
 		var unsubFuncs = [];
 
+		if (!(await game.getDbRefs(gamePin).game.once("value")).exists()) {
+			router.push("/admin/dashboard");
+			return;
+		}
+
 		unsubFuncs.push(
 			game.getDbRefs(gamePin).state.on("value", (snapshot) => {
 				setGameState(snapshot.val());
@@ -63,7 +68,8 @@ export default function AdminResults() {
 
 	// update matchings whenever user data or the state changes
 	useEffect(async () => {
-		setMatchData(await game.calcAllMatches(gamePin));
+		const results = await game.calcAllMatches(gamePin);
+		setMatchData(results !== null ? resulsts : []);
 	}, [userData, gameState]);
 
 	function getGroup(group) {
