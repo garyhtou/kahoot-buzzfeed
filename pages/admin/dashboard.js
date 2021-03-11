@@ -59,11 +59,12 @@ export default function Dashboard() {
 	}, []);
 
 	useEffect(() => {
-		var listOfGames = [];
+		var listOfGames = {};
 		for (var k in gamesObjList) {
-			listOfGames.push(k);
+			listOfGames[k] = gamesObjList[k].createdAt;
 		}
-		setGamesArrList(listOfGames);
+		var keysSorted = Object.keys(listOfGames).sort(function(a,b){return listOfGames[b]-listOfGames[a]})
+		setGamesArrList(Object.values(keysSorted));
 	}, [gamesObjList]);
 
 	function gameClicked(pin) {
@@ -125,11 +126,14 @@ export default function Dashboard() {
 
 	function newGame() {
 		const newPin = Math.floor(Math.random() * (9999 - 1000) + 1000);
-		firebase
-			.database()
-			.ref(`games/` + newPin)
-			.child('state')
+		const gameRef = firebase
+		.database()
+		.ref(`games/` + newPin);
+		
+		gameRef.child('state')
 			.set(consts.gameStates.waiting);
+
+		gameRef.child("createdAt").set(new Date().getTime())
 	}
 
 	return (
