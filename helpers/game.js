@@ -36,15 +36,15 @@ function getDbRefs(pin) {
 }
 
 async function getName(pin, uid) {
-  const snapshot = await firebase
-    .database()
-    .ref(`games`)
-    .child(pin)
-    .child("users")
-    .child(uid)
-    .child("name")
-    .once("value");
-  return snapshot.val();
+	const snapshot = await firebase
+		.database()
+		.ref(`games`)
+		.child(pin)
+		.child('users')
+		.child(uid)
+		.child('name')
+		.once('value');
+	return snapshot.val();
 }
 
 // State checkers
@@ -155,12 +155,13 @@ function calcMatch(answers) {
 		const currentQ = consts.game.questions[questionIndex];
 
 		if (typeof currentQ === 'undefined') {
-			//this will throow when a mistake is made in entering the questions in consts - number of questions doesnt match, when there are less questions in the consts than in the database
+			//this will throw when a mistake is made in entering the questions in consts - number of questions doesnt match, when there are less questions in the consts than in the database
 			console.error(`Question #${questionIndex} is not found!`);
 			continue;
 		}
 
 		const belongsTo = currentQ.answers[userChoice].belongs;
+		if (belongsTo === 'NONE') continue;
 
 		tally[belongsTo]++;
 	}
@@ -276,18 +277,18 @@ async function addCurrentUser(pin, name) {
 }
 
 function validateName(name, realtime = false) {
-  if (name.length > 14) {
-    throw Error("Your name is too long! Please keep it under 14 characters.");
-  }
-  if (!realtime && name.length <= 1) {
-    throw Error("Hmm... Can you pick a longer name?");
-  }
+	if (name.length > 14) {
+		throw Error('Your name is too long! Please keep it under 14 characters.');
+	}
+	if (!realtime && name.length <= 1) {
+		throw Error('Hmm... Can you pick a longer name?');
+	}
 
-  if (!realtime && filter.clean(name) !== name) {
-    throw Error("Hey! Please keep it clean :)");
-  }
+	if (!realtime && filter.clean(name) !== name) {
+		throw Error('Hey! Please keep it clean :)');
+	}
 
-  return true;
+	return true;
 }
 
 /**
