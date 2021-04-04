@@ -80,15 +80,18 @@ export default function gameEnd(props) {
 							  ))
 							: null}
 					</Box>
-					<Typography varient='body1' id={styles.characteristics}>
+					<Typography variant='h4' id={styles.characteristics}>
+						What does this mean?
+					</Typography>
+					<Typography varient='body1' id={styles.characteristics} style={{marginTop: '1rem'}}>
 						{myGroupInfo.characteristics}
 					</Typography>
 				</Box>
 				<Divider />
 			</Box>
-			<Box id={styles.details}>
+			{/* <Box id={styles.details}>
 				<span>More details coming soon...</span>
-			</Box>
+			</Box> */}
 		</Box>
 	);
 }
