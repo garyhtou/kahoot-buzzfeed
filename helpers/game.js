@@ -334,6 +334,7 @@ export default {
 	checkAdminPassword,
 	getDbRefs,
 	isWaiting,
+	getName,
 	isEnded,
 	isInGameQuestions,
 	calcAllMatches,
