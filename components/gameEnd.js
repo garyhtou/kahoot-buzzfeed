@@ -57,43 +57,44 @@ export default function gameEnd(props) {
 		<>
 		{(typeof myGroupInfo !== 'undefined') ? (<Box id={styles.container}>
 			<Box id={styles.header}>
-				<Box id={styles.matchContainer}>
-					<Typography variant='h6'>You matched with</Typography>
-					<Typography variant='h4'>{myGroupInfo.name}</Typography>
-					<Box id={styles.peopleContainer}>
-						{typeof myGroupInfo.members !== 'undefined'
-							? myGroupInfo.members.map((p) => (
-									<Box id={styles.personWrapper} key={p.name + p.picture}>
-										<Tooltip title={`Visit ${p.linkType}`}>
-											<Box>
-												<Avatar
-													src={p.picture}
-													alt={p.name}
-													id={styles.personAvatar}
-												/>
-												<Typography variant='body1' id={styles.name}>
-													{p.name}
-												</Typography>
-												<Typography variant='body1' id={styles.social}>
-													<Link href={p.link} target='_blank' color='inherit'>
-														{p.handle}
-													</Link>
-												</Typography>
-											</Box>
-										</Tooltip>
+                <Box id={styles.matchContainer}>
+                    <Typography variant='h6'>You matched with</Typography>
+                    <Typography variant='h4'>{myGroupInfo.name}</Typography>
+                    <Box id={styles.peopleContainer}>
+                        {typeof myGroupInfo.members !== 'undefined'
+                            ? myGroupInfo.members.map((p) => (
+								<Box id={styles.personWrapper} key={p.name + p.picture}>
+								<Tooltip title={`Visit ${p.linkType}`}>
+									<Box>
+										<Avatar
+											src={p.picture}
+											alt={p.name}
+											id={styles.personAvatar}
+										/>
+										<Typography variant='body1' id={styles.name}>
+											{p.name}
+										</Typography>
+										<Typography variant='body1' id={styles.social}>
+											<Link href={p.link} target='_blank' color='inherit'>
+												{p.handle}
+											</Link>
+										</Typography>
 									</Box>
-							  ))
-							: null}
-					</Box>
-					<Typography variant='h4' id={styles.characteristics}>
-						What does this mean?
-					</Typography>
-					<Typography varient='body1' id={styles.characteristics} style={{marginTop: '1rem'}}>
-						{myGroupInfo.characteristics}
-					</Typography>
-				</Box>
-				<Divider />
-			</Box>
+								</Tooltip>
+							</Box>
+                              ))
+                            : null}
+                    </Box>
+                    <Typography variant='h4' id={styles.characteristics}>
+                        What does this mean?
+                    </Typography>
+                    <Typography varient='body1' id={styles.characteristics} style={{marginTop: '1rem'}}>
+                        {myGroupInfo.characteristics}
+                    </Typography>
+                </Box>
+                <Divider />
+            </Box>
+
 			{/* <Box id={styles.details}>
 				<span>More details coming soon...</span>
 			</Box> */}
