@@ -39,6 +39,8 @@ export default function gameEnd(props) {
 		} catch (error) {
 			// TODO: surface to user
 			// most likely user not found
+			setMyResults(undefined)
+
 		}
 	}, []);
 
@@ -46,15 +48,18 @@ export default function gameEnd(props) {
 	useEffect(() => {
 		if (typeof myResults !== 'undefined') {
 			setMyGroupInfo(game.getGroupInfo(myResults));
+		}else{
+			setMyGroupInfo(undefined);
 		}
 	}, [myResults, state]);
 
 	return (
-		<Box id={styles.container}>
+		<>
+		{(typeof myGroupInfo !== 'undefined') ? (<Box id={styles.container}>
 			<Box id={styles.header}>
 				<Box id={styles.matchContainer}>
 					<Typography variant='h6'>You matched with</Typography>
-					<Typography variant='h3'>{myGroupInfo.name}</Typography>
+					<Typography variant='h4'>{myGroupInfo.name}</Typography>
 					<Box id={styles.peopleContainer}>
 						{typeof myGroupInfo.members !== 'undefined'
 							? myGroupInfo.members.map((p) => (
@@ -92,7 +97,15 @@ export default function gameEnd(props) {
 			{/* <Box id={styles.details}>
 				<span>More details coming soon...</span>
 			</Box> */}
-		</Box>
+		</Box>) 
+		
+		: 
+		
+		(<Box id={styles.container}>
+			<Typography style={{textAlign: 'center'}} variant='h4'>You have insufficient data to calculate a match</Typography>
+		</Box>)}
+		</>
+		
 	);
 }
 

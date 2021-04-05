@@ -14,7 +14,6 @@
 	padding-bottom: 0;
 	padding-top: 10rem;
 
-	border: 1px solid blue;
 	text-align: center;
 }
 #matchContainer {
@@ -38,13 +37,14 @@
 
 #peopleContainer {
 	display: flex;
-	justify-content: center;
+	flex-direction: row;
 	align-items: flex-start;
+	justify-content: center;
 	flex-wrap: nowrap;
-	width: fit-content;
-	margin-left: 1.5rem;
+	padding-left: 1.5rem;
+
+	justify-content: space-evenly;
 	margin-top: 2rem;
-	min-width: 50%;
 }
 
 #personWrapper {
