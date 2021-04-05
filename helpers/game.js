@@ -95,7 +95,7 @@ async function calcMyMatch(pin, uuid) {
 		throw Error(`User ${uuid} not found!`);
 	}
 
-	return calcMatch(snapshot.val());
+	return calcMatch(snapshot.child("answers").val());
 }
 
 /**
