@@ -80,6 +80,8 @@ export default function Game() {
       if (user) {
         console.log(`UID: ${user.uid}`);
         setUser(user);
+        const val = await game.getName(getPin(), user.uid);
+        setName(val);
       }
     });
 
@@ -97,11 +99,6 @@ export default function Game() {
     return unsub;
   }, []);
 
-  async function getUserName() {
-    const val = await game.getName(getPin(), user.uid);
-    setName(val);
-  }
-  getUserName();
   return (
     <>
       <Container id={styles.gameContainer}>

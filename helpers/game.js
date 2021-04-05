@@ -93,9 +93,11 @@ async function calcMyMatch(pin, uuid) {
 
 	if (!snapshot.exists()) {
 		throw Error(`User ${uuid} not found!`);
+	} else if(!snapshot.child("answers").exists()){
+		throw Error(`User ${uuid} didnt answer any questions`);
 	}
 
-	return calcMatch(snapshot.val());
+	return calcMatch(snapshot.child("answers").val());
 }
 
 /**
@@ -334,6 +336,7 @@ export default {
 	checkAdminPassword,
 	getDbRefs,
 	isWaiting,
+	getName,
 	isEnded,
 	isInGameQuestions,
 	calcAllMatches,
