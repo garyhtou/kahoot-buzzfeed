@@ -39,8 +39,7 @@ export default function gameEnd(props) {
 		} catch (error) {
 			// TODO: surface to user
 			// most likely user not found
-			setMyResults(undefined)
-
+			setMyResults(undefined);
 		}
 	}, []);
 
@@ -48,65 +47,74 @@ export default function gameEnd(props) {
 	useEffect(() => {
 		if (typeof myResults !== 'undefined') {
 			setMyGroupInfo(game.getGroupInfo(myResults));
-		}else{
+		} else {
 			setMyGroupInfo(undefined);
 		}
 	}, [myResults, state]);
 
 	return (
 		<>
-		{(typeof myGroupInfo !== 'undefined') ? (<Box id={styles.container}>
-			<Box id={styles.header}>
-                <Box id={styles.matchContainer}>
-                    <Typography variant='h6'>You matched with</Typography>
-                    <Typography variant='h4'>{myGroupInfo.name}</Typography>
-                    <Box id={styles.peopleContainer}>
-                        {typeof myGroupInfo.members !== 'undefined'
-                            ? myGroupInfo.members.map((p) => (
-								<Box id={styles.personWrapper} key={p.name + p.picture}>
-								<Tooltip title={`Visit ${p.linkType}`}>
-									<Box>
-										<Avatar
-											src={p.picture}
-											alt={p.name}
-											id={styles.personAvatar}
-										/>
-										<Typography variant='body1' id={styles.name}>
-											{p.name}
-										</Typography>
-										<Typography variant='body1' id={styles.social}>
-											<Link href={p.link} target='_blank' color='inherit'>
-												{p.handle}
-											</Link>
-										</Typography>
-									</Box>
-								</Tooltip>
+			{typeof myGroupInfo !== 'undefined' ? (
+				<Box id={styles.container}>
+					<Box id={styles.header}>
+						<Box id={styles.matchContainer}>
+							<Typography variant='h6'>You matched with</Typography>
+							<Typography variant='h4'>{myGroupInfo.name}</Typography>
+							<Box id={styles.peopleContainer}>
+								{typeof myGroupInfo.members !== 'undefined'
+									? myGroupInfo.members.map((p) => (
+											<Box id={styles.personWrapper} key={p.name + p.picture}>
+												<Tooltip title={`Visit ${p.linkType}`}>
+													<Box id={styles.personCol}>
+														<Avatar
+															src={p.picture}
+															alt={p.name}
+															id={styles.personAvatar}
+														/>
+														<Typography variant='body1' id={styles.name}>
+															{p.name}
+														</Typography>
+														<Typography variant='body1' id={styles.social}>
+															<Link
+																href={p.link}
+																target='_blank'
+																color='inherit'
+															>
+																{p.handle}
+															</Link>
+														</Typography>
+													</Box>
+												</Tooltip>
+											</Box>
+									  ))
+									: null}
 							</Box>
-                              ))
-                            : null}
-                    </Box>
-                    <Typography variant='h4' id={styles.characteristics}>
-                        What does this mean?
-                    </Typography>
-                    <Typography varient='body1' id={styles.characteristics} style={{marginTop: '1rem'}}>
-                        {myGroupInfo.characteristics}
-                    </Typography>
-                </Box>
-                <Divider />
-            </Box>
+							<Typography variant='h4' id={styles.characteristics}>
+								What does this mean?
+							</Typography>
+							<Typography
+								varient='body1'
+								id={styles.characteristics}
+								style={{ marginTop: '1rem' }}
+							>
+								{myGroupInfo.characteristics}
+							</Typography>
+						</Box>
+						<Divider />
+					</Box>
 
-			{/* <Box id={styles.details}>
+					{/* <Box id={styles.details}>
 				<span>More details coming soon...</span>
 			</Box> */}
-		</Box>) 
-		
-		: 
-		
-		(<Box id={styles.container}>
-			<Typography style={{textAlign: 'center'}} variant='h4'>You have insufficient data to calculate a match</Typography>
-		</Box>)}
+				</Box>
+			) : (
+				<Box id={styles.container}>
+					<Typography style={{ textAlign: 'center' }} variant='h4'>
+						You have insufficient data to calculate a match
+					</Typography>
+				</Box>
+			)}
 		</>
-		
 	);
 }
 
