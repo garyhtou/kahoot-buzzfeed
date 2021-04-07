@@ -39,6 +39,7 @@ export default function Home() {
 
 	const [gamePin, setGamePin] = useState('');
 	async function submitPin(pin) {
+		pin = pin.trim();
 		console.log(`VALIDATING PIN: ${pin}`);
 		if (pin === '') {
 			return;

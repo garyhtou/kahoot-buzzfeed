@@ -1,18 +1,20 @@
 #container {
 	width: 100%;
 	height: 100%;
-	overflow: auto;
+	overflow-y: auto;
 
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: stretch;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+#container::-webkit-scrollbar {
+	display: none;
 }
 
 #header {
-	margin-top: 15%;
-
+	padding-top: 2rem;
+	padding-bottom: 3rem;
 	text-align: center;
+	width: 100%;
 }
 #matchContainer {
 	display: flex;
@@ -49,12 +51,14 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	
-    width: 33%;
+
+	width: 33%;
 	height: 100%;
 	align-items: center;
 	flex-wrap: nowrap;
 
+	margin-left: 0.5rem;
+	margin-right: 0.5rem;
 }
 
 #personAvatar {
@@ -64,7 +68,7 @@
 }
 
 #characteristics {
-	margin-top: 3rem;
+	margin-top: 6rem;
 	margin-bottom: 1rem;
 }
 
@@ -72,7 +76,7 @@
 	font-size: 0.8rem;
 }
 
-#name{
-	font-size: 15px;		
-	white-space: nowrap;	
+#name {
+	font-size: 18px;
+	white-space: nowrap;
 }

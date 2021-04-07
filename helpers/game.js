@@ -16,7 +16,7 @@ async function validatePin(pin) {
 		.ref(`games/${pin}/state`)
 		.once('value');
 
-	return snapshot.exists() && snapshot.val() !== consts.gameStates.end;
+	return snapshot.exists(); // && snapshot.val() !== consts.gameStates.end; // is there really a purpose why we aren't allow them to go back and view their match afterwards?
 }
 
 function getDbRefs(pin) {
@@ -93,11 +93,11 @@ async function calcMyMatch(pin, uuid) {
 
 	if (!snapshot.exists()) {
 		throw Error(`User ${uuid} not found!`);
-	} else if(!snapshot.child("answers").exists()){
+	} else if (!snapshot.child('answers').exists()) {
 		throw Error(`User ${uuid} didnt answer any questions`);
 	}
 
-	return calcMatch(snapshot.child("answers").val());
+	return calcMatch(snapshot.child('answers').val());
 }
 
 /**
