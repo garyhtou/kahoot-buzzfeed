@@ -30,6 +30,8 @@ export default function gameEnd(props) {
 	const uuid = props.uuid;
 
 	const [myResults, setMyResults] = useState();
+	const [myAllResults, setAllResults] = useState();
+	const [usersWithSimilarResults, setUsersWithSimilarResults] = useState();
 	const [myGroupInfo, setMyGroupInfo] = useState({});
 
 	// Get my results
@@ -51,6 +53,50 @@ export default function gameEnd(props) {
 			setMyGroupInfo(undefined);
 		}
 	}, [myResults, state]);
+
+	// Get all results
+	useEffect(async () => {
+		try {
+			const allResults = await game.calcAllMatchesExceptUser(pin, uuid);
+			setAllResults(allResults);
+
+			if (typeof myResults !== 'undefined') {
+				const similar = allResults
+					.filter((u) => u.match === myResults)
+					.map((u) => u.name);
+				setUsersWithSimilarResults(similar);
+			}
+		} catch (error) {
+			console.log(error);
+			setAllResults(undefined);
+		}
+	}, [myResults, state]);
+
+	function formatSimilar() {
+		const len = usersWithSimilarResults.length;
+		const suffix = ' also match with your group!';
+
+		if (len === 0) {
+			return '';
+		} else if (len === 1) {
+			return usersWithSimilarResults[0] + suffix;
+		} else if (len === 2) {
+			return (
+				usersWithSimilarResults[0] +
+				' and ' +
+				usersWithSimilarResults[1] +
+				suffix
+			);
+		}
+
+		const limit = Math.min(len, 5);
+		return (
+			usersWithSimilarResults.slice(0, limit - 1).join(', ') +
+			', and ' +
+			usersWithSimilarResults.slice(limit, limit + 1) +
+			suffix
+		);
+	}
 
 	return (
 		<>
@@ -103,9 +149,11 @@ export default function gameEnd(props) {
 						<Divider />
 					</Box>
 
-					{/* <Box id={styles.details}>
-				<span>More details coming soon...</span>
-			</Box> */}
+					<Box id={styles.details}>
+						{usersWithSimilarResults ? (
+							<Typography variant='body'>{formatSimilar()}</Typography>
+						) : null}
+					</Box>
 				</Box>
 			) : (
 				<Box id={styles.container}>
