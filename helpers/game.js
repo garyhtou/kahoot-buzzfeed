@@ -112,25 +112,26 @@ async function calcAllMatchesExceptUser(pin, excludeUuid = null) {
 	if (!snapshot.exists()) {
 		return null; //TODO: error message
 	}
-	const rawUsers = snapshot.val();
+	var rawUsers = snapshot.val();
+	delete rawUsers[excludeUuid]
 
 	var users = Object.keys(rawUsers).map((uuid) => {
 		const user = rawUsers[uuid];
-		return {
-			uuid: uuid,
-			name: user.name,
-			match: calcMatch(user.answers),
-		};
+			return {
+				uuid: uuid,
+				name: user.name,
+				match: calcMatch(user.answers),
+			};
+		
+		
 	});
 
-	// Filter out a user by uuid
-	if (excludeUuid !== null) {
-		users.filter((user) => user.uuid !== excludeUuid);
-	}
+
 	// Filter out shadow banned users
 	users.filter((user) =>
 		typeof user.sban !== 'undefined' ? !user.sban : true
 	);
+	console.log(users)
 
 	return users;
 }
