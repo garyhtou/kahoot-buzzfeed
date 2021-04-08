@@ -131,7 +131,6 @@ async function calcAllMatchesExceptUser(pin, excludeUuid = null) {
 	users.filter((user) =>
 		typeof user.sban !== 'undefined' ? !user.sban : true
 	);
-	console.log(users)
 
 	return users;
 }

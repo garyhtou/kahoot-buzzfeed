@@ -151,7 +151,7 @@ export default function gameEnd(props) {
 
 					<Box id={styles.details}>
 						{usersWithSimilarResults ? (
-							<Typography variant='body'>{formatSimilar()}</Typography>
+							<Typography style={{ "fontWeight": 600}} variant='body'>{formatSimilar()}</Typography>
 						) : null}
 					</Box>
 				</Box>
