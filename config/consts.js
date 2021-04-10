@@ -149,6 +149,7 @@ export default {
 		questions: [
 			{
 				question: 'How did you hear about FBLA?',
+				stats: false,
 				answers: {
 					// Each choice must be assigned to a result group!!!
 					a: { title: 'Chapter adviser/officer', belongs: 'b' },
@@ -158,95 +159,9 @@ export default {
 				},
 			},
 			{
-				question: 'Which describes your personality?',
-				answers: {
-					// Each choice must be assigned to a result group!!!
-					a: { title: 'Dependable and kind', belongs: 'a' },
-					b: {
-						title: 'A problem solver, analytical, and creative',
-						belongs: 'b',
-					},
-					c: { title: 'Extroverted and friendly', belongs: 'c' },
-					d: { title: 'Adventurous and likes to try new things', belongs: 'd' },
-				},
-			},
-			{
-				question: 'Why did you join FBLA?',
-				answers: {
-					// Each choice must be assigned to a result group!!!
-					a: { title: 'Prepare for future business career', belongs: 'd' },
-					b: { title: 'Learn new career and technical skills', belongs: 'b' },
-					c: { title: 'Networking/friends', belongs: 'c' },
-					d: { title: 'Competitive events', belongs: 'a' },
-				},
-			},
-			{
-				question: 'What competitive events are you most interested in?',
-				answers: {
-					// Each choice must be assigned to a result group!!!
-					a: { title: 'Test', belongs: 'a' },
-					b: { title: 'Roleplay', belongs: 'c' },
-					c: { title: 'Presentation + Prejudged', belongs: 'd' },
-					d: { title: 'Interview + Production', belongs: 'b' },
-				},
-			},
-			{
-				question: 'Which conference is most appealing to you?',
-				answers: {
-					// Each choice must be assigned to a result group!!!
-					a: { title: 'Fall Leadership Conference', belongs: 'NONE' },
-					b: { title: 'Roleplay', belongs: 'NONE' },
-					c: { title: 'State Business Leadership Conference', belongs: 'NONE' },
-					d: { title: 'National Leadership Conference', belongs: 'NONE' },
-				},
-			},
-			{
-				question: 'Which officer role appeals the most to you?',
-				answers: {
-					// Each choice must be assigned to a result group!!!
-					a: {
-						title:
-							'Executive Positions (President, Secretary, Public Relations)',
-						belongs: 'NONE',
-					},
-					b: { title: 'Regional Vice President', belongs: 'NONE' },
-					c: { title: 'Parliamentarian', belongs: 'NONE' },
-					d: { title: 'Alumni and Business Relations VP', belongs: 'NONE' },
-				},
-			},
-			{
-				question: 'What field do you plan on studying in the future?',
-				answers: {
-					// Each choice must be assigned to a result group!!!
-					a: { title: 'STEM', belongs: 'b' },
-					b: { title: 'Business + Economics', belongs: 'd' },
-					c: { title: 'Social Science', belongs: 'c' },
-					d: { title: 'Fine Arts', belongs: 'a' },
-				},
-			},
-			{
 				question:
-					'Which Hogwarts sorting house from the Harry Potter series are you in?',
-				answers: {
-					// Each choice must be assigned to a result group!!!
-					a: { title: 'Hufflepuff', belongs: 'a' },
-					b: { title: 'Ravenclaw', belongs: 'c' },
-					c: { title: 'Gryffindor', belongs: 'd' },
-					d: { title: 'Slytherin', belongs: 'b' },
-				},
-			},
-			{
-				question: 'Which snacks do you like the most?',
-				answers: {
-					// Each choice must be assigned to a result group!!!
-					a: { title: 'Vegetables and fruit', belongs: 'NONE' },
-					b: { title: 'Chips', belongs: 'NONE' },
-					c: { title: 'Candy', belongs: 'NONE' },
-					d: { title: 'Baked goods', belongs: 'NONE' },
-				},
-			},
-			{
-				question: 'What superpower would you like to have?',
+					'Out of the following, which superpower would you like to have?',
+				stats: true,
 				answers: {
 					// Each choice must be assigned to a result group!!!
 					a: { title: 'Invisibility', belongs: 'a' },
@@ -256,7 +171,93 @@ export default {
 				},
 			},
 			{
+				question: 'Why did you join FBLA?',
+				stats: false,
+				answers: {
+					// Each choice must be assigned to a result group!!!
+					a: { title: 'Prepare for future business career', belongs: 'd' },
+					b: { title: 'Learn new career and technical skills', belongs: 'b' },
+					c: { title: 'Networking/friends', belongs: 'c' },
+					d: { title: 'Competitive events', belongs: 'a' },
+				},
+			},
+			{
+				question:
+					'What other clubs do you participate in the moust outside of FBLA?',
+				stats: false,
+				answers: {
+					// Each choice must be assigned to a result group!!!
+					a: { title: 'Leadership (ASB, student council)', belongs: 'd' },
+					b: {
+						title: 'Community Service (Key Club, Interact, Red Cross)',
+						belongs: 'a',
+					},
+					c: { title: 'Hobbies (Photography, drama, music)', belongs: 'c' },
+					d: { title: 'None of the above', belongs: 'b' },
+				},
+			},
+			{
+				question: 'Out of these snacks, which one do you like the most?',
+				stats: false,
+				answers: {
+					// Each choice must be assigned to a result group!!!
+					a: { title: 'Vegetables and fruit', belongs: 'NONE' },
+					b: { title: 'Chips', belongs: 'NONE' },
+					c: { title: 'Candy', belongs: 'NONE' },
+					d: { title: 'Baked goods', belongs: 'NONE' },
+				},
+			},
+			{
+				question: 'Which conference is most appealing to you?',
+				stats: false,
+				answers: {
+					// Each choice must be assigned to a result group!!!
+					a: { title: 'Fall Leadership Conference', belongs: 'NONE' },
+					b: { title: 'Roleplay', belongs: 'NONE' },
+					c: { title: 'State Business Leadership Conference', belongs: 'NONE' },
+					d: { title: 'National Leadership Conference', belongs: 'NONE' },
+				},
+			},
+			{
+				question: 'What competitive events are you most interested in?',
+				stats: true,
+				answers: {
+					// Each choice must be assigned to a result group!!!
+					a: { title: 'Test', belongs: 'a' },
+					b: { title: 'Roleplay', belongs: 'c' },
+					c: { title: 'Presentation + Prejudged', belongs: 'd' },
+					d: { title: 'Interview + Production', belongs: 'b' },
+				},
+			},
+			{
+				question:
+					'Which Hogwarts sorting house from the Harry Potter series are you in?',
+				stats: false,
+				answers: {
+					// Each choice must be assigned to a result group!!!
+					a: { title: 'Hufflepuff', belongs: 'a' },
+					b: { title: 'Ravenclaw', belongs: 'c' },
+					c: { title: 'Gryffindor', belongs: 'd' },
+					d: { title: 'Slytherin', belongs: 'b' },
+				},
+			},
+			{
+				question: 'What competition genre do you prefer to compete in?',
+				stats: false,
+				answers: {
+					// Each choice must be assigned to a result group!!!
+					a: {
+						title: 'Technology/computer programming/designing',
+						belongs: 'b',
+					},
+					b: { title: 'Business and leadership', belongs: 'd' },
+					c: { title: 'Advertising/social media', belongs: 'c' },
+					d: { title: 'Service/customer orientated', belongs: 'a' },
+				},
+			},
+			{
 				question: 'If money was no object, would you travel all the time?',
+				stats: false,
 				answers: {
 					// Each choice must be assigned to a result group!!!
 					a: {
@@ -276,7 +277,8 @@ export default {
 				},
 			},
 			{
-				question: 'What is your favorite music genre?',
+				question: 'What music genre do you like best out of the following?',
+				stats: false,
 				answers: {
 					// Each choice must be assigned to a result group!!!
 					a: { title: 'R&B', belongs: 'b' },
@@ -286,34 +288,33 @@ export default {
 				},
 			},
 			{
-				question: 'What competition genre do you prefer to compete in?',
+				question: "What's your favorite FBLA initiative?",
+				stats: false,
 				answers: {
 					// Each choice must be assigned to a result group!!!
-					a: {
-						title: 'Technology/computer programming/designing',
-						belongs: 'b',
-					},
-					b: { title: 'Business and leadership', belongs: 'd' },
-					c: { title: 'Advertising/social media', belongs: 'c' },
-					d: { title: 'Service/customer orientated', belongs: 'a' },
+					a: { title: 'Business Achievement Awards (BAAs)', belongs: 'd' },
+					b: { title: 'March of Dimes', belongs: 'c' },
+					c: { title: 'Chapter Challenges', belongs: 'b' },
+					d: { title: 'Community Service Awards (CSAs)', belongs: 'a' },
 				},
 			},
 			{
-				question:
-					'What other clubs do you participate in the moust outside of FBLA?',
+				question: 'Which describes your personality?',
+				stats: false,
 				answers: {
 					// Each choice must be assigned to a result group!!!
-					a: { title: 'Leadership (ASB, student council)', belongs: 'd' },
+					a: { title: 'Dependable and kind', belongs: 'a' },
 					b: {
-						title: 'Community Service (Key Club, Interact, Red Cross)',
-						belongs: 'a',
+						title: 'A problem solver, analytical, and creative',
+						belongs: 'b',
 					},
-					c: { title: 'Hobbies (Photography, drama, music)', belongs: 'c' },
-					d: { title: 'None of the above', belongs: 'b' },
+					c: { title: 'Extroverted and friendly', belongs: 'c' },
+					d: { title: 'Adventurous and likes to try new things', belongs: 'd' },
 				},
 			},
 			{
 				question: 'Which donut flavor do you enjoy the most?',
+				stats: false,
 				answers: {
 					// Each choice must be assigned to a result group!!!
 					a: { title: 'Chocolate (with or without sprinkles)', belongs: 'c' },
@@ -323,13 +324,30 @@ export default {
 				},
 			},
 			{
-				question: "What's your favorite FBLA initiative?",
+				question:
+					'Out of the following career fields, which most interests you?',
+				stats: true,
 				answers: {
 					// Each choice must be assigned to a result group!!!
-					a: { title: 'Business Achievement Awards (BAAs)', belongs: 'd' },
-					b: { title: 'March of Dimes', belongs: 'c' },
-					c: { title: 'Chapter Challenges', belongs: 'b' },
-					d: { title: 'Community Service Awards (CSAs)', belongs: 'a' },
+					a: { title: 'STEM', belongs: 'b' },
+					b: { title: 'Business + Economics', belongs: 'd' },
+					c: { title: 'Social Science', belongs: 'c' },
+					d: { title: 'Fine Arts', belongs: 'a' },
+				},
+			},
+			{
+				question: 'Which officer role appeals the most to you?',
+				stats: false,
+				answers: {
+					// Each choice must be assigned to a result group!!!
+					a: {
+						title:
+							'Executive Positions (President, Secretary, Public Relations)',
+						belongs: 'NONE',
+					},
+					b: { title: 'Regional Vice President', belongs: 'NONE' },
+					c: { title: 'Parliamentarian', belongs: 'NONE' },
+					d: { title: 'Alumni and Business Relations VP', belongs: 'NONE' },
 				},
 			},
 		],
