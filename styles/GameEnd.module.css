@@ -27,12 +27,12 @@
 	flex-grow: 1;
 	padding-bottom: 4rem;
 
-	display: flex;
+	/* display: flex;
 	justify-content: flex-start;
 	align-items: center;
 	align-content: flex-start;
 	flex-wrap: wrap;
-	overflow-x: hidden;
+	overflow-x: hidden; */
 }
 
 #peopleContainer {

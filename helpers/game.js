@@ -113,19 +113,16 @@ async function calcAllMatchesExceptUser(pin, excludeUuid = null) {
 		return null; //TODO: error message
 	}
 	var rawUsers = snapshot.val();
-	delete rawUsers[excludeUuid]
+	delete rawUsers[excludeUuid];
 
 	var users = Object.keys(rawUsers).map((uuid) => {
 		const user = rawUsers[uuid];
-			return {
-				uuid: uuid,
-				name: user.name,
-				match: calcMatch(user.answers),
-			};
-		
-		
+		return {
+			uuid: uuid,
+			name: user.name,
+			match: calcMatch(user.answers),
+		};
 	});
-
 
 	// Filter out shadow banned users
 	users.filter((user) =>
@@ -331,6 +328,42 @@ function getGroupInfo(group) {
 	}
 }
 
+/**
+ * Gets the statistics for all questions.
+ * Pass in a group to only show stats from that group.
+ * @param {string} group
+ */
+async function getQuestionStats(pin, group = undefined) {
+	const userSnapshot = await getDbRefs(pin).users.once('value');
+	var userData = userSnapshot.exists() ? userSnapshot.val() : {};
+
+	// filter by result group
+	if (typeof group !== 'undefined') {
+		const results = (await calcAllMatches(pin)).filter(
+			(r) => r.match === group
+		);
+		results.forEach((r) => {
+			delete userData[r.uuid];
+		});
+	}
+
+	var tally = consts.game.questions.map((questionObj) =>
+		Object.assign(
+			...Object.keys(questionObj.answers).map((answer) => ({ [answer]: 0 }))
+		)
+	);
+
+	for (let user in userData) {
+		const userObj = userData[user];
+		for (let question in userObj.answers) {
+			const choice = userObj.answers[question];
+			tally[question][choice]++;
+		}
+	}
+
+	return tally;
+}
+
 export default {
 	validatePin,
 	checkAdminPassword,
@@ -353,4 +386,5 @@ export default {
 	hasNextQuestion,
 	setShadowBan,
 	getGroupInfo,
+	getQuestionStats,
 };

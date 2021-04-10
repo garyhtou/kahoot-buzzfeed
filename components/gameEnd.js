@@ -33,6 +33,7 @@ export default function gameEnd(props) {
 	const [myAllResults, setAllResults] = useState();
 	const [usersWithSimilarResults, setUsersWithSimilarResults] = useState();
 	const [myGroupInfo, setMyGroupInfo] = useState({});
+	const [questionStats, setQuestionStats] = useState([]);
 
 	// Get my results
 	useEffect(async () => {
@@ -69,6 +70,29 @@ export default function gameEnd(props) {
 		} catch (error) {
 			console.log(error);
 			setAllResults(undefined);
+		}
+	}, [myResults, state]);
+
+	// Get question stats
+	useEffect(async () => {
+		if (typeof myResults === 'undefined') return;
+
+		try {
+			// get stats for only users in my matched group
+			const rawStats = await game.getQuestionStats(pin, myResults);
+			const stats = consts.game.questions
+				.map((q, index) => {
+					q.questionNum = index;
+					q.resultDistribution = rawStats[index];
+					return q;
+				})
+				.filter((q) => q.stats);
+
+			console.log(stats);
+			setQuestionStats(stats);
+		} catch (error) {
+			console.log(error);
+			setQuestionStats([]);
 		}
 	}, [myResults, state]);
 
@@ -150,8 +174,15 @@ export default function gameEnd(props) {
 					</Box>
 
 					<Box id={styles.details}>
+						<div>
+							{questionStats.map((q) => (
+								<pre>{JSON.stringify(q, null, 2)}</pre>
+							))}
+						</div>
 						{usersWithSimilarResults ? (
-							<Typography style={{ "fontWeight": 600}} variant='body'>{formatSimilar()}</Typography>
+							<Typography style={{ fontWeight: 600 }} variant='body'>
+								{formatSimilar()}
+							</Typography>
 						) : null}
 					</Box>
 				</Box>
