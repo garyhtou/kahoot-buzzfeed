@@ -2,6 +2,14 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import styles from '../styles/GameEnd.module.css';
 import consts from '../config/consts';
+import PieChart, {
+	Legend,
+	Export,
+	Series,
+	Label,
+	Font,
+	Connector,
+} from 'devextreme-react/pie-chart';
 import {
 	Avatar,
 	Box,
@@ -122,6 +130,16 @@ export default function gameEnd(props) {
 		);
 	}
 
+	const dataSource = [
+		{
+			country: 'USA',
+			medals: 40,
+		},
+		{
+			country: 'China',
+			medals: 60,
+		},
+	];
 	return (
 		<>
 			{typeof myGroupInfo !== 'undefined' ? (
@@ -173,12 +191,57 @@ export default function gameEnd(props) {
 						<Divider />
 					</Box>
 
+					<Box></Box>
+
 					<Box id={styles.details}>
 						<div>
 							{questionStats.map((q) => (
-								<pre>{JSON.stringify(q, null, 2)}</pre>
+								<div>
+									<pre>{JSON.stringify(q.question, null, 2)}</pre>
+
+									<PieChart
+										id='pie'
+										palette='Bright'
+										dataSource={[
+											{
+												country: q.answers.a.title,
+												medals: q.resultDistribution.a,
+											},
+											{
+												country: q.answers.b.title,
+												medals: q.resultDistribution.b,
+											},
+											{
+												country: q.answers.c.title,
+												medals: q.resultDistribution.c,
+											},
+											{
+												country: q.answers.d.title,
+												medals: q.resultDistribution.d,
+											},
+										]}
+									>
+										<Legend
+											orientation='horizontal'
+											itemTextPosition='right'
+											horizontalAlignment='center'
+											verticalAlignment='bottom'
+											columnCount={4}
+										/>
+
+										<Export enabled={true} />
+										<Series argumentField='country' valueField='medals'>
+											<Label visible={true} position='columns'>
+												<Font size={16} />
+												<Connector visible={true} width={0.5} />
+											</Label>
+										</Series>
+									</PieChart>
+								</div>
 							))}
 						</div>
+
+						{/* other people who matched */}
 						{usersWithSimilarResults ? (
 							<Typography style={{ fontWeight: 600 }} variant='body'>
 								{formatSimilar()}
