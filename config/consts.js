@@ -183,7 +183,7 @@ export default {
 			},
 			{
 				question:
-					'What other clubs do you participate in the moust outside of FBLA?',
+					'What other clubs do you participate in the most outside of FBLA?',
 				stats: false,
 				answers: {
 					// Each choice must be assigned to a result group!!!
@@ -213,7 +213,7 @@ export default {
 				answers: {
 					// Each choice must be assigned to a result group!!!
 					a: { title: 'Fall Leadership Conference', belongs: 'NONE' },
-					b: { title: 'Roleplay', belongs: 'NONE' },
+					b: { title: 'Winter Leadership Conference', belongs: 'NONE' },
 					c: { title: 'State Business Leadership Conference', belongs: 'NONE' },
 					d: { title: 'National Leadership Conference', belongs: 'NONE' },
 				},
@@ -252,7 +252,7 @@ export default {
 					},
 					b: { title: 'Business and leadership', belongs: 'd' },
 					c: { title: 'Advertising/social media', belongs: 'c' },
-					d: { title: 'Service/customer orientated', belongs: 'a' },
+					d: { title: 'Service/customer oriented', belongs: 'a' },
 				},
 			},
 			{
@@ -284,7 +284,7 @@ export default {
 					a: { title: 'R&B', belongs: 'b' },
 					b: { title: 'Pop', belongs: 'c' },
 					c: { title: 'Classical', belongs: 'a' },
-					d: { title: 'Podcasts', belongs: 'b' },
+					d: { title: 'Jazz', belongs: 'b' },
 				},
 			},
 			{
