@@ -340,7 +340,7 @@ async function getQuestionStats(pin, group = undefined) {
 	// filter by result group
 	if (typeof group !== 'undefined') {
 		const results = (await calcAllMatches(pin)).filter(
-			(r) => r.match === group
+			(r) => r.match != group
 		);
 		results.forEach((r) => {
 			delete userData[r.uuid];
