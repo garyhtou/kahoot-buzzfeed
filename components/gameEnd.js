@@ -194,10 +194,17 @@ export default function gameEnd(props) {
 					<Box></Box>
 
 					<Box id={styles.details}>
+						{/* other people who matched */}
+						{usersWithSimilarResults ? (
+							<Typography style={{ fontWeight: 600 }} variant='body'>
+								{formatSimilar()}
+							</Typography>
+						) : null}
+
 						<div>
 							{questionStats.map((q) => (
 								<div>
-									<pre>{JSON.stringify(q.question, null, 2)}</pre>
+									<Typography variant='subtitle1'>{q.question}</Typography>
 
 									<PieChart
 										id='pie'
@@ -240,13 +247,6 @@ export default function gameEnd(props) {
 								</div>
 							))}
 						</div>
-
-						{/* other people who matched */}
-						{usersWithSimilarResults ? (
-							<Typography style={{ fontWeight: 600 }} variant='body'>
-								{formatSimilar()}
-							</Typography>
-						) : null}
 					</Box>
 				</Box>
 			) : (
