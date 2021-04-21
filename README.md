@@ -1,11 +1,35 @@
 # Kahoot-Buzzfeed
 
-Nice to have:
 
-- 5 sec count down before next question
-- Powerpoint slide (image) embedded via icon rollover
+## Firebase Real-Time Database Rules
 
-Edge ease:
+Change `@wafbla.org` to the domain of your admin users.
 
-- new user (of game) joins after it started (ask for name)
-- matching must require at least one answer. if not, show message/screen at end
+```json
+{
+	"rules": {
+		".read": true,
+		"games": {
+			".write": "auth.token.email.endsWith('@wafbla.org')",
+			"$gameID": {
+				"users": {
+					".write": "auth != null",
+					"$user_id": {
+						"answers": {
+							".write": "auth.uid == $user_id"
+						},
+						"name": {
+							".write": "auth.uid == $user_id"
+						},
+						"sban": {
+							".write": "auth.token.email.endsWith('@wafbla.org')"
+						}
+					}
+				}
+			}
+		}
+	}
+}
+```
+
+In the database set `password/myAdminDashboardPassword` to `true`.
