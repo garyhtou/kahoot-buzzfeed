@@ -176,9 +176,9 @@ export default {
 				answers: {
 					// Each choice must be assigned to a result group!!!
 					a: { title: 'Prepare for future business career', belongs: 'd' },
-					b: { title: 'Learn new career and technical skills', belongs: 'b' },
+					b: { title: 'Learn new career and technical skills', belongs: 'a' },
 					c: { title: 'Networking/friends', belongs: 'c' },
-					d: { title: 'Competitive events', belongs: 'a' },
+					d: { title: 'Competitive events', belongs: 'b' },
 				},
 			},
 			{
@@ -190,10 +190,10 @@ export default {
 					a: { title: 'Leadership (ASB, student council)', belongs: 'd' },
 					b: {
 						title: 'Community Service (Key Club, Interact, Red Cross)',
-						belongs: 'a',
+						belongs: 'c',
 					},
-					c: { title: 'Hobbies (Photography, drama, music)', belongs: 'c' },
-					d: { title: 'None of the above', belongs: 'b' },
+					c: { title: 'Hobbies (Photography, drama, music)', belongs: 'b' },
+					d: { title: 'None of the above', belongs: 'a' },
 				},
 			},
 			{
@@ -225,8 +225,8 @@ export default {
 					// Each choice must be assigned to a result group!!!
 					a: { title: 'Test', belongs: 'a' },
 					b: { title: 'Roleplay', belongs: 'c' },
-					c: { title: 'Presentation + Prejudged', belongs: 'd' },
-					d: { title: 'Interview + Production', belongs: 'b' },
+					c: { title: 'Presentation + Prejudged', belongs: 'b' },
+					d: { title: 'Interview + Production', belongs: 'd' },
 				},
 			},
 			{
@@ -236,9 +236,9 @@ export default {
 				answers: {
 					// Each choice must be assigned to a result group!!!
 					a: { title: 'Hufflepuff', belongs: 'a' },
-					b: { title: 'Ravenclaw', belongs: 'c' },
+					b: { title: 'Ravenclaw', belongs: 'b' },
 					c: { title: 'Gryffindor', belongs: 'd' },
-					d: { title: 'Slytherin', belongs: 'b' },
+					d: { title: 'Slytherin', belongs: 'c' },
 				},
 			},
 			{
@@ -251,7 +251,7 @@ export default {
 						belongs: 'b',
 					},
 					b: { title: 'Business and leadership', belongs: 'd' },
-					c: { title: 'Advertising/social media', belongs: 'c' },
+					c: { title: 'Advertising/social media', belongs: 'd' },
 					d: { title: 'Service/customer oriented', belongs: 'a' },
 				},
 			},
@@ -292,9 +292,9 @@ export default {
 				stats: false,
 				answers: {
 					// Each choice must be assigned to a result group!!!
-					a: { title: 'Business Achievement Awards (BAAs)', belongs: 'd' },
+					a: { title: 'Business Achievement Awards (BAAs)', belongs: 'b' },
 					b: { title: 'March of Dimes', belongs: 'c' },
-					c: { title: 'Chapter Challenges', belongs: 'b' },
+					c: { title: 'Chapter Challenges', belongs: 'd' },
 					d: { title: 'Community Service Awards (CSAs)', belongs: 'a' },
 				},
 			},
@@ -318,8 +318,8 @@ export default {
 				answers: {
 					// Each choice must be assigned to a result group!!!
 					a: { title: 'Chocolate (with or without sprinkles)', belongs: 'c' },
-					b: { title: 'Glazed', belongs: 'a' },
-					c: { title: 'Maple', belongs: 'b' },
+					b: { title: 'Glazed', belongs: 'b' },
+					c: { title: 'Maple', belongs: 'a' },
 					d: { title: 'Filled donuts', belongs: 'd' },
 				},
 			},
