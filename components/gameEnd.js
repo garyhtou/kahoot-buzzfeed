@@ -152,7 +152,7 @@ export default function gameEnd(props) {
 								{typeof myGroupInfo.members !== 'undefined'
 									? myGroupInfo.members.map((p) => (
 											<Box id={styles.personWrapper} key={p.name + p.picture}>
-												<Tooltip title={`Visit ${p.linkType}`}>
+												<Tooltip title={`Visit ${p.linkType}`} style={{maxWidth: '100%'}}>
 													<Box id={styles.personCol}>
 														<Avatar
 															src={p.picture}
@@ -204,7 +204,9 @@ export default function gameEnd(props) {
 						<div>
 							{questionStats.map((q) => (
 								<div>
-									<Typography variant='subtitle1'>{q.question}</Typography>
+									<Typography variant='subtitle1' style={{ marginTop: '4rem' }}>
+										{q.question}
+									</Typography>
 
 									<PieChart
 										id='pie'
