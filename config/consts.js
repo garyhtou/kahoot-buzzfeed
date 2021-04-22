@@ -250,7 +250,7 @@ export default {
 						title: 'Technology/computer programming/designing',
 						belongs: 'b',
 					},
-					b: { title: 'Business and leadership', belongs: 'd' },
+					b: { title: 'Business and leadership', belongs: 'c' },
 					c: { title: 'Advertising/social media', belongs: 'd' },
 					d: { title: 'Service/customer oriented', belongs: 'a' },
 				},
